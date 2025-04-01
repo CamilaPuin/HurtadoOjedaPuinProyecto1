@@ -91,7 +91,7 @@ public class View extends JFrame implements ActionListener {
     private JPanel registerParking() {
         JPanel registerParkingPanel = new JPanel();
         registerParkingPanel.add(new JLabel("register parking"));
-        return registerParkingPanel;
+        
     }
 
     private JPanel createRecepcionist() {

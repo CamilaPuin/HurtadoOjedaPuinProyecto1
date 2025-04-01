@@ -7,14 +7,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+<<<<<<< HEAD
 
+=======
+>>>>>>> a260f4f659bb4d71944785739534034df7096f41
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -45,7 +47,7 @@ public class View extends JFrame implements ActionListener {
         setSize(800, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new GridLayout(1,2));
-        getContentPane().add(recepcionistPanel());
+        getContentPane().add(registerVehiclePanel());
         setVisible(true);
     }
 
@@ -348,28 +350,6 @@ public class View extends JFrame implements ActionListener {
         return welcome;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == registerParking)
-            cardLayout.show(adminRightPanel, "Register Parking");
-        if (e.getSource() == createRecepcionist)
-            cardLayout.show(adminRightPanel, "Create Recepcionist");
-        if (e.getSource() == updateRecepcionist)
-            cardLayout.show(adminRightPanel, "Update Recepcionist");
-        if (e.getSource() == salesReport)
-            cardLayout.show(adminRightPanel, "Sales Report");
-        if (e.getSource() == logout)
-            cardLayout.show(adminRightPanel, "Logout");
-        if (e.getSource() == availableSpaces)
-            cardLayout.show(recepRightPanel, "Available Spaces");
-        if (e.getSource() == registerVehicle)
-            cardLayout.show(recepRightPanel, "Register Vehicle");
-        if (e.getSource() == exitVehicle)
-            cardLayout.show(recepRightPanel, "Exit Vehicle");
-        if (e.getSource() == recepLogOut)
-            cardLayout.show(recepRightPanel, "Log Out");
-    }
-
     private void addComponent(JPanel panel, Component comp, GridBagConstraints gbc, int x, int y, int width) {
         gbc.gridx = x;
         gbc.gridy = y;
@@ -401,5 +381,27 @@ public class View extends JFrame implements ActionListener {
         JButton button = new JButton(text);
         button.addActionListener(this);
         return button;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == registerParking)
+            cardLayout.show(adminRightPanel, "Register Parking");
+        if (e.getSource() == createRecepcionist)
+            cardLayout.show(adminRightPanel, "Create Recepcionist");
+        if (e.getSource() == updateRecepcionist)
+            cardLayout.show(adminRightPanel, "Update Recepcionist");
+        if (e.getSource() == salesReport)
+            cardLayout.show(adminRightPanel, "Sales Report");
+        if (e.getSource() == logout)
+            cardLayout.show(adminRightPanel, "Logout");
+        if (e.getSource() == availableSpaces)
+            cardLayout.show(recepRightPanel, "Available Spaces");
+        if (e.getSource() == registerVehicle)
+            cardLayout.show(recepRightPanel, "Register Vehicle");
+        if (e.getSource() == exitVehicle)
+            cardLayout.show(recepRightPanel, "Exit Vehicle");
+        if (e.getSource() == recepLogOut)
+            cardLayout.show(recepRightPanel, "Log Out");
     }
 }

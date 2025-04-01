@@ -1,29 +1,29 @@
 package co.edu.uptc.model;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Admin extends User {
-    private ArrayList<Parking> parkings = new ArrayList<Parking>();
+    Parking parking;
 
     public Admin(String name, String lastName, String email, String phone, String address, String id, String password) {
         super(name, lastName, email, phone, address, id, password);
+        parking = registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
     }
 
-    public ArrayList<Parking> getParkings() {
-        return parkings;
+    public Parking getParking() {
+        return parking;
     }
 
-    public void setParkings(ArrayList<Parking> parkings) {
-        this.parkings = parkings;
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 
-    public void registerParking(String name, String address, String id, int carsCapacity, int motorbikesCapacity,
+    public Parking registerParking(String name, String address, String id, int carsCapacity, int motorbikesCapacity,
             LocalTime openingHour, ArrayList<Recepcionist> parkingRecepcionists) {
-        parkings.add(new Parking(name, address, id, carsCapacity, motorbikesCapacity, openingHour, new ArrayList<>(),
-                new ArrayList<>(), parkingRecepcionists));
+        return new Parking(name, address, id, carsCapacity, motorbikesCapacity, openingHour, new ArrayList<>(),
+                new ArrayList<>(), parkingRecepcionists);
     }
 
     public Recepcionist createRecepcionist(String name, String lastName, String email, String phone, String address,
@@ -31,40 +31,24 @@ public class Admin extends User {
         return new Recepcionist(name, lastName, email, phone, address, id, password);
     }
 
-    // TODO update?
     public void updateRecepcionistData(String name, String lastName, String email, String phone, String address,
-            String id,
-            Parking parking, Recepcionist recepcionists) {
+            String id, Recepcionist recepcionist, String password) {
         if (name != null)
-            recepcionists.setName(name);
+            recepcionist.setName(name);
         if (lastName != null)
-            recepcionists.setLastName(lastName);
+            recepcionist.setLastName(lastName);
         if (email != null)
-            recepcionists.setEmail(email);
+            recepcionist.setEmail(email);
         if (phone != null)
-            recepcionists.setPhone(phone);
+            recepcionist.setPhone(phone);
         if (address != null)
-            recepcionists.setAddress(address);
-        if (parking != null)
-            recepcionists.setParking(parking);
+            recepcionist.setAddress(address);
+        if (password != null)
+            recepcionist.setPassword(password);
     }
 
-    // TODO add parking to wifreframe?
-    // public ArrayList<String> generateSalesReport(String Parking, LocalDate date)
-    // {
-    // Parking parking = parkings.get(searchParking(Parking));
-    // ArrayList<String> salesReport = new ArrayList<>();
-    // for (Recepcionist recepcionist : recepcionists) {
-    // if (recepcionist.getParking().equals(parking)) {
-    // // TODO: date management, arrays?
-    // }
-    // }
-    // return null;
-
-    // }
-
-
-    public int searchParking(String name) {
-        return Collections.binarySearch(parkings, new Parking(name), Comparator.comparing(Parking::getName));
+    public ArrayList<String> generateSalesReport(LocalDate date) {
+        return null;
     }
+
 }

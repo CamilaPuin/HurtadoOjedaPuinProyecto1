@@ -72,12 +72,14 @@ public class User {
         this.id = id;
     }
 
-    public boolean login(String id, String password) {
-        return true;
+    public String getPassword() {
+        return password;
     }
 
-    public void logout() {
-
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+    
 
 }

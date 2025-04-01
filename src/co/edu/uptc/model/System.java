@@ -1,5 +1,6 @@
 package co.edu.uptc.model;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +19,7 @@ public class System {
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "recepcionist", "12345678");
-        // TODO set parking?
-        recepcionist.setParking(admin.getParkings().get(0));
+        recepcionist.setParking(admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         admins = new ArrayList<>();
@@ -58,18 +58,20 @@ public class System {
         this.currentRecepcionist = currentRecepcionist;
     }
 
-    public void adminregisterparking() {
-
+    public void createRecepcionist(String name, String lastName, String email, String phone, String address,
+            String id, String password) {
+        currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, password);
+    }
+    //search recepcionist by id
+    public void updateRecepcionist(String name, String lastName, String email, String phone, String address,
+            String id,String password) {
+        int index = Collections.binarySearch(recepcionists, new Recepcionist(id), Comparator.comparing(Recepcionist::getId));
+        if (index >= 0)
+            currentAdmin.updateRecepcionistData(name, lastName, email, phone, address, id, recepcionists.get(index),password);
     }
 
-    public void createRecepcionist() {
-
-    }
-
-    public void updateRecepcionist() {
-    }
-
-    public void salesReport() {
+    public void salesReport(LocalDate date) {
+        currentAdmin.generateSalesReport(date);
     }
 
     public void logout() {
@@ -77,14 +79,17 @@ public class System {
         currentRecepcionist = null;
     }
 
-    
     public void availableSpaces() {
+        currentRecepcionist.seeParkingAvailability();
     }
-    public void registerVehicle() {
+
+    public void registerVehicle(String plate, String type) {
+        currentRecepcionist.registerEntryVehicle(plate,type);
 
     }
-    public void exitVehicle() {
 
+    public void exitVehicle(String plate) {
+        currentRecepcionist.registerVehicleExit(plate);
     }
 
 }

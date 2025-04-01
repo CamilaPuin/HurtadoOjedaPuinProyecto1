@@ -13,10 +13,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
-
-=======
->>>>>>> a260f4f659bb4d71944785739534034df7096f41
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -27,7 +23,6 @@ import java.awt.Font;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
-    private JButton registerParking;
     private JButton createRecepcionist;
     private JButton updateRecepcionist;
     private JButton salesReport;
@@ -59,13 +54,11 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight())); 
 
-        registerParking = new JButton("Register Parking");
         createRecepcionist = new JButton("Create Recepcionist");
         updateRecepcionist = new JButton("Update Recepcionist");
         salesReport = new JButton("Sales Report");
         logout = new JButton("Logout");
         adminLeftPanel.add(Box.createVerticalStrut(20));
-        adminLeftPanel.add(registerParking, "Register Parking");
         adminLeftPanel.add(Box.createVerticalStrut(10));
         adminLeftPanel.add(createRecepcionist, "Create Recepcionist");
         adminLeftPanel.add(Box.createVerticalStrut(10));
@@ -76,18 +69,16 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.add(logout, "Logout");
         cardLayout = new CardLayout();
         adminRightPanel = new JPanel(cardLayout);
-        JPanel registerParkingPanel = registerParking();
         JPanel createRecepcionistPanel = createRecepcionist();
         JPanel updateRecepcionistPanel = updateRecepcionist();
         JPanel salesReportPanel = salesReport();
         JPanel logoutPanel = logout();
-        adminRightPanel.add(registerParkingPanel, "Register Parking");
+
         adminRightPanel.add(createRecepcionistPanel, "Create Recepcionist");
         adminRightPanel.add(updateRecepcionistPanel, "Update Recepcionist");
         adminRightPanel.add(salesReportPanel, "Sales Report");
         adminRightPanel.add(logoutPanel, "Logout");
 
-        registerParking.addActionListener(this);
         createRecepcionist.addActionListener(this);
         updateRecepcionist.addActionListener(this);
         salesReport.addActionListener(this);
@@ -385,8 +376,6 @@ public class View extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == registerParking)
-            cardLayout.show(adminRightPanel, "Register Parking");
         if (e.getSource() == createRecepcionist)
             cardLayout.show(adminRightPanel, "Create Recepcionist");
         if (e.getSource() == updateRecepcionist)
@@ -403,5 +392,6 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(recepRightPanel, "Exit Vehicle");
         if (e.getSource() == recepLogOut)
             cardLayout.show(recepRightPanel, "Log Out");
+        
     }
 }

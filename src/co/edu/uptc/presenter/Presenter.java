@@ -1,5 +1,8 @@
 package co.edu.uptc.presenter;
 
+import java.time.LocalDate;
+
+import co.edu.uptc.model.Recepcionist;
 import co.edu.uptc.model.System;
 import co.edu.uptc.view.View;
 
@@ -11,49 +14,35 @@ public class Presenter {
         view = new View();
         system = new System();
         // TODO metodos de orrdenamiento
-        menu(0);
-    }
 
-    private void menu(int option) {
+    }
+    //excepcion para logins???
+
+    public void createRecepcionist(String name, String lastName, String email, String phone, String address,
+    String id, String password){
+        system.createRecepcionist(name, lastName, email, phone, address, id, password);
+    }
+    public void updateRecepcionist(String name, String lastName, String email, String phone, String address,
+            String id, String password){
+        system.updateRecepcionist(name, lastName, email, phone, address, id, password);
+    }
+    public void salesReport(LocalDate date){
+        system.salesReport(date);
+    }
+    public void logout(){
+        system.logout();
+    }
+    public void availableSpaces(){
+        system.availableSpaces();
+    }
+    public void registerVehicle(String plate, String type){
+        system.registerVehicle(plate, type);
+    }
+    public void exitVehicle(String plate){
+        system.exitVehicle(plate);
+    }       
         // login
         // meterle un while
         // el int option...
-        if (system.getCurrentAdmin() != null) {
-            switch (option) {
-                case 0:
-                    system.adminregisterparking();
-                    break;
-                case 1:
-                    system.createRecepcionist();
-                    break;
-                case 2:
-                    system.updateRecepcionist();
-                    break;
-                case 3:
-                    system.salesReport();
-                    break;
-                case 4:
-                    system.logout();
-                    break;
-                default:
-                    // error????
-                    break;
-            }
-        } else if (system.getCurrentRecepcionist() != null) {
-            switch (option) {
-                case 0:
-                    system.availableSpaces();
-                    break;
-                case 1:
-                    system.registerVehicle();
-                    break;
-                case 2:
-                    system.exitVehicle();
-                    break;
-                case 3:
-                    system.logout();
-                    break;
-            }
-        }
-    }
+        
 }

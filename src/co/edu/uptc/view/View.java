@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,10 +43,12 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel adminPanel() {
         // TODO layout here to organization
-        JPanel adminPanel = new JPanel(// new whatLayout());
+        JPanel adminPanel = new JPanel(// new whatLayout
         );
         adminLeftPanel = new JPanel();
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
+        adminLeftPanel.setPreferredSize(new Dimension(150, getHeight())); 
+
         registerParking = new JButton("Register Parking");
         createRecepcionist = new JButton("Create Recepcionist");
         updateRecepcionist = new JButton("Update Recepcionist");
@@ -116,10 +120,11 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel recepcionistPanel() {
         // TODO layout here to organization
-        JPanel recepPanel = new JPanel(// new whatLayout());
+        JPanel recepPanel = new JPanel(// new whatLayout
         );
         recepLeftPanel = new JPanel();
         recepLeftPanel.setLayout(new BoxLayout(recepLeftPanel, BoxLayout.Y_AXIS));
+        recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         availableSpaces = new JButton("Available Spaces");
         registerVehicle = new JButton("Register Vehicle");
         exitVehicle = new JButton("Exit Vehicle");

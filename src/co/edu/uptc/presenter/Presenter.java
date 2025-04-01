@@ -1,4 +1,10 @@
 package co.edu.uptc.presenter;
-public class Presenter {
 
+import co.edu.uptc.view.View;
+
+public class Presenter {
+    private View view;
+    public Presenter() {
+        view = new View();
+    }
 }

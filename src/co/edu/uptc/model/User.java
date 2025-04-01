@@ -69,7 +69,7 @@ public class User {
         this.id = id;
     }
 
-    public boolean login(String email, String password) {
+    public boolean login(String id, String password) {
         return true;
     }
 

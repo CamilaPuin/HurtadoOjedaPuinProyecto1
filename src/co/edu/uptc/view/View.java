@@ -406,13 +406,6 @@ public class View extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-=======
-        JButton button = (JButton) e.getSource();
-        String text = button.getText();
-        if (e.getSource() == registerParking)
-            cardLayout.show(adminRightPanel, "Register Parking");
->>>>>>> 87791c5646b197a88e12eec27c39c34d4fe63a83
         if (e.getSource() == createRecepcionist)
             cardLayout.show(adminRightPanel, "Create Recepcionist");
         if (e.getSource() == updateRecepcionist)
@@ -429,11 +422,6 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(recepRightPanel, "Exit Vehicle");
         if (e.getSource() == recepLogOut)
             cardLayout.show(recepRightPanel, "Log Out");
-<<<<<<< HEAD
         
-=======
-        if (text.equals("Siguiente"))
-            System.out.println("Siguiente");
->>>>>>> 87791c5646b197a88e12eec27c39c34d4fe63a83
     }
 }

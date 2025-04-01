@@ -431,8 +431,7 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(recepRightPanel, "Exit Vehicle");
         if (e.getSource() == recepLogOut)
             cardLayout.show(recepRightPanel, "Log Out");
-        if (text.equals("Siguiente")) {
+        if (text.equals("Siguiente"))
             System.out.println("Siguiente");
-        }
     }
 }

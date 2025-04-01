@@ -118,7 +118,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketPanel, createButton("Volver al menú principal"), gbc, 0, 4, 1);
         return ticketPanel;
     }
-    //Hola
 
      // TODO Panel vacio, va el selector de fechas de Santi
     private JPanel generateReportPanel() {
@@ -386,6 +385,8 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JButton createButton(String text) {
-        return new JButton(text);
+        JButton button = new JButton(text);
+        button.addActionListener(this);
+        return button;
     }
 }

@@ -122,10 +122,25 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel registerParking() {
-        JPanel registerParkingPanel = new JPanel();
-        registerParkingPanel.add(new JLabel("register parking"));
-        return null;
-        
+        JPanel parkingRegisterPanel = new JPanel(new GridBagLayout());
+        parkingRegisterPanel.setSize(400, 600);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        addComponent(parkingRegisterPanel, createLabel("Registro de estacionamiento"), gbc, 0, 0, 2);
+        addComponent(parkingRegisterPanel, createLabel("Datos Básicos"), gbc, 0, 1, 2);
+        addComponent(parkingRegisterPanel, createLabel("Nombre"), gbc, 0, 3, 1);
+        addComponent(parkingRegisterPanel, createLabel("Dirección"), gbc, 0, 4, 1);
+        addComponent(parkingRegisterPanel, createLabel("N° disponible"), gbc, 0, 5, 1);
+        addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 3, 1);
+        addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 4, 1);
+        addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 5, 1);
+        addComponent(parkingRegisterPanel, createLabel("Horario de atención"), gbc, 0, 6, 2);
+        addComponent(parkingRegisterPanel, createLabel("Hora inicio"), gbc, 0, 7, 1);
+        addComponent(parkingRegisterPanel, createLabel("Hora fin"), gbc, 0, 8, 1);
+        addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 7, 1);
+        addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 8, 1);
+        addComponent(parkingRegisterPanel, createButton("Registar"), gbc, 0, 9, 2);
+        return parkingRegisterPanel;
     }
 
     private JPanel createRecepcionist() {

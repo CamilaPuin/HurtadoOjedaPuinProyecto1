@@ -10,8 +10,8 @@ public class Admin extends User {
     private ArrayList<Parking> parkings = new ArrayList<Parking>();
     private ArrayList<Recepcionist> recepcionists = new ArrayList<Recepcionist>();
 
-    public Admin(String name, String lastName, String email, String phone, String address, String id) {
-        super(name, lastName, email, phone, address, id);
+    public Admin(String name, String lastName, String email, String phone, String address, String id, String password) {
+        super(name, lastName, email, phone, address, id, password);
     }
 
     public ArrayList<Parking> getParkings() {
@@ -36,8 +36,8 @@ public class Admin extends User {
                 new ArrayList<>(), parkingRecepcionists));
     }
 
-    public void createRecepcionist(String name, String lastName, String email, String phone, String address, String id) {
-        recepcionists.add(new Recepcionist(name, lastName, email, phone, address, id));
+    public void createRecepcionist(String name, String lastName, String email, String phone, String address, String id, String password) {
+        recepcionists.add(new Recepcionist(name, lastName, email, phone, address, id, password));
     }
 
     // TODO update?

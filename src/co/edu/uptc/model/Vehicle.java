@@ -6,16 +6,14 @@ import java.time.LocalTime;
 public class Vehicle {
     private String plate;
     private String type;
-    private String color;
     private LocalTime entryTime;
     private LocalDate date;
     private boolean isRegistered;
 
 
-    public Vehicle(String plate, String type, String color, LocalTime entryTime, boolean isRegistered) {
+    public Vehicle(String plate, String type, LocalTime entryTime, boolean isRegistered) {
         this.plate = plate;
         this.type = type;
-        this.color = color;
         this.entryTime = entryTime;
         this.date = LocalDate.now();
         this.isRegistered = isRegistered;
@@ -39,14 +37,6 @@ public class Vehicle {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public LocalTime getEntryTime() {

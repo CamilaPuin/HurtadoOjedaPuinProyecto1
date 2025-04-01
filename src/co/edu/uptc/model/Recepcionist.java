@@ -2,7 +2,7 @@ package co.edu.uptc.model;
 
 import java.time.LocalTime;
 
-import co.edu.uptc.model.Parking;
+
 
 public class Recepcionist extends User {
     private Parking parking;

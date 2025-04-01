@@ -126,11 +126,6 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel registerParking() {
-<<<<<<< HEAD
-        JPanel registerParkingPanel = new JPanel();
-        registerParkingPanel.add(new JLabel("register parking"));
-        return null;
-=======
         JPanel parkingRegisterPanel = new JPanel(new GridBagLayout());
         parkingRegisterPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -150,7 +145,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(parkingRegisterPanel, createTextField(), gbc, 1, 8, 1);
         addComponent(parkingRegisterPanel, createButton("Registar"), gbc, 0, 9, 2);
         return parkingRegisterPanel;
->>>>>>> 62cc6f6b73ec1c55557e9f0818766c988620b489
     }
 
     private JPanel createRecepcionist() {

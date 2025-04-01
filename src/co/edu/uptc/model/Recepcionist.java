@@ -7,8 +7,8 @@ public class Recepcionist extends User {
     private double money;
     private int registeredVehicles;
 
-    public Recepcionist(String name, String lastName, String email, String phone, String address, String id) {
-        super(name, lastName, email, phone, address, id);
+    public Recepcionist(String name, String lastName, String email, String phone, String address, String id, String password) {
+        super(name, lastName, email, phone, address, id, password);
 
     }
 

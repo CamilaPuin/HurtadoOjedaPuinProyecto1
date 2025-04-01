@@ -7,9 +7,9 @@ public class System {
     private Admin admin;
     private Recepcionist recepcionist;
     public System() {
-        admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin");
+        admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin", "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com", "123456789",
-                "Calle de la casa, 1", "recepcionist");
+                "Calle de la casa, 1", "recepcionist", "12345678");
     }
 }

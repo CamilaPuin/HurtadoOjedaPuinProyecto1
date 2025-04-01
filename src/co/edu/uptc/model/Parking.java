@@ -115,7 +115,7 @@ public class Parking {
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
         if (type.equals("car")) {
             if (carscapacity > cars.size()) {
-                cars.add(new Vehicle(plate, type, entryTime, false));
+                cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
             } else {
                 // TODO: throw exception?
@@ -123,7 +123,7 @@ public class Parking {
         }
         if (type.equals("motorbike")) {
             if (motorbikescapacity > motorbikes.size()) {
-                motorbikes.add(new Vehicle(plate, type, entryTime, false));
+                motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
             } else {
                 // TODO: throw exception?

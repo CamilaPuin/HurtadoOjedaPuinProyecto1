@@ -2,17 +2,14 @@ package co.edu.uptc.model;
 
 import java.time.LocalTime;
 
-
-
 public class Recepcionist extends User {
     private Parking parking;
     private double money;
     private int registeredVehicles;
 
-    public Recepcionist(String name, String lastName, String email, String phone, String address, String id,
-            Parking parking) {
+    public Recepcionist(String name, String lastName, String email, String phone, String address, String id) {
         super(name, lastName, email, phone, address, id);
-        this.parking = parking;
+
     }
 
     public Recepcionist(String id) {

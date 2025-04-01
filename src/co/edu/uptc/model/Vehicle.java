@@ -8,19 +8,20 @@ public class Vehicle {
     private String type;
     private LocalTime entryTime;
     private LocalDate date;
-    private boolean isRegistered;
 
-
-    public Vehicle(String plate, String type, LocalTime entryTime, boolean isRegistered) {
+    public Vehicle(String plate, String type, LocalTime entryTime) {
         this.plate = plate;
         this.type = type;
         this.entryTime = entryTime;
         this.date = LocalDate.now();
-        this.isRegistered = isRegistered;
     }
 
     public Vehicle(String plate) {
         this.plate = plate;
+    }
+
+    public Vehicle(LocalDate date) {
+        this.date = date;
     }
 
     public String getPlate() {
@@ -45,14 +46,6 @@ public class Vehicle {
 
     public void setEntryTime(LocalTime entryTime) {
         this.entryTime = entryTime;
-    }
-
-    public boolean isRegistered() {
-        return isRegistered;
-    }
-
-    public void setRegistered(boolean isRegistered) {
-        this.isRegistered = isRegistered;
     }
 
     public LocalDate getDate() {

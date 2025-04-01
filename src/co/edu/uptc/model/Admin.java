@@ -14,15 +14,30 @@ public class Admin extends User {
         super(name, lastName, email, phone, address, id);
     }
 
+    public ArrayList<Parking> getParkings() {
+        return parkings;
+    }
+
+    public void setParkings(ArrayList<Parking> parkings) {
+        this.parkings = parkings;
+    }
+
+    public ArrayList<Recepcionist> getRecepcionists() {
+        return recepcionists;
+    }
+
+    public void setRecepcionists(ArrayList<Recepcionist> recepcionists) {
+        this.recepcionists = recepcionists;
+    }
+
     public void registerParking(String name, String address, String id, int carsCapacity, int motorbikesCapacity,
             LocalTime openingHour, ArrayList<Recepcionist> parkingRecepcionists) {
         parkings.add(new Parking(name, address, id, carsCapacity, motorbikesCapacity, openingHour, new ArrayList<>(),
                 new ArrayList<>(), parkingRecepcionists));
     }
 
-    public void createRecepcionist(String name, String lastName, String email, String phone, String address, String id,
-            Parking parking) {
-        recepcionists.add(new Recepcionist(name, lastName, email, phone, address, id, parking));
+    public void createRecepcionist(String name, String lastName, String email, String phone, String address, String id) {
+        recepcionists.add(new Recepcionist(name, lastName, email, phone, address, id));
     }
 
     // TODO update?

@@ -41,9 +41,39 @@ public class View extends JFrame implements ActionListener {
         super("Parking UPTC");
         setSize(800, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new GridLayout(1,2));
+        getContentPane().setLayout(new GridLayout(1, 2));
         getContentPane().add(registerVehiclePanel());
         setVisible(true);
+    }
+
+    private JPanel userType() {
+        JPanel userType = new JPanel(new GridBagLayout());
+        userType.setSize(400, 600);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 60, 10, 10);
+        addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
+        JTextArea admin = new JTextArea(10, 15);
+        admin.setText("Aca va el recepcionista");
+        JTextArea recep = new JTextArea(10, 15);
+        recep.setText("Aca va el administrador");
+        addComponent(userType, admin, gbc, 0, 1, 1);
+        addComponent(userType, recep, gbc, 1, 1, 1);
+        addComponent(userType, createButton("Recepcionista"), gbc, 0, 2, 1);
+        addComponent(userType, createButton("Administrador"), gbc, 1, 2, 1);
+        return userType;
+    }
+
+    private JPanel loginPanel() {
+        JPanel login = new JPanel(new GridBagLayout());
+        login.setSize(400, 600);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        addComponent(login, createLabel("Usuario"), gbc, 0, 0, 1);
+        addComponent(login, createTextField(), gbc, 1, 0, 1);
+        addComponent(login, createLabel("Contraseña"), gbc, 0, 1, 1);
+        addComponent(login, createTextField(), gbc, 1, 1, 1);
+        addComponent(login, createButton("Ingresar"), gbc, 0, 2, 2);
+        return login;
     }
 
     public JPanel adminPanel() {
@@ -52,7 +82,7 @@ public class View extends JFrame implements ActionListener {
         );
         adminLeftPanel = new JPanel();
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
-        adminLeftPanel.setPreferredSize(new Dimension(150, getHeight())); 
+        adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
 
         createRecepcionist = new JButton("Create Recepcionist");
         updateRecepcionist = new JButton("Update Recepcionist");
@@ -110,7 +140,7 @@ public class View extends JFrame implements ActionListener {
         return ticketPanel;
     }
 
-     // TODO Panel vacio, va el selector de fechas de Santi
+    // TODO Panel vacio, va el selector de fechas de Santi
     private JPanel generateReportPanel() {
         JPanel generateReport = new JPanel();
         return generateReport;
@@ -264,7 +294,7 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(availableSpacesPanel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-        addComponent(availableSpacesPanel, createLabel("Hay 5 espacios disponibles",25), gbc, 0, 1, 2);
+        addComponent(availableSpacesPanel, createLabel("Hay 5 espacios disponibles", 25), gbc, 0, 1, 2);
         addComponent(availableSpacesPanel, createLabel("Moto"), gbc, 0, 2, 1);
         addComponent(availableSpacesPanel, createLabel("3 espacios disponibles"), gbc, 1, 2, 1);
         addComponent(availableSpacesPanel, createLabel("Carro"), gbc, 0, 3, 1);
@@ -336,8 +366,8 @@ public class View extends JFrame implements ActionListener {
         JPanel welcome = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(20, 0, 20, 0);
-        addComponent(welcome, createLabel("BIENVENIDO A PARKING UPTC",20), gbc, 0, 0, 1);
-        addComponent(welcome, createLabel("SELECCIONE UNA OPCIÓN DEL MENÚ",15), gbc, 0, 1, 1);
+        addComponent(welcome, createLabel("BIENVENIDO A PARKING UPTC", 20), gbc, 0, 0, 1);
+        addComponent(welcome, createLabel("SELECCIONE UNA OPCIÓN DEL MENÚ", 15), gbc, 0, 1, 1);
         return welcome;
     }
 
@@ -350,7 +380,7 @@ public class View extends JFrame implements ActionListener {
 
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Arial", Font.BOLD,15));
+        label.setFont(new Font("Arial", Font.BOLD, 15));
         return label;
     }
 
@@ -376,6 +406,13 @@ public class View extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
+=======
+        JButton button = (JButton) e.getSource();
+        String text = button.getText();
+        if (e.getSource() == registerParking)
+            cardLayout.show(adminRightPanel, "Register Parking");
+>>>>>>> 87791c5646b197a88e12eec27c39c34d4fe63a83
         if (e.getSource() == createRecepcionist)
             cardLayout.show(adminRightPanel, "Create Recepcionist");
         if (e.getSource() == updateRecepcionist)
@@ -392,6 +429,11 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(recepRightPanel, "Exit Vehicle");
         if (e.getSource() == recepLogOut)
             cardLayout.show(recepRightPanel, "Log Out");
+<<<<<<< HEAD
         
+=======
+        if (text.equals("Siguiente"))
+            System.out.println("Siguiente");
+>>>>>>> 87791c5646b197a88e12eec27c39c34d4fe63a83
     }
 }

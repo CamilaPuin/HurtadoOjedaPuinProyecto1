@@ -418,7 +418,7 @@ public class View extends JFrame implements ActionListener {
                 textFieldsMap.get("CreateEmail").getText(),
                 textFieldsMap.get("CreateTelefono").getText(),
                 textFieldsMap.get("CreateDireccion").getText(),
-                textFieldsMap.get("CreateDocumento").getText(), null);
+                textFieldsMap.get("CreateDocumento").getText());
     }
 
     private void readUpdateRecepcionist() {
@@ -426,7 +426,7 @@ public class View extends JFrame implements ActionListener {
                     textFieldsMap.get("UpdateTelefono").getText(),
                     textFieldsMap.get("UpdateDireccion").getText(),
                     textFieldsMap.get("UpdateDocumento").getText(),
-                    textFieldsMap.get("UpdateNuevaContraseña").getText());
+                    textFieldsMap.get("UpdateNuevaContraseña").getText(), textFieldsMap.get("UpdateConfirmarContraseña").getText());
     }
 
     private void readRegisterVehicle() {

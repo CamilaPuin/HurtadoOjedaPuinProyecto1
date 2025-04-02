@@ -46,16 +46,22 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
+    private String userType;
 
     public View() {
         super("Parking UPTC");
         setSize(800, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new GridLayout(1, 2));
+        cardLayout = new CardLayout();
+        getContentPane().setLayout(cardLayout);
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        getContentPane().add(adminPanel());
+        getContentPane().add(userType(), "UserTypePanel");
+        getContentPane().add(loginPanel(), "LoginPanel");
+        getContentPane().add(adminPanel(), "AdminPanel");
+        getContentPane().add(recepcionistPanel(), "RecepPanel");
+
         setVisible(true);
     }
 
@@ -91,7 +97,7 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel adminPanel() {
         // TODO layout here to organization
-        JPanel adminPanel = new JPanel();
+        JPanel adminPanel = new JPanel(new GridLayout(1, 2));
         adminLeftPanel = new JPanel();
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
@@ -109,8 +115,10 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.add(salesReport, "Sales Report");
         adminLeftPanel.add(Box.createVerticalStrut(10));
         adminLeftPanel.add(logout, "Logout");
-        cardLayout = new CardLayout();
+        
+
         adminRightPanel = new JPanel(cardLayout);
+
         JPanel welcome = welcome();
         JPanel createRecepcionistPanel = createRecepcionist();
         JPanel updateRecepcionistPanel = updateRecepcionist();
@@ -133,7 +141,7 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel createRecepcionist() {
-        JPanel recepcionistPanel = new JPanel(new GridBagLayout());
+        JPanel recepcionistPanel = new JPanel(new GridLayout(1, 2));
         recepcionistPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -240,8 +248,7 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel recepcionistPanel() {
         // TODO layout here to organization
-        JPanel recepPanel = new JPanel(// new whatLayout
-        );
+        JPanel recepPanel = new JPanel(new GridLayout(1,2));
         recepLeftPanel = new JPanel();
         recepLeftPanel.setLayout(new BoxLayout(recepLeftPanel, BoxLayout.Y_AXIS));
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
@@ -258,7 +265,6 @@ public class View extends JFrame implements ActionListener {
         recepLeftPanel.add(Box.createVerticalStrut(10));
         recepLeftPanel.add(recepLogOut, "Log Out");
 
-        cardLayout = new CardLayout();
         recepRightPanel = new JPanel(cardLayout);
         JPanel welcome = welcome();
         JPanel availableSpacesPanel = availableSpacesPanel();
@@ -433,8 +439,31 @@ public class View extends JFrame implements ActionListener {
 
     }
 
+    private boolean readLogin() {
+        // return
+        // textFieldsMap.get("LoginUser"),textFieldsMap.get("LoginPassword"),userType;
+        return false;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonsMap.get("Recepcionista")) {
+            userType = "Recepcionista";
+            // llamado al metodo de comprobar login
+            cardLayout.show(getContentPane(), "LoginPanel");
+        }
+        if (e.getSource() == buttonsMap.get("Administrador")) {
+            userType = "Administrador";
+            // llamado al metodo de comprobar login
+            cardLayout.show(getContentPane(), "LoginPanel");
+        }
+        if (e.getSource() == buttonsMap.get("Ingresar")) {
+            if (userType == "Recepcionista" && readLogin())
+                cardLayout.show(getContentPane(), "RecepPanel");
+            else if (userType == "Administrador" && readLogin())
+                cardLayout.show(getContentPane(), "AdminPanel");
+        }
+
         if (e.getSource() == createRecepcionist)
             cardLayout.show(adminRightPanel, "Create Recepcionist");
         else if (e.getSource() == updateRecepcionist)
@@ -451,6 +480,7 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(recepRightPanel, "Exit Vehicle");
         else if (e.getSource() == recepLogOut)
             cardLayout.show(recepRightPanel, "Log Out");
+        // mostrar el user type??
         else {
             if (e.getSource() == buttonsMap.get("Crear"))
                 readCreateRecepcionist();
@@ -459,7 +489,7 @@ public class View extends JFrame implements ActionListener {
             else if (e.getSource() == buttonsMap.get("No")) {
                 cardLayout.show(adminRightPanel, "Welcome");
             } else if (e.getSource() == buttonsMap.get("Si")) {
-               // show the loginPanel();
+                // show the loginPanel();
             } else if (e.getSource() == buttonsMap.get("Imprimir recibo")) {
                 // imprimir recibo
             } else if (e.getSource() == buttonsMap.get("Siguiente"))

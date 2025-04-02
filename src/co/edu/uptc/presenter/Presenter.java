@@ -7,7 +7,7 @@ import co.edu.uptc.view.View;
 
 public class Presenter {
     private System system;
-
+    private View view;
     public Presenter() {
 
         system = new System();

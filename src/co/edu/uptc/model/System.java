@@ -18,7 +18,7 @@ public class System {
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678",admin.getParking());
+                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         admins = new ArrayList<>();
@@ -61,12 +61,28 @@ public class System {
             String id, String password) {
         currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, password);
     }
-    //search recepcionist by id
-    public void updateRecepcionist( String email, String phone, String address,
-            String id,String password) {
-        int index = Collections.binarySearch(recepcionists, new Recepcionist(id), Comparator.comparing(Recepcionist::getId));
-        if (index >= 0)
-            currentAdmin.updateRecepcionistData( email, phone, address, id, recepcionists.get(index),password);
+
+    // search recepcionist by id
+    public void updateRecepcionist(String email, String phone, String address,
+            String id, String password, String passwordConfirm) {
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            if(password!=null && passwordConfirm!=null){
+                if (checkPassword(index, password, passwordConfirm))
+                    currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
+            }
+            currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
+        }
+    }
+
+    public int searchRecepcionist(String id) {
+        return Collections.binarySearch(recepcionists, new Recepcionist(id),
+                Comparator.comparing(Recepcionist::getId));
+    }
+
+    private boolean checkPassword(int index, String password, String passwordConfirm) {
+        return (!recepcionists.get(index).getPassword().equals(password) && passwordConfirm.equals(password)
+                && password.length() >= 8);
     }
 
     public void salesReport(LocalDate date) {
@@ -83,7 +99,7 @@ public class System {
     }
 
     public void registerVehicle(String plate, String type) {
-        currentRecepcionist.registerEntryVehicle(plate,type);
+        currentRecepcionist.registerEntryVehicle(plate, type);
 
     }
 

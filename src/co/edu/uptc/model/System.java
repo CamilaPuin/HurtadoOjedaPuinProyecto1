@@ -22,7 +22,9 @@ public class System {
                 "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
+        recepcionists.sort(Comparator.comparing(Recepcionist::getId));
         admins = new ArrayList<>();
+        admins.sort(Comparator.comparing(Admin::getId));
         admins.add(admin);
     }
 

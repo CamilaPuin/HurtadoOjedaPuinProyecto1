@@ -450,10 +450,7 @@ public class View extends JFrame implements ActionListener {
         return presenter.logIn(id, password, userType);
     }
 
-    private void checkLogIn(String usertype) {
-        // En este ejemplo se almacena el tipo de usuario, luego se usa en readLogin()
-        userType = usertype;
-    }
+   
 
     public void optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
@@ -465,13 +462,13 @@ public class View extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("Recepcionista")) {
             userType = "Recepcionista";
-            checkLogIn(userType);
+      
             // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("Administrador")) {
             userType = "Administrador";
-            checkLogIn(userType);
+      
             // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }

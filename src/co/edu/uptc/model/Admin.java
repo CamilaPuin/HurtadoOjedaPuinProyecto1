@@ -31,12 +31,8 @@ public class Admin extends User {
         return new Recepcionist(name, lastName, email, phone, address, id, password,parking);
     }
 
-    public void updateRecepcionistData(String name, String lastName, String email, String phone, String address,
+    public void updateRecepcionistData(String email, String phone, String address,
             String id, Recepcionist recepcionist, String password) {
-        if (name != null)
-            recepcionist.setName(name);
-        if (lastName != null)
-            recepcionist.setLastName(lastName);
         if (email != null)
             recepcionist.setEmail(email);
         if (phone != null)

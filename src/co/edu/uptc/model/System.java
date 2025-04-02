@@ -62,11 +62,11 @@ public class System {
         currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, password);
     }
     //search recepcionist by id
-    public void updateRecepcionist(String name, String lastName, String email, String phone, String address,
+    public void updateRecepcionist( String email, String phone, String address,
             String id,String password) {
         int index = Collections.binarySearch(recepcionists, new Recepcionist(id), Comparator.comparing(Recepcionist::getId));
         if (index >= 0)
-            currentAdmin.updateRecepcionistData(name, lastName, email, phone, address, id, recepcionists.get(index),password);
+            currentAdmin.updateRecepcionistData( email, phone, address, id, recepcionists.get(index),password);
     }
 
     public void salesReport(LocalDate date) {

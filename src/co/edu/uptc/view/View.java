@@ -1,5 +1,6 @@
 package co.edu.uptc.view;
 
+import javax.smartcardio.Card;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -29,6 +30,8 @@ import java.awt.Font;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
+    private CardLayout adminCardLayout;
+    private CardLayout recepcionistCardLayout;
     private JButton createRecepcionist;
     private JButton updateRecepcionist;
     private JButton salesReport;
@@ -58,6 +61,8 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
+        getContentPane().add(adminPanel(), "AdminPanel");
+
         getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
@@ -116,8 +121,8 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.add(salesReport, "Sales Report");
         adminLeftPanel.add(Box.createVerticalStrut(10));
         adminLeftPanel.add(logout, "Logout");
-
-        adminRightPanel = new JPanel(cardLayout);
+        adminCardLayout = new CardLayout();
+        adminRightPanel = new JPanel(adminCardLayout);
 
         JPanel welcome = welcome();
         JPanel createRecepcionistPanel = createRecepcionist();
@@ -193,8 +198,6 @@ public class View extends JFrame implements ActionListener {
         return recepcionistPanel;
     }
 
-
-
     private JPanel salesReport() {
         JPanel report = new JPanel(new GridBagLayout());
         report.setSize(400, 600);
@@ -269,8 +272,8 @@ public class View extends JFrame implements ActionListener {
         recepLeftPanel.add(exitVehicle, "Exit Vehicle");
         recepLeftPanel.add(Box.createVerticalStrut(10));
         recepLeftPanel.add(recepLogOut, "Log Out");
-
-        recepRightPanel = new JPanel(cardLayout);
+        recepcionistCardLayout = new CardLayout();
+        recepRightPanel = new JPanel(recepcionistCardLayout);
         JPanel welcome = welcome();
         JPanel availableSpacesPanel = availableSpacesPanel();
         JPanel registerVehiclePanel = registerVehiclePanel();
@@ -422,11 +425,12 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void readUpdateRecepcionist() {
-            presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
-                    textFieldsMap.get("UpdateTelefono").getText(),
-                    textFieldsMap.get("UpdateDireccion").getText(),
-                    textFieldsMap.get("UpdateDocumento").getText(),
-                    textFieldsMap.get("UpdateNuevaContraseña").getText(), textFieldsMap.get("UpdateConfirmarContraseña").getText());
+        presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
+                textFieldsMap.get("UpdateTelefono").getText(),
+                textFieldsMap.get("UpdateDireccion").getText(),
+                textFieldsMap.get("UpdateDocumento").getText(),
+                textFieldsMap.get("UpdateNuevaContraseña").getText(),
+                textFieldsMap.get("UpdateConfirmarContraseña").getText());
     }
 
     private void readRegisterVehicle() {
@@ -481,7 +485,6 @@ public class View extends JFrame implements ActionListener {
             else if (userType == "Administrador" && readLogin())
                 cardLayout.show(getContentPane(), "AdminPanel");
         }
-
         if (e.getSource() == buttonsMap.get("Ingresar")) {
             // Se valida el login y se redirige según el resultado
             if (userType.equals("Recepcionista") && readLogin())
@@ -489,26 +492,25 @@ public class View extends JFrame implements ActionListener {
             else if (userType.equals("Administrador") && readLogin())
                 cardLayout.show(getContentPane(), "AdminPanel");
             else
-                JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error",
+                        JOptionPane.ERROR_MESSAGE);
         }
-
-
         if (e.getSource() == createRecepcionist)
-            cardLayout.show(adminRightPanel, "Create Recepcionist");
+            adminCardLayout.show(adminRightPanel, "Create Recepcionist");
         else if (e.getSource() == updateRecepcionist)
-            cardLayout.show(adminRightPanel, "Update Recepcionist");
+            adminCardLayout.show(adminRightPanel, "Update Recepcionist");
         else if (e.getSource() == salesReport)
-            cardLayout.show(adminRightPanel, "Sales Report");
+            adminCardLayout.show(adminRightPanel, "Sales Report");
         else if (e.getSource() == logout)
-            cardLayout.show(adminRightPanel, "Logout");
+            adminCardLayout.show(adminRightPanel, "Logout");
         else if (e.getSource() == availableSpaces)
-            cardLayout.show(recepRightPanel, "Available Spaces");
+            recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
         else if (e.getSource() == registerVehicle)
-            cardLayout.show(recepRightPanel, "Register Vehicle");
+            recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
         else if (e.getSource() == exitVehicle)
-            cardLayout.show(recepRightPanel, "Exit Vehicle");
+            recepcionistCardLayout.show(recepRightPanel, "Exit Vehicle");
         else if (e.getSource() == recepLogOut)
-            cardLayout.show(recepRightPanel, "Log Out");
+            recepcionistCardLayout.show(recepRightPanel, "Log Out");
         // mostrar el user type??
         else {
             if (e.getSource() == buttonsMap.get("Crear"))

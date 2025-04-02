@@ -5,6 +5,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -115,7 +116,6 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.add(salesReport, "Sales Report");
         adminLeftPanel.add(Box.createVerticalStrut(10));
         adminLeftPanel.add(logout, "Logout");
-        
 
         adminRightPanel = new JPanel(cardLayout);
 
@@ -248,7 +248,7 @@ public class View extends JFrame implements ActionListener {
 
     public JPanel recepcionistPanel() {
         // TODO layout here to organization
-        JPanel recepPanel = new JPanel(new GridLayout(1,2));
+        JPanel recepPanel = new JPanel(new GridLayout(1, 2));
         recepLeftPanel = new JPanel();
         recepLeftPanel.setLayout(new BoxLayout(recepLeftPanel, BoxLayout.Y_AXIS));
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
@@ -443,6 +443,12 @@ public class View extends JFrame implements ActionListener {
         // return
         // textFieldsMap.get("LoginUser"),textFieldsMap.get("LoginPassword"),userType;
         return false;
+    }
+
+    public void optionPanel(String message, String tittle, int icon, String buttonText) {
+        Object[] opciones = { buttonText };
+        JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+                opciones[0]);
     }
 
     @Override

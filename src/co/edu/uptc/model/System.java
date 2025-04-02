@@ -58,8 +58,12 @@ public class System {
     }
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
-            String id, String password) {
-        currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, password);
+            String id) {
+        currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword());
+    }
+
+    private String generatePassword() {
+        return "12345678";
     }
 
     // search recepcionist by id
@@ -67,7 +71,7 @@ public class System {
             String id, String password, String passwordConfirm) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
-            if(password!=null && passwordConfirm!=null){
+            if (password != null && passwordConfirm != null) {
                 if (checkPassword(index, password, passwordConfirm))
                     currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
             }

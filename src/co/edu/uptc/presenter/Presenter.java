@@ -17,12 +17,12 @@ public class Presenter {
     //excepcion para logins???
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
-    String id, String password){
-        system.createRecepcionist(name, lastName, email, phone, address, id, password);
+    String id){
+        system.createRecepcionist(name, lastName, email, phone, address, id);
     }
     public void updateRecepcionist( String email, String phone, String address,
-            String id, String password){
-        system.updateRecepcionist(email, phone, address, id, password);
+            String id, String newpassword,String passwordConfirm) {
+        system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
     }
 
     public void salesReport(LocalDate date){

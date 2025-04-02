@@ -12,6 +12,9 @@ public class Admin extends User {
         parking = registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
     }
 
+    public Admin(String id) {
+        super(id);
+    }
     public Parking getParking() {
         return parking;
     }

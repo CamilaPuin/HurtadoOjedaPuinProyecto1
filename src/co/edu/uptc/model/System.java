@@ -91,4 +91,31 @@ public class System {
         currentRecepcionist.registerVehicleExit(plate);
     }
 
+    public boolean logIn(String id, String password, String userType) {
+        if (userType.equalsIgnoreCase("Administrador")) {
+            int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
+            if (index >= 0) {
+                if (admins.get(index).getPassword().equals(password)) {
+                    currentAdmin = admins.get(index);
+                    return true;
+                }
+                return false; 
+            }
+            return false; 
+        } 
+        else if (userType.equalsIgnoreCase("Recepcionista")) {
+            int index = Collections.binarySearch(recepcionists, new Recepcionist(id), Comparator.comparing(Recepcionist::getId));
+            if (index >= 0) {
+                if (recepcionists.get(index).getPassword().equals(password)) {
+                    currentRecepcionist = recepcionists.get(index);
+                    return true;
+                }
+                return false; 
+            }
+            return false; 
+        }
+        return false;
+    }
+    
+
 }

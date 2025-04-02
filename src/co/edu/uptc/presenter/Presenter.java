@@ -40,6 +40,12 @@ public class Presenter {
     public void exitVehicle(String plate){
         system.exitVehicle(plate);
     }       
+
+    public boolean logIn(String addrees, String password, String userType){
+       return system.logIn(addrees, password, userType);
+
+    }
+
         // login
         // meterle un while
         // el int option...

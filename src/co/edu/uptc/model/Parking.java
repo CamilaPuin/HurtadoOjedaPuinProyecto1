@@ -132,7 +132,7 @@ public class Parking {
     }
 
     // TODO check method type
-    public void deleteVehicle(String plate) {
+    public Vehicle deleteVehicle(String plate) {
         Vehicle vehicle = getVehicle(plate);
         if (vehicle != null) {
             if (vehicle.getType().equals("car")) {
@@ -142,6 +142,7 @@ public class Parking {
             }
         }
         // TODO throw exception if plate not found???
+        return vehicle;
     }
 
     // TODO check whether it is necessary to re-evaluate the type of the vehicle and

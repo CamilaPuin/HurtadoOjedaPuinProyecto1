@@ -7,19 +7,56 @@ public class Ticket {
     private double change;
     private int hours;
 
-    public Ticket(String vehiclePlate, double cost, double amountReceived, double change, int hours) {
+    public Ticket(String vehiclePlate, double cost, double amountReceived, int hours) {
         this.vehiclePlate = vehiclePlate;
         this.cost = cost;
         this.amountReceived = amountReceived;
-        this.change = change;
+        this.change = calculateChange(amountReceived, cost);
         this.hours = hours;
     }
 
-    public static Ticket generateTicket(String plate, double cost, double amountReceived, int hours) {
-        return new Ticket(plate, cost, amountReceived, calculateChange(amountReceived, cost), hours);
+    public String getVehiclePlate() {
+        return vehiclePlate;
     }
 
-    private static double calculateChange(double amountReceived, double cost) {
+    public void setVehiclePlate(String vehiclePlate) {
+        this.vehiclePlate = vehiclePlate;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getAmountReceived() {
+        return amountReceived;
+    }
+
+    public void setAmountReceived(double amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    public double getChange() {
+        return change;
+    }
+
+    public void setChange(double change) {
+        this.change = change;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    // TODO move to other class??
+    public double calculateChange(double amountReceived, double cost) {
         return amountReceived - cost;
     }
 
@@ -28,5 +65,5 @@ public class Ticket {
         return "Ticket [vehiclePlate=" + vehiclePlate + ", cost=" + cost + ", amountReceived=" + amountReceived
                 + ", change=" + change + ", hours=" + hours + "]";
     }
-    
+
 }

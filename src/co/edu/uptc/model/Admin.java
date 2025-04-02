@@ -28,7 +28,7 @@ public class Admin extends User {
 
     public Recepcionist createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id, String password) {
-        return new Recepcionist(name, lastName, email, phone, address, id, password);
+        return new Recepcionist(name, lastName, email, phone, address, id, password,parking);
     }
 
     public void updateRecepcionistData(String name, String lastName, String email, String phone, String address,
@@ -47,8 +47,39 @@ public class Admin extends User {
             recepcionist.setPassword(password);
     }
 
+    // el get cost ahi no me convence
     public ArrayList<String> generateSalesReport(LocalDate date) {
-        return null;
+        ArrayList<String> report = new ArrayList<>();
+        report.add("Nombre,Apellidos,Dinero,Vehículos,Motocicletas,Coches");
+        int totalMoney = 0;
+        int totalVehicles = 0;
+        int totalMotorbikes = 0;
+        int totalCars = 0;
+        for (Recepcionist recepcionist : parking.getRecepcionists()) {
+            int money = 0;
+            int vehicles = 0;
+            int motorbikes = 0;
+            int cars = 0;
+            for (Vehicle vehicle : recepcionist.getAttendedVehicles()) {
+                if (vehicle.getDate().equals(date)) {
+                    money += parking.calculateCost(vehicle.getPlate());
+                    vehicles++;
+                    if (vehicle.getType().equals("motorbike"))
+                        motorbikes++;
+                    if (vehicle.getType().equals("car"))
+                        cars++;
+                }
+                report.add(recepcionist.getName() + "," + recepcionist.getLastName() + "," + money + "," + vehicles
+                        + "," + motorbikes + "," + cars);
+            }
+            totalMoney += money;
+            totalVehicles += vehicles;
+            totalMotorbikes += motorbikes;
+            totalCars += cars;
+        }
+        report.add("Total: " + totalMoney + ", Vehículos: " + totalVehicles + ", Motocicletas: " + totalMotorbikes+ ", Coches: " + totalCars);
+        return report;
+
     }
 
 }

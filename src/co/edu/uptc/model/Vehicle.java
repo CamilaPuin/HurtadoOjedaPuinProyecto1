@@ -8,6 +8,7 @@ public class Vehicle {
     private String type;
     private LocalTime entryTime;
     private LocalDate date;
+    
 
     public Vehicle(String plate, String type, LocalTime entryTime) {
         this.plate = plate;

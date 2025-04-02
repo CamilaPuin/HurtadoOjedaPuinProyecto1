@@ -394,8 +394,8 @@ public class View extends JFrame implements ActionListener {
         return new JTextField(10);
     }
 
-    private JComboBox createComboBox(String[] items) {
-        return new JComboBox(items);
+    private JComboBox<String> createComboBox(String[] items) {
+        return new JComboBox<>(items);
     }
 
     private JButton createButton(String text) {

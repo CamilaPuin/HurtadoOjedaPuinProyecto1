@@ -1,15 +1,16 @@
 package co.edu.uptc.model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Recepcionist extends User {
     private Parking parking;
-    private double money;
-    private int registeredVehicles;
+    private ArrayList<Vehicle> attendedVehicles;
 
-    public Recepcionist(String name, String lastName, String email, String phone, String address, String id, String password) {
+    public Recepcionist(String name, String lastName, String email, String phone, String address, String id,
+            String password, Parking parking) {
         super(name, lastName, email, phone, address, id, password);
-
+        this.parking = parking;
     }
 
     public Recepcionist(String id) {
@@ -24,45 +25,31 @@ public class Recepcionist extends User {
         this.parking = parking;
     }
 
-    public double getMoney() {
-        return money;
+    public ArrayList<Vehicle> getAttendedVehicles() {
+        return attendedVehicles;
     }
 
-    public void setMoney(double money) {
-        this.money = money;
-    }
-
-    public int getRegisteredVehicles() {
-        return registeredVehicles;
-    }
-
-    public void setRegisteredVehicles(int registeredVehicles) {
-        this.registeredVehicles = registeredVehicles;
+    public void setAttendedVehicles(ArrayList<Vehicle> attendedVehicles) {
+        this.attendedVehicles = attendedVehicles;
     }
 
     public void registerEntryVehicle(String plate, String type) {
         parking.registerVehicle(plate, type, LocalTime.now());
-        registeredVehicles++;
+
     }
 
     public void registerVehicleExit(String plate) {
-        parking.deleteVehicle(plate);
+        attendedVehicles.add(parking.deleteVehicle(plate));
     }
 
     // TODO static methods and params
     public Ticket generateTicket(String plate, double amountReceived) {
-        return Ticket.generateTicket(plate, parking.calculateCost(plate), amountReceived,
+        return new Ticket(plate, parking.calculateCost(plate), amountReceived,
                 parking.getPassedTime(parking.getVehicle(plate)));
     }
 
     public String seeParkingAvailability() {
         return parking.updateAvailability();
-    }
-
-    @Override
-    public String toString() {
-        return "Recepcionist [parking=" + parking + ", money=" + money + ", registeredVehicles=" + registeredVehicles
-                + "]";
     }
 
 }

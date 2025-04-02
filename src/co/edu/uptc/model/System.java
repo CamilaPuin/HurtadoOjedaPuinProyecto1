@@ -18,8 +18,7 @@ public class System {
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678");
-        recepcionist.setParking(admin.getParking());
+                "Calle de la casa, 1", "recepcionist", "12345678",admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         admins = new ArrayList<>();

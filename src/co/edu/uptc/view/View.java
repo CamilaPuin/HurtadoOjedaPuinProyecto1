@@ -170,12 +170,15 @@ public class View extends JFrame implements ActionListener {
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
+
         addComponent(recepcionistPanel, createLabel("Dirección"), gbc, 0, 2, 1);
         addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 3, 1);
         addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 4, 1);
         addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 5, 1);
         addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 6, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
+        // añadir el field del namobre
+
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
@@ -189,6 +192,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createButton("Actualizar"), gbc, 0, 10, 2);
         return recepcionistPanel;
     }
+
+
 
     private JPanel salesReport() {
         JPanel report = new JPanel(new GridBagLayout());
@@ -417,11 +422,11 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void readUpdateRecepcionist() {
-        presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
-                textFieldsMap.get("UpdateTelefono").getText(),
-                textFieldsMap.get("UpdateDireccion").getText(),
-                textFieldsMap.get("UpdateDocumento").getText(),
-                textFieldsMap.get("UpdateNuevaContraseña").getText());
+            presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
+                    textFieldsMap.get("UpdateTelefono").getText(),
+                    textFieldsMap.get("UpdateDireccion").getText(),
+                    textFieldsMap.get("UpdateDocumento").getText(),
+                    textFieldsMap.get("UpdateNuevaContraseña").getText());
     }
 
     private void readRegisterVehicle() {

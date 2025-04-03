@@ -12,9 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
-
 import co.edu.uptc.presenter.Presenter;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -23,7 +21,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -42,7 +39,6 @@ public class View extends JFrame implements ActionListener {
     private JButton logout;
     private JPanel adminLeftPanel;
     private JPanel adminRightPanel;
-
     private JButton availableSpaces;
     private JButton registerVehicle;
     private JButton exitVehicle;
@@ -50,7 +46,6 @@ public class View extends JFrame implements ActionListener {
     private JPanel recepLeftPanel;
     private JPanel recepRightPanel;
     private Presenter presenter;
-
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
@@ -61,11 +56,13 @@ public class View extends JFrame implements ActionListener {
         super("Parking UPTC");
         setSize(800, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         cardLayout = new CardLayout();
         getContentPane().setLayout(cardLayout);
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
+
         getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
@@ -77,17 +74,23 @@ public class View extends JFrame implements ActionListener {
     private JPanel userType() {
         JPanel userType = new JPanel(new GridBagLayout());
         userType.setSize(400, 600);
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 60, 10, 10);
         addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
+
         ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
         ImageIcon imageRecep= new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
+
         JLabel admin = new JLabel(imageAdmin);
         JLabel recep = new JLabel(imageRecep);
+
         addComponent(userType, recep, gbc, 0, 1, 1);
         addComponent(userType, admin, gbc, 1, 1, 1);
-        addComponent(userType, createButton("Recepcionista"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador"), gbc, 1, 2, 1);
+
+        addComponent(userType, createButton("Recepcionista", "Recepcionista"), gbc, 0, 2, 1);
+        addComponent(userType, createButton("Administrador", "Administrador"), gbc, 1, 2, 1);
+        
         return userType;
     }
 

@@ -1,8 +1,7 @@
 package co.edu.uptc.presenter;
 
-import java.time.LocalDate;
-
 import co.edu.uptc.model.System;
+import java.time.LocalDate;
 
 public class Presenter {
     private System system;
@@ -15,34 +14,34 @@ public class Presenter {
     }
     // excepcion para logins???
 
-    public String createRecepcionist(String name, String lastName, String email, String phone, String address,
+    public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        return system.createRecepcionist(name, lastName, email, phone, address, id);
+        system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
-    public String updateRecepcionist(String email, String phone, String address,
+    public void updateRecepcionist(String email, String phone, String address,
             String id, String newpassword, String passwordConfirm) {
-        return system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
+        system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
     }
 
-    public String salesReport(LocalDate date) {
-       return system.salesReport(date);
+    public void salesReport(LocalDate date) {
+        system.salesReport(date);
     }
 
-    public String logout() {
-       return system.logout();
+    public void logout() {
+        system.logout();
     }
 
     public String availableSpaces() {
-       return system.availableSpaces();
+        return system.availableSpaces();
     }
 
-    public String registerVehicle(String plate, String type) {
-       return system.registerVehicle(plate, type);
+    public void registerVehicle(String plate, String type) {
+        system.registerVehicle(plate, type);
     }
 
-    public String exitVehicle(String plate) {
-       return system.exitVehicle(plate);
+    public void exitVehicle(String plate) {
+        system.exitVehicle(plate);
     }
 
     public boolean logIn(String addrees, String password, String userType) {

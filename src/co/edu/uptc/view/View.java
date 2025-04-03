@@ -63,9 +63,8 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        getContentPane().add(adminPanel(), "AdminPanel");
-
         getContentPane().add(userType(), "UserTypePanel");
+        getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
@@ -98,7 +97,7 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(login, createLabel("Usuario"), gbc, 0, 0, 1);
-        addComponent(login, createTextField("LoginUser"), gbc, 1, 0, 1);
+        
         addComponent(login, createLabel("Contraseña"), gbc, 0, 1, 1);
         addComponent(login, createTextField("LoginPassword"), gbc, 1, 1, 1);
         addComponent(login, createButton("Ingresar"), gbc, 0, 2, 2);
@@ -106,10 +105,9 @@ public class View extends JFrame implements ActionListener {
     }
 
     public JPanel adminPanel() {
-        // TODO layout here to organization
         JPanel adminPanel = new JPanel(new GridLayout(1, 2));
         adminLeftPanel = new JPanel();
-        adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
+        // TODO layout here to organization en la izquierda
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
 
         createRecepcionist = new JButton("Create Recepcionist");
@@ -259,9 +257,9 @@ public class View extends JFrame implements ActionListener {
     }
 
     public JPanel recepcionistPanel() {
-        // TODO layout here to organization
         JPanel recepPanel = new JPanel(new GridLayout(1, 2));
         recepLeftPanel = new JPanel();
+        // TODO layout here to organization
         recepLeftPanel.setLayout(new BoxLayout(recepLeftPanel, BoxLayout.Y_AXIS));
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         availableSpaces = new JButton("Available Spaces");

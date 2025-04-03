@@ -174,15 +174,13 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap.get("NameFounded").setEnabled(false);
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
-
         addComponent(recepcionistPanel, createLabel("Dirección"), gbc, 0, 2, 1);
         addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 3, 1);
         addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 4, 1);
         addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 5, 1);
         addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 6, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        // añadir el field del namobre
-
+        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
@@ -195,6 +193,12 @@ public class View extends JFrame implements ActionListener {
         gbc.insets = new Insets(10, 0, 0, 0);
         addComponent(recepcionistPanel, createButton("Actualizar", "actualizarUpdateRecepcionist"), gbc, 0, 11, 2);
         return recepcionistPanel;
+    }
+    private String getFullName(String id) {
+        String fullName = presenter.getFullName(id);
+        if (fullName.equals(""))
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+        return fullName;
     }
 
     private JPanel salesReport() {

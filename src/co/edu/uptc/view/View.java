@@ -2,6 +2,7 @@ package co.edu.uptc.view;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +16,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -72,6 +74,8 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 60, 10, 10);
         addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
+        Image imageAdmin= new ImageIcon(getClass().getResource("/resources/administrador.png")).getImage();
+        Image imageRecep= new ImageIcon(getClass().getResource("/resources/recepcionista.png")).getImage();
         JTextArea admin = new JTextArea(10, 15);
         admin.setText("Aca va el recepcionista");
         JTextArea recep = new JTextArea(10, 15);

@@ -67,7 +67,6 @@ public class View extends JFrame implements ActionListener {
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
         getContentPane().add(userType(), "UserTypePanel");
-        getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");

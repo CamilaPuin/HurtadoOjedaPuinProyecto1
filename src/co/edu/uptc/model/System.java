@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 public class System {
     private ArrayList<Admin> admins;
@@ -65,7 +66,16 @@ public class System {
     }
 
     private String generatePassword() {
-        return "12345678";
+        String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(8);
+
+        for (int i = 0; i < 8; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+
+        return sb.toString();
+
     }
 
     // search recepcionist by id
@@ -121,23 +131,22 @@ public class System {
                     currentAdmin = admins.get(index);
                     return true;
                 }
-                return false; 
+                return false;
             }
-            return false; 
-        } 
-        else if (userType.equalsIgnoreCase("Recepcionista")) {
-            int index = Collections.binarySearch(recepcionists, new Recepcionist(id), Comparator.comparing(Recepcionist::getId));
+            return false;
+        } else if (userType.equalsIgnoreCase("Recepcionista")) {
+            int index = Collections.binarySearch(recepcionists, new Recepcionist(id),
+                    Comparator.comparing(Recepcionist::getId));
             if (index >= 0) {
                 if (recepcionists.get(index).getPassword().equals(password)) {
                     currentRecepcionist = recepcionists.get(index);
                     return true;
                 }
-                return false; 
+                return false;
             }
-            return false; 
+            return false;
         }
         return false;
     }
-    
 
 }

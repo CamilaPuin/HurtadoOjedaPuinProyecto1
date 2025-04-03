@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
 
 import co.edu.uptc.presenter.Presenter;
@@ -78,16 +79,16 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 60, 10, 10);
         addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
-        Image imageAdmin= new ImageIcon(getClass().getResource("/resources/administrador.png")).getImage();
-        Image imageRecep= new ImageIcon(getClass().getResource("/resources/recepcionista.png")).getImage();
+        Image imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png")).getImage();
+        Image imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png")).getImage();
         JTextArea admin = new JTextArea(10, 15);
         admin.setText("Aca va el recepcionista");
         JTextArea recep = new JTextArea(10, 15);
         recep.setText("Aca va el administrador");
         addComponent(userType, admin, gbc, 0, 1, 1);
         addComponent(userType, recep, gbc, 1, 1, 1);
-        addComponent(userType, createButton("Recepcionista"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador"), gbc, 1, 2, 1);
+        addComponent(userType, createButton("Recepcionista","RecepcionistaUserType"), gbc, 0, 2, 1);
+        addComponent(userType, createButton("Administrador","AdministradorUserType"), gbc, 1, 2, 1);
         return userType;
     }
 
@@ -99,8 +100,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(login, createLabel("Usuario"), gbc, 0, 0, 1);
         
         addComponent(login, createLabel("Contraseña"), gbc, 0, 1, 1);
-        addComponent(login, createTextField("LoginPassword"), gbc, 1, 1, 1);
-        addComponent(login, createButton("Ingresar"), gbc, 0, 2, 2);
+        addComponent(login, createPasswordField("LoginPassword"), gbc, 1, 1, 1);
+        addComponent(login, createButton("Ingresar","IngresarLoginPanel"), gbc, 0, 2, 2);
         return login;
     }
 
@@ -165,8 +166,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createTextField("CreateDireccion"), gbc, 1, 4, 1);
         addComponent(recepcionistPanel, createTextField("CreateTelefono"), gbc, 1, 5, 1);
         addComponent(recepcionistPanel, createTextField("CreateEmail"), gbc, 1, 6, 1);
-        addComponent(recepcionistPanel, createButton("Crear"), gbc, 0, 7, 2);
-
+        addComponent(recepcionistPanel, createButton("Crear","crearCreateRecepcionist"), gbc, 0, 7, 2);
         return recepcionistPanel;
     }
 
@@ -175,6 +175,8 @@ public class View extends JFrame implements ActionListener {
         recepcionistPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+        addComponent(recepcionistPanel, createTextField("NameFounded"), gbc, 1, 2, 1);
+        textFieldsMap.get("NameFounded").setEnabled(false);
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
 
@@ -192,11 +194,11 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createTextField("UpdateNuevaContraseña"), gbc, 1, 5, 1);
         addComponent(recepcionistPanel, createTextField("UpdateConfirmarContraseña"), gbc, 1, 6, 1);
         gbc.insets = new Insets(0, 0, 0, 0);
-        addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 7, 2);
-        addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 8, 2);
-        addComponent(recepcionistPanel, createLabel("- Debe tener mínimo 8 dígitos"), gbc, 0, 9, 2);
+        addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 8, 2);
+        addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 9, 2);
+        addComponent(recepcionistPanel, createLabel("- Debe tener mínimo 8 dígitos"), gbc, 0, 10, 2);
         gbc.insets = new Insets(10, 0, 0, 0);
-        addComponent(recepcionistPanel, createButton("Actualizar"), gbc, 0, 10, 2);
+        addComponent(recepcionistPanel, createButton("Actualizar","actualizarUpdateRecepcionist"), gbc, 0, 11, 2);
         return recepcionistPanel;
     }
 
@@ -214,7 +216,7 @@ public class View extends JFrame implements ActionListener {
         JTextArea consolidado = new JTextArea(5, 10);
         consolidado.setText("Aquí va el consolidado");
         addComponent(report, consolidado, gbc, 0, 3, 2);
-        addComponent(report, createButton("Regresar al menú"), gbc, 0, 4, 2);
+        addComponent(report, createButton("Regresar al menú","RegresarSalesReport"), gbc, 0, 4, 2);
         return report;
     }
 
@@ -224,8 +226,8 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(logOutPanel, createLabel("¿Desea cerrar sesión?"), gbc, 0, 0, 2);
-        addComponent(logOutPanel, createButton("Si"), gbc, 0, 1, 1);
-        addComponent(logOutPanel, createButton("No"), gbc, 1, 1, 1);
+        addComponent(logOutPanel, createButton("Si","SiLogOut"), gbc, 0, 1, 1);
+        addComponent(logOutPanel, createButton("No","NoLogOut"), gbc, 1, 1, 1);
         return logOutPanel;
     }
 
@@ -242,7 +244,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketPanel, createLabel("Resumen"), gbc, 0, 1, 2);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(ticketPanel, createButton("Imprimir recibo"), gbc, 0, 2, 1);
+        addComponent(ticketPanel, createButton("Imprimir recibo","ImprimirReciboTicketPanel"), gbc, 0, 2, 1);
         // TODO Aqui va el consolidado
         JTextArea consolidado = new JTextArea(5, 10);
         consolidado.setText("Aquí va el consolidado");
@@ -310,7 +312,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(availableSpacesPanel, createLabel("3 espacios disponibles"), gbc, 1, 2, 1);
         addComponent(availableSpacesPanel, createLabel("Carro"), gbc, 0, 3, 1);
         addComponent(availableSpacesPanel, createLabel("2 espacios disponibles"), gbc, 1, 3, 1);
-        addComponent(availableSpacesPanel, createButton("Salir"), gbc, 0, 4, 2);
+        addComponent(availableSpacesPanel, createButton("Salir","SalirAvailableSpaces"), gbc, 0, 4, 2);
         return availableSpacesPanel;
     }
 
@@ -326,7 +328,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(incomePanel, createTextField("PlacaRegisterVehicle"), gbc, 1, 1, 1);
         addComponent(incomePanel, createLabel("Tipo"), gbc, 0, 2, 1);
         addComponent(incomePanel, comboBox, gbc, 1, 2, 1);
-        addComponent(incomePanel, createButton("Siguiente"), gbc, 0, 3, 2);
+        addComponent(incomePanel, createButton("Siguiente","SiguienteRegisterVehicle"), gbc, 0, 3, 2);
         return incomePanel;
     }
 
@@ -349,7 +351,7 @@ public class View extends JFrame implements ActionListener {
         consolidado.setText("Aquí va el consolidado");
         addComponent(ticketOutPanel, consolidado, gbc, 0, 6, 2);
         gbc.fill = GridBagConstraints.NONE;
-        addComponent(ticketOutPanel, createButton("Registrar salida"), gbc, 0, 7, 2);
+        addComponent(ticketOutPanel, createButton("Registrar salida","RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
         return ticketOutPanel;
     }
 
@@ -369,8 +371,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(consolidadoPanel, createLabel("¿Desea cerrar sesión?"), gbc, 0, 3, 2);
         gbc.fill = GridBagConstraints.NONE;
         gbc.ipadx = 10;
-        addComponent(consolidadoPanel, createButton("Si"), gbc, 0, 4, 1);
-        addComponent(consolidadoPanel, createButton("No"), gbc, 1, 4, 1);
+        addComponent(consolidadoPanel, createButton("Si","SiRecepLogOut"), gbc, 0, 4, 1);
+        addComponent(consolidadoPanel, createButton("No","NoRecepLogOut"), gbc, 1, 4, 1);
         return consolidadoPanel;
     }
 
@@ -408,10 +410,16 @@ public class View extends JFrame implements ActionListener {
         return textField;
     }
 
-    private JButton createButton(String text) {
+    private JPasswordField createPasswordField(String text) {
+        JPasswordField textField = new JPasswordField(10);
+        textFieldsMap.put(text, textField);
+        return textField;
+    }
+
+    private JButton createButton(String text, String name) {
         JButton button = new JButton(text);
         button.addActionListener(this);
-        buttonsMap.put(text, button);
+        buttonsMap.put(name, button);
         return button;
     }
 
@@ -456,8 +464,6 @@ public class View extends JFrame implements ActionListener {
         return presenter.logIn(id, password, userType);
     }
 
-   
-
     public void optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
         JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
@@ -468,13 +474,13 @@ public class View extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("Recepcionista")) {
             userType = "Recepcionista";
-      
+
             // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("Administrador")) {
             userType = "Administrador";
-      
+
             // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }

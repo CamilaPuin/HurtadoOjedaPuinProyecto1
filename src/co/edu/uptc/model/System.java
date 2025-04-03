@@ -110,8 +110,8 @@ public class System {
         currentRecepcionist = null;
     }
 
-    public void availableSpaces() {
-        currentRecepcionist.seeParkingAvailability();
+    public String availableSpaces() {
+        return currentRecepcionist.seeParkingAvailability();
     }
 
     public void registerVehicle(String plate, String type) {

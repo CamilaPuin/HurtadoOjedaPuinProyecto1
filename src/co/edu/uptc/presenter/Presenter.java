@@ -17,34 +17,34 @@ public class Presenter {
     }
     // excepcion para logins???
 
-    public void createRecepcionist(String name, String lastName, String email, String phone, String address,
+    public String createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        system.createRecepcionist(name, lastName, email, phone, address, id);
+        return system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
-    public void updateRecepcionist(String email, String phone, String address,
+    public String updateRecepcionist(String email, String phone, String address,
             String id, String newpassword, String passwordConfirm) {
-        system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
+        return system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
     }
 
-    public void salesReport(LocalDate date) {
-        system.salesReport(date);
+    public String salesReport(LocalDate date) {
+       return system.salesReport(date);
     }
 
-    public void logout() {
-        system.logout();
+    public String logout() {
+       return system.logout();
     }
 
-    public void availableSpaces() {
-        system.availableSpaces();
+    public String availableSpaces() {
+       return system.availableSpaces();
     }
 
-    public void registerVehicle(String plate, String type) {
-        system.registerVehicle(plate, type);
+    public String registerVehicle(String plate, String type) {
+       return system.registerVehicle(plate, type);
     }
 
-    public void exitVehicle(String plate) {
-        system.exitVehicle(plate);
+    public String exitVehicle(String plate) {
+       return system.exitVehicle(plate);
     }
 
     public boolean logIn(String addrees, String password, String userType) {

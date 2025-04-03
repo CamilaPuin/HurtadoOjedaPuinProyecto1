@@ -1,5 +1,6 @@
 package co.edu.uptc.view;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -10,7 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+
 import co.edu.uptc.presenter.Presenter;
+
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -50,6 +54,7 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
     private String userType;
+    
 
     public View() {
         super("Parking UPTC");
@@ -61,7 +66,6 @@ public class View extends JFrame implements ActionListener {
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
         getContentPane().add(userType(), "UserTypePanel");
-        getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
@@ -103,22 +107,38 @@ public class View extends JFrame implements ActionListener {
     public JPanel adminPanel() {
         JPanel adminPanel = new JPanel(new GridLayout(1, 2));
         adminLeftPanel = new JPanel();
-        // TODO layout here to organization en la izquierda
+
+        adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
+
+        JPanel centerPanel= new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));        
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         createRecepcionist = new JButton("Create Recepcionist");
         updateRecepcionist = new JButton("Update Recepcionist");
         salesReport = new JButton("Sales Report");
         logout = new JButton("Logout");
-        adminLeftPanel.add(Box.createVerticalStrut(20));
-        adminLeftPanel.add(Box.createVerticalStrut(10));
-        adminLeftPanel.add(createRecepcionist, "Create Recepcionist");
-        adminLeftPanel.add(Box.createVerticalStrut(10));
-        adminLeftPanel.add(updateRecepcionist, "Update Recepcionist");
-        adminLeftPanel.add(Box.createVerticalStrut(10));
-        adminLeftPanel.add(salesReport, "Sales Report");
-        adminLeftPanel.add(Box.createVerticalStrut(10));
-        adminLeftPanel.add(logout, "Logout");
+        ImageIcon logo = new ImageIcon(getClass().getResource("/resources/logo.png"));
+        JLabel logoLabel = new JLabel(logo);
+
+        logoLabel.setAlignmentX(CENTER_ALIGNMENT);
+        createRecepcionist.setAlignmentX(CENTER_ALIGNMENT);
+        updateRecepcionist.setAlignmentX(CENTER_ALIGNMENT);
+        salesReport.setAlignmentX(CENTER_ALIGNMENT);
+        logout.setAlignmentX(CENTER_ALIGNMENT);
+        
+        centerPanel.add(logoLabel);
+        centerPanel.add(Box.createVerticalStrut(30)); 
+        centerPanel.add(createRecepcionist);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(updateRecepcionist);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(salesReport);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(logout);
+
+        adminLeftPanel.add(centerPanel, BorderLayout.CENTER);
         adminCardLayout = new CardLayout();
         adminRightPanel = new JPanel(adminCardLayout);
 
@@ -133,6 +153,7 @@ public class View extends JFrame implements ActionListener {
         adminRightPanel.add(updateRecepcionistPanel, "Update Recepcionist");
         adminRightPanel.add(salesReportPanel, "Sales Report");
         adminRightPanel.add(logoutPanel, "Logout");
+
         createRecepcionist.addActionListener(this);
         updateRecepcionist.addActionListener(this);
         salesReport.addActionListener(this);
@@ -140,6 +161,7 @@ public class View extends JFrame implements ActionListener {
 
         adminPanel.add(adminLeftPanel);
         adminPanel.add(adminRightPanel);
+
         return adminPanel;
     }
 
@@ -259,25 +281,45 @@ public class View extends JFrame implements ActionListener {
     }
 
     public JPanel recepcionistPanel() {
+     
         JPanel recepPanel = new JPanel(new GridLayout(1, 2));
-        recepLeftPanel = new JPanel();
-        // TODO layout here to organization
-        recepLeftPanel.setLayout(new BoxLayout(recepLeftPanel, BoxLayout.Y_AXIS));
+
+        recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
+
+        JPanel centerPanel= new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+
         availableSpaces = new JButton("Available Spaces");
         registerVehicle = new JButton("Register Vehicle");
         exitVehicle = new JButton("Exit Vehicle");
         recepLogOut = new JButton("Log Out");
-        recepLeftPanel.add(Box.createVerticalStrut(20));
-        recepLeftPanel.add(availableSpaces, "Availabel Spaces");
-        recepLeftPanel.add(Box.createVerticalStrut(10));
-        recepLeftPanel.add(registerVehicle, "Register Vehicle");
-        recepLeftPanel.add(Box.createVerticalStrut(10));
-        recepLeftPanel.add(exitVehicle, "Exit Vehicle");
-        recepLeftPanel.add(Box.createVerticalStrut(10));
-        recepLeftPanel.add(recepLogOut, "Log Out");
+        ImageIcon logo = new ImageIcon(getClass().getResource("/resources/logo.png"));
+        JLabel logoLabel = new JLabel(logo);
+
+        logoLabel.setAlignmentX(CENTER_ALIGNMENT);
+        availableSpaces.setAlignmentX(CENTER_ALIGNMENT);
+        registerVehicle.setAlignmentX(CENTER_ALIGNMENT);
+        exitVehicle.setAlignmentX(CENTER_ALIGNMENT);
+        recepLogOut.setAlignmentX(CENTER_ALIGNMENT);
+
+     
+        centerPanel.add(logoLabel);
+        centerPanel.add(Box.createVerticalStrut(30)); 
+        centerPanel.add(availableSpaces);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(registerVehicle);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(exitVehicle);
+        centerPanel.add(Box.createVerticalStrut(10));
+        centerPanel.add(recepLogOut);
+
+        recepLeftPanel.add(centerPanel, BorderLayout.CENTER);
         recepcionistCardLayout = new CardLayout();
         recepRightPanel = new JPanel(recepcionistCardLayout);
+
         JPanel welcome = welcome();
         JPanel availableSpacesPanel = availableSpacesPanel();
         JPanel registerVehiclePanel = registerVehiclePanel();
@@ -290,6 +332,7 @@ public class View extends JFrame implements ActionListener {
         recepRightPanel.add(exitVehiclePanel, "Exit Vehicle");
         recepRightPanel.add(recepLogOutPanel, "Log Out");
         recepRightPanel.add(registerVehiclePanel2, "TicketPanel");
+
         availableSpaces.addActionListener(this);
         registerVehicle.addActionListener(this);
         exitVehicle.addActionListener(this);
@@ -297,6 +340,7 @@ public class View extends JFrame implements ActionListener {
 
         recepPanel.add(recepLeftPanel);
         recepPanel.add(recepRightPanel);
+
         return recepPanel;
     }
 

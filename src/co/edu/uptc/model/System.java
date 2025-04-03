@@ -60,6 +60,14 @@ public class System {
         this.currentRecepcionist = currentRecepcionist;
     }
 
+    public String getFullName(String id) {
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            return recepcionists.get(index).getName() + " " + recepcionists.get(index).getLastName();
+        }
+        return "";
+    }
+
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
         currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword());
@@ -110,8 +118,8 @@ public class System {
         currentRecepcionist = null;
     }
 
-    public void availableSpaces() {
-        currentRecepcionist.seeParkingAvailability();
+    public String availableSpaces() {
+        return currentRecepcionist.seeParkingAvailability();
     }
 
     public void registerVehicle(String plate, String type) {

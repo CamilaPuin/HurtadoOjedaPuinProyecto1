@@ -3,11 +3,9 @@ package co.edu.uptc.presenter;
 import java.time.LocalDate;
 
 import co.edu.uptc.model.System;
-import co.edu.uptc.view.View;
 
 public class Presenter {
     private System system;
-    private View view;
 
     public Presenter() {
 
@@ -52,6 +50,9 @@ public class Presenter {
 
     }
 
+    public String getFullName(String id) {
+        return system.getFullName(id);
+    }
     // login
     // meterle un while
     // el int option...

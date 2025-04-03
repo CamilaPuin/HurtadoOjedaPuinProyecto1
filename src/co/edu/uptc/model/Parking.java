@@ -108,7 +108,7 @@ public class Parking {
     }
 
     public String updateAvailability() {
-        return name + " parking saces available: Car" + (carscapacity - cars.size()) + " Motorbike"
+        return name + " parking spaces available: Car" + (carscapacity - cars.size()) + " Motorbike"
                 + (motorbikescapacity - motorbikes.size());
     }
 

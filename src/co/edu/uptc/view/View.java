@@ -64,6 +64,8 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
+
+        add(availableSpacesPanel());
         getContentPane().add(adminPanel(), "AdminPanel");
 
         getContentPane().add(userType(), "UserTypePanel");
@@ -247,6 +249,8 @@ public class View extends JFrame implements ActionListener {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(ticketPanel, createButton("Imprimir recibo","ImprimirReciboTicketPanel"), gbc, 0, 2, 1);
+        addComponent(ticketPanel, createButton("Volver al menú principal","MenúTicketPanel"), gbc, 0, 3, 1);
+
         // TODO Aqui va el consolidado
         JTextArea consolidado = new JTextArea(5, 10);
         consolidado.setText("Aquí va el consolidado");
@@ -309,11 +313,11 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(availableSpacesPanel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-        addComponent(availableSpacesPanel, createLabel("Hay 5 espacios disponibles", 25), gbc, 0, 1, 2);
+        addComponent(availableSpacesPanel, createLabel("Hay 5 espacios disponibles", 25), gbc, 0, 1, 2);//Modificar esta linea
         addComponent(availableSpacesPanel, createLabel("Moto"), gbc, 0, 2, 1);
-        addComponent(availableSpacesPanel, createLabel("3 espacios disponibles"), gbc, 1, 2, 1);
+        addComponent(availableSpacesPanel, createLabel("3 espacios disponibles"), gbc, 1, 2, 1);//Modificar esta linea
         addComponent(availableSpacesPanel, createLabel("Carro"), gbc, 0, 3, 1);
-        addComponent(availableSpacesPanel, createLabel("2 espacios disponibles"), gbc, 1, 3, 1);
+        addComponent(availableSpacesPanel, createLabel("2 espacios disponibles"), gbc, 1, 3, 1);//Modificar esta linea
         addComponent(availableSpacesPanel, createButton("Salir","SalirAvailableSpaces"), gbc, 0, 4, 2);
         return availableSpacesPanel;
     }

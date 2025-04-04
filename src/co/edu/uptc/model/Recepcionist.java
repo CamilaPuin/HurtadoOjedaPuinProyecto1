@@ -11,6 +11,7 @@ public class Recepcionist extends User {
             String password, Parking parking) {
         super(name, lastName, email, phone, address, id, password);
         this.parking = parking;
+        attendedVehicles = new ArrayList<>();
     }
 
     public Recepcionist(String id) {

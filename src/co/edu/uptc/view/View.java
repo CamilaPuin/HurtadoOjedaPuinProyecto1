@@ -83,7 +83,6 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap = new HashMap<>();
         datePicker = new DatePicker();
 
-        add(availableSpacesPanel());
         getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
@@ -387,6 +386,7 @@ public class View extends JFrame implements ActionListener {
         panel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+        
         String[] lines = presenter.availableSpaces().split("\n");
         addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
         IntStream.range(0, lines.length)

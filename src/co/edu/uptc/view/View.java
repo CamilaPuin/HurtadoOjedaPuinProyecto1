@@ -199,20 +199,12 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        addComponent(recepcionistPanel, createButton("Buscar", "buscarUpdateRecepcionist"), gbc, 0, 2, 2);
-        addComponent(recepcionistPanel, createLabel("Name"), gbc, 0, 3, 1);
-        addComponent(recepcionistPanel, createTextField("NameFounded"), gbc, 1, 3, 1);
-        textFieldsMap.get("NameFounded").setEnabled(false);
-        addComponent(recepcionistPanel, createLabel("Dirección"), gbc, 0, 4, 1);
-        addComponent(recepcionistPanel, createLabel("Teléfono"), gbc, 0, 5, 1);
-        addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
-        addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
-        addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 4, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 5, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 6, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateNuevaContraseña"), gbc, 1, 7, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateConfirmarContraseña"), gbc, 1, 8, 1);
+        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
+        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateNuevaContraseña"), gbc, 1, 5, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateConfirmarContraseña"), gbc, 1, 6, 1);
         gbc.insets = new Insets(0, 0, 0, 0);
         addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 9, 2);
         addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 10, 2);
@@ -535,16 +527,13 @@ public class View extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
             userType = "Recepcionista";
-            // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
             userType = "Administrador";
-            // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-            // Se valida el login y se redirige según el resultado
             if (userType.equals("Recepcionista") && readLogin())
                 cardLayout.show(getContentPane(), "RecepPanel");
             else if (userType.equals("Administrador") && readLogin())

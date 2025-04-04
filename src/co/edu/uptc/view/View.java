@@ -14,11 +14,13 @@ import javax.swing.WindowConstants;
 import co.edu.uptc.presenter.Presenter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JTextArea;
@@ -27,6 +29,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
+import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
@@ -49,7 +52,8 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
     private String userType;
-    // Hi
+    private DatePicker datePicker;
+    
 
     public View() {
         super("Parking UPTC");
@@ -61,11 +65,14 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
+        datePicker = new DatePicker();
 
         getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
+      
+
         setVisible(true);
     }
 
@@ -86,8 +93,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(userType, recep, gbc, 0, 1, 1);
         addComponent(userType, admin, gbc, 1, 1, 1);
 
-        addComponent(userType, createButton("Recepcionista", "Recepcionista"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador", "Administrador"), gbc, 1, 2, 1);
+        addComponent(userType, createButton("Recepcionista", "RecepcionistaUserType"), gbc, 0, 2, 1);
+        addComponent(userType, createButton("Administrador", "AdministradorUserType"), gbc, 1, 2, 1);
         
         return userType;
     }
@@ -277,9 +284,27 @@ public class View extends JFrame implements ActionListener {
 
     // TODO Panel vacio, va el selector de fechas de Santi
     private JPanel generateReportPanel() {
-        JPanel generateReport = new JPanel();
+        JPanel generateReport = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+       
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+       // datePicker.addDateSelectionListener(this);
+        datePicker.setColor(Color.BLUE);
+        addComponent(generateReport, datePicker, gbc, 0, 0, 1);
+        
+      
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
+        
         return generateReport;
     }
+    
 
     public JPanel recepcionistPanel() {
      
@@ -511,9 +536,14 @@ public class View extends JFrame implements ActionListener {
         return presenter.logIn(id, password, userType);
     }
 
-    public void optionPanel(String message, String tittle, int icon, String buttonText) {
+    public int optionPanel(String message, String tittle, int icon, String buttonText, String secondButton) {
+        Object[] opciones = { buttonText, secondButton };
+      return  JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+                opciones[0]);
+    }
+    public int optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
-        JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+       return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
 
@@ -521,16 +551,16 @@ public class View extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
             userType = "Recepcionista";
-            // llamado al metodo de comprobar login
+          
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
             userType = "Administrador";
-            // llamado al metodo de comprobar login
+    
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-            // Se valida el login y se redirige según el resultado
+      
             if (userType.equals("Recepcionista") && readLogin())
                 cardLayout.show(getContentPane(), "RecepPanel");
             else if (userType.equals("Administrador") && readLogin())
@@ -541,46 +571,89 @@ public class View extends JFrame implements ActionListener {
         }
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
+
         else if (e.getSource() == updateRecepcionist)
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
+
         else if (e.getSource() == salesReport)
             adminCardLayout.show(adminRightPanel, "Sales Report");
+            
         else if (e.getSource() == logout)
             adminCardLayout.show(adminRightPanel, "Logout");
+
         else if (e.getSource() == availableSpaces)
             recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
+
         else if (e.getSource() == registerVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
+
         else if (e.getSource() == exitVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Exit Vehicle");
+
         else if (e.getSource() == recepLogOut)
             recepcionistCardLayout.show(recepRightPanel, "Log Out");
+
         // mostrar el user type??
+
         else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
             readCreateRecepcionist();
+            
         else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
             readUpdateRecepcionist();
+
         else if (e.getSource() == buttonsMap.get("NoLogOutAdmin")) {
             cardLayout.show(adminRightPanel, "Welcome");
+
         } else if (e.getSource() == buttonsMap.get("SiLogOutAdmin")) {
             cardLayout.show(getContentPane(), "UserTypePanel");
+
         } else if (e.getSource() == buttonsMap.get("ImprimirReciboTicketPanel")) {
             // imprimir recibo
+
         } else if (e.getSource() == buttonsMap.get("SiguienteRegisterVehicle"))
             readRegisterVehicle();
+
         else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle"))
             readExitVehicle();
+
         else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
         else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
             cardLayout.show(getContentPane(), "UserTypePanel");
+
         else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
+        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")){
+            if (datePicker.getSelectedDate() != null){
+                int option= optionPanel("Desea continuar con la fecha: "+ datePicker.getSelectedDateAsString(), "Continuar", 3, "Si", "No");
+                if (option == 0){
+                    dateSale();
+                }
+                
+                
+            }
+            else{
+                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+            }
+        }
         // si no de recepcionista
         // falta RegresarSalesReport de admin
         // volver al incio en ticket panel
 
     }
+
+    private void dateSale() {
+        LocalDate date = datePicker.getSelectedDate();
+        if (date != null) {
+            presenter.salesReport(date);
+        }
+    }
+
+
+   
 }

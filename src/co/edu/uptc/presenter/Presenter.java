@@ -1,6 +1,8 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.SystemParking;
+import co.edu.uptc.model.Ticket;
+
 import java.time.LocalDate;
 
 public class Presenter {
@@ -53,7 +55,21 @@ public class Presenter {
     public String getFullName(String id) {
         return system.getFullName(id);
     }
-    // login
+   
+    
+    public double costTikect(String plate, double amountReceived){
+        return system.costTikect(plate, amountReceived);
+    }
+
+    public double calculteChange(String plate, double amountReceived){
+        return system.calculteChange(plate, amountReceived);
+    }
+    
+    public int hoursVehicle(String plate){
+        return system.hoursVehicle(plate);
+    }
+
+   
     // meterle un while
     // el int option...
 

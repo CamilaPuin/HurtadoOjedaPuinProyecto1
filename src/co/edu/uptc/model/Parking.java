@@ -161,7 +161,7 @@ public String updateAvailability() {
         return costPerHour * getPassedTime(vehicle);
     }
 
-    public int getPassedTime(Vehicle vehicle) {
+    public static int getPassedTime(Vehicle vehicle) {
         Duration passedTime = Duration.between(vehicle.getEntryTime(), LocalTime.now());
         return (int) (passedTime.toMinutes() + 59) / 60;
     }

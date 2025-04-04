@@ -56,7 +56,7 @@ public class Ticket {
     }
 
     // TODO move to other class??
-    public double calculateChange(double amountReceived, double cost) {
+    public static double calculateChange(double amountReceived, double cost) {
         return amountReceived - cost;
     }
 

@@ -107,15 +107,13 @@ public class Parking {
         this.recepcionists = recepcionists;
     }
 
-public String updateAvailability() {
-    int availableCars = carscapacity - cars.size();
-    int availableMotorbikes = motorbikescapacity - motorbikes.size();
-    int totalAvailable = availableCars + availableMotorbikes;
-
-    return "Hay " + totalAvailable + " espacios disponibles\n" +
-           "Moto: " + availableMotorbikes + " espacios disponibles\n" +
-           "Carro: " + availableCars + " espacios disponibles";
-}
+    public String updateAvailability() {
+        return String.format(
+                "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
+                (carscapacity - cars.size()) + (motorbikescapacity - motorbikes.size()),
+                motorbikescapacity - motorbikes.size(),
+                carscapacity - cars.size());
+    }
 
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
         if (type.equals("car")) {

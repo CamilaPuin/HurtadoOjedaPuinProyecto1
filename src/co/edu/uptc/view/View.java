@@ -17,7 +17,6 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -50,7 +49,6 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
     private String userType;
-    
 
     public View() {
         super("Parking UPTC");
@@ -79,7 +77,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
 
         ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
-        ImageIcon imageRecep= new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
+        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
 
         JLabel admin = new JLabel(imageAdmin);
         JLabel recep = new JLabel(imageRecep);
@@ -87,9 +85,9 @@ public class View extends JFrame implements ActionListener {
         addComponent(userType, recep, gbc, 0, 1, 1);
         addComponent(userType, admin, gbc, 1, 1, 1);
 
-        addComponent(userType, createButton("Recepcionista", "Recepcionista"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador", "Administrador"), gbc, 1, 2, 1);
-        
+        addComponent(userType, createButton("Recepcionista", "RecepcionistaUserType"), gbc, 0, 2, 1);
+        addComponent(userType, createButton("Administrador", "AdministradorUserType"), gbc, 1, 2, 1);
+
         return userType;
     }
 
@@ -113,8 +111,8 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
 
-        JPanel centerPanel= new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));        
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         createRecepcionist = new JButton("Create Recepcionist");
@@ -129,9 +127,9 @@ public class View extends JFrame implements ActionListener {
         updateRecepcionist.setAlignmentX(CENTER_ALIGNMENT);
         salesReport.setAlignmentX(CENTER_ALIGNMENT);
         logout.setAlignmentX(CENTER_ALIGNMENT);
-        
+
         centerPanel.add(logoLabel);
-        centerPanel.add(Box.createVerticalStrut(30)); 
+        centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(createRecepcionist);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(updateRecepcionist);
@@ -204,7 +202,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 5, 1);
         addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 6, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
+        // textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
@@ -218,6 +216,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createButton("Actualizar", "actualizarUpdateRecepcionist"), gbc, 0, 11, 2);
         return recepcionistPanel;
     }
+
     private String getFullName(String id) {
         String fullName = presenter.getFullName(id);
         if (fullName.equals(""))
@@ -283,16 +282,15 @@ public class View extends JFrame implements ActionListener {
     }
 
     public JPanel recepcionistPanel() {
-     
+
         JPanel recepPanel = new JPanel(new GridLayout(1, 2));
 
         recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
 
-        JPanel centerPanel= new JPanel();
+        JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
 
         availableSpaces = new JButton("Available Spaces");
         registerVehicle = new JButton("Register Vehicle");
@@ -307,9 +305,8 @@ public class View extends JFrame implements ActionListener {
         exitVehicle.setAlignmentX(CENTER_ALIGNMENT);
         recepLogOut.setAlignmentX(CENTER_ALIGNMENT);
 
-     
         centerPanel.add(logoLabel);
-        centerPanel.add(Box.createVerticalStrut(30)); 
+        centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(availableSpaces);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(registerVehicle);
@@ -522,16 +519,13 @@ public class View extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
             userType = "Recepcionista";
-            // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
             userType = "Administrador";
-            // llamado al metodo de comprobar login
             cardLayout.show(getContentPane(), "LoginPanel");
         }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-            // Se valida el login y se redirige según el resultado
             if (userType.equals("Recepcionista") && readLogin())
                 cardLayout.show(getContentPane(), "RecepPanel");
             else if (userType.equals("Administrador") && readLogin())

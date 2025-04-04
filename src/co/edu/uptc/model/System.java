@@ -14,12 +14,12 @@ public class System {
     private Recepcionist currentRecepcionist;
 
     public System() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "123",
                 "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
+                "Calle de la casa, 1", "456", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
@@ -86,7 +86,6 @@ public class System {
 
     }
 
-    // search recepcionist by id
     public void updateRecepcionist(String email, String phone, String address,
             String id, String password, String passwordConfirm) {
         int index = searchRecepcionist(id);

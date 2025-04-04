@@ -150,8 +150,6 @@ public String updateAvailability() {
         return vehicle;
     }
 
-    // TODO check whether it is necessary to re-evaluate the type of the vehicle and
-    // the variables
     public double calculateCost(String plate) {
         Vehicle vehicle = getVehicle(plate);
         double costPerHour = 0;

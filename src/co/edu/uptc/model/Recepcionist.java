@@ -42,7 +42,6 @@ public class Recepcionist extends User {
         attendedVehicles.add(parking.deleteVehicle(plate));
     }
 
-    // TODO static methods and params
     public Ticket generateTicket(String plate, double amountReceived) {
         return new Ticket(plate, parking.calculateCost(plate), amountReceived,
                 parking.getPassedTime(parking.getVehicle(plate)));

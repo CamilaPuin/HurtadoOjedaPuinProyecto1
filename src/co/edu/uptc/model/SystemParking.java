@@ -7,14 +7,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
-public class System {
+public class SystemParking {
     private ArrayList<Admin> admins;
     private ArrayList<Recepcionist> recepcionists;
     private Admin currentAdmin;
     private Recepcionist currentRecepcionist;
 
-    public System() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "123",
+    public SystemParking() {
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
                 "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",

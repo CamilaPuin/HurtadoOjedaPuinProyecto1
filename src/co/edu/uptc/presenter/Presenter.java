@@ -1,14 +1,14 @@
 package co.edu.uptc.presenter;
 
-import co.edu.uptc.model.System;
+import co.edu.uptc.model.SystemParking;
 import java.time.LocalDate;
 
 public class Presenter {
-    private System system;
+    private SystemParking system;
 
     public Presenter() {
 
-        system = new System();
+        system = new SystemParking();
         // TODO metodos de orrdenamiento
 
     }
@@ -26,6 +26,7 @@ public class Presenter {
 
     public void salesReport(LocalDate date) {
         system.salesReport(date);
+    
     }
 
     public void logout() {

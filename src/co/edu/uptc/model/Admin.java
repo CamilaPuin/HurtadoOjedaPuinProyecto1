@@ -48,6 +48,7 @@ public class Admin extends User {
 
     // el get cost ahi no me convence
     public ArrayList<String> generateSalesReport(LocalDate date) {
+     
         ArrayList<String> report = new ArrayList<>();
         report.add("Nombre,Apellidos,Dinero,Vehículos,Motocicletas,Coches");
         int totalMoney = 0;
@@ -78,6 +79,7 @@ public class Admin extends User {
         }
         report.add("Total: " + totalMoney + ", Vehículos: " + totalVehicles + ", Motocicletas: " + totalMotorbikes+ ", Coches: " + totalCars);
         return report;
+        
 
     }
 

@@ -69,7 +69,6 @@ public class View extends JFrame implements ActionListener {
     private JComboBox<String> comboBox;
     private String userType;
     private DatePicker datePicker;
-    
 
     public View() {
         super("Parking UPTC");
@@ -83,36 +82,11 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap = new HashMap<>();
         datePicker = new DatePicker();
 
-        getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
-      
 
         setVisible(true);
-    }
-
-    private JPanel userType() {
-        JPanel userType = new JPanel(new GridBagLayout());
-        userType.setSize(400, 600);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 60, 10, 10);
-        addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
-
-        ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
-        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
-
-        JLabel admin = new JLabel(imageAdmin);
-        JLabel recep = new JLabel(imageRecep);
-
-        addComponent(userType, recep, gbc, 0, 1, 1);
-        addComponent(userType, admin, gbc, 1, 1, 1);
-
-        addComponent(userType, createButton("Recepcionista", "RecepcionistaUserType"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador", "AdministradorUserType"), gbc, 1, 2, 1);
-        
-        return userType;
     }
 
     private JPanel loginPanel() {
@@ -220,7 +194,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
+        // textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
@@ -297,25 +271,22 @@ public class View extends JFrame implements ActionListener {
     private JPanel generateReportPanel() {
         JPanel generateReport = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
+
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
-        
-       
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-       // datePicker.addDateSelectionListener(this);
+        // datePicker.addDateSelectionListener(this);
         datePicker.setColor(Color.BLUE);
         addComponent(generateReport, datePicker, gbc, 0, 0, 1);
-        
-      
+
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
-        
+
         return generateReport;
     }
-    
 
     public JPanel recepcionistPanel() {
 
@@ -386,7 +357,7 @@ public class View extends JFrame implements ActionListener {
         panel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-        
+
         String[] lines = presenter.availableSpaces().split("\n");
         addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
         IntStream.range(0, lines.length)
@@ -549,46 +520,39 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-    private boolean readLogin() {
+    private String readLogin() {
         String id = textFieldsMap.get("LoginUser").getText();
         String password = textFieldsMap.get("LoginPassword").getText();
         textFieldsMap.get("LoginUser").setText("");
         textFieldsMap.get("LoginPassword").setText("");
-        return presenter.logIn(id, password, userType);
+        return presenter.logIn(id, password);
     }
 
     public int optionPanel(String message, String tittle, int icon, String buttonText, String secondButton) {
         Object[] opciones = { buttonText, secondButton };
-      return  JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
+
     public int optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
-       return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
-            userType = "Recepcionista";
-            // llamado al metodo de comprobar login
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
-        if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
-            userType = "Administrador";
-            // llamado al metodo de comprobar login
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-            // Se valida el login y se redirige según el resultado
-            if (userType.equals("Recepcionista") && readLogin())
+            String userRole = readLogin(); 
+            System.out.println("Rol leído: [" + userRole + "] (Longitud: " + userRole.length() + ")");
+            if (userRole.equals("Recepcionista")) {
                 cardLayout.show(getContentPane(), "RecepPanel");
-            else if (userType.equals("Administrador") && readLogin())
+            } else if (userRole.equals("Administrador")) {
                 cardLayout.show(getContentPane(), "AdminPanel");
-            else
+            } else { 
                 JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error",
                         JOptionPane.ERROR_MESSAGE);
+            }
         }
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
@@ -598,7 +562,7 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == salesReport)
             adminCardLayout.show(adminRightPanel, "Sales Report");
-            
+
         else if (e.getSource() == logout)
             adminCardLayout.show(adminRightPanel, "Logout");
 
@@ -618,7 +582,7 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
             readCreateRecepcionist();
-            
+
         else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
             readUpdateRecepcionist();
 

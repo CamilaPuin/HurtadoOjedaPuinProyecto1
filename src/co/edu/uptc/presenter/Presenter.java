@@ -45,9 +45,8 @@ public class Presenter {
         system.exitVehicle(plate);
     }
 
-    public boolean logIn(String addrees, String password, String userType) {
-        return system.logIn(addrees, password, userType);
-
+    public String logIn(String addrees, String password) {
+        return system.logIn(addrees, password);
     }
 
     public String getFullName(String id) {

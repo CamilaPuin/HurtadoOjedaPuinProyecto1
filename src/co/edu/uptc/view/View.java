@@ -254,7 +254,6 @@ public class View extends JFrame implements ActionListener {
     private JPanel generateReportPanel() {
         JPanel generateReport = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
 
@@ -267,9 +266,9 @@ public class View extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
-
         return generateReport;
     }
+    
 
     public JPanel recepcionistPanel() {
 
@@ -540,6 +539,7 @@ public class View extends JFrame implements ActionListener {
         }
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
+
         else if (e.getSource() == updateRecepcionist)
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
 
@@ -560,6 +560,7 @@ public class View extends JFrame implements ActionListener {
             }
             recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
         }
+
 
         else if (e.getSource() == registerVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
@@ -597,6 +598,7 @@ public class View extends JFrame implements ActionListener {
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
 
         else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
+
             cardLayout.show(getContentPane(), "LoginPanel");
 
         else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
@@ -604,8 +606,29 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
+        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")){
+            if (datePicker.getSelectedDate() != null){
+                int option= optionPanel("Desea continuar con la fecha: "+ datePicker.getSelectedDateAsString(), "Continuar", 3, "Si", "No");
+                if (option == 0){
+                    dateSale();
+                }
+                
+           
+            }
+            else{
+                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+            }
+        }
         // si no de recepcionista
         // falta RegresarSalesReport de admin
         // volver al incio en ticket panel
     }
+    private void dateSale() {
+        LocalDate date = datePicker.getSelectedDate();
+        if (date != null) {
+            presenter.salesReport(date);
+        }
+    }
+
 }

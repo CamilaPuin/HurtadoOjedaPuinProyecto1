@@ -8,6 +8,7 @@ public class Presenter {
 
     public Presenter() {
         system = new SystemParking();
+
     }
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,

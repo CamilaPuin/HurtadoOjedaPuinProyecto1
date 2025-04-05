@@ -10,16 +10,17 @@ import java.util.Random;
 public class SystemParking {
     private ArrayList<Admin> admins;
     private ArrayList<Recepcionist> recepcionists;
-    private Admin currentAdmin;
     private Recepcionist currentRecepcionist;
+    private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "123",
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+
                 "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "456", "12345678", admin.getParking());
+                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
@@ -130,30 +131,20 @@ public class SystemParking {
         currentRecepcionist.registerVehicleExit(plate);
     }
 
-    public boolean logIn(String id, String password, String userType) {
-        if (userType.equalsIgnoreCase("Administrador")) {
-            int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
-            if (index >= 0) {
-                if (admins.get(index).getPassword().equals(password)) {
-                    currentAdmin = admins.get(index);
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        } else if (userType.equalsIgnoreCase("Recepcionista")) {
-            int index = Collections.binarySearch(recepcionists, new Recepcionist(id),
-                    Comparator.comparing(Recepcionist::getId));
-            if (index >= 0) {
-                if (recepcionists.get(index).getPassword().equals(password)) {
-                    currentRecepcionist = recepcionists.get(index);
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-        return false;
-    }
 
-}
+    public String logIn(String id, String password) {
+       String user = "";
+        int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
+        if (index >= 0 && admins.get(index).getPassword().equals(password)) {
+            currentAdmin = admins.get(index);
+            user = "Administrador";
+        } else {
+            index = Collections.binarySearch(recepcionists, new Recepcionist(id),
+                    Comparator.comparing(Recepcionist::getId));
+            if (index >= 0 && recepcionists.get(index).getPassword().equals(password)) {
+                currentRecepcionist = recepcionists.get(index);
+                user = "Recepcionista";
+            }
+        }
+        return user;
+    }

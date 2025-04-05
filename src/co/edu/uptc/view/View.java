@@ -3,6 +3,7 @@ package co.edu.uptc.view;
 import co.edu.uptc.presenter.Presenter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,24 +28,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
-import co.edu.uptc.presenter.Presenter;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.HashMap;
-import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Font;
 import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
@@ -67,9 +52,7 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
-    private String userType;
     private DatePicker datePicker;
-    
 
     public View() {
         super("Parking UPTC");
@@ -83,37 +66,11 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap = new HashMap<>();
         datePicker = new DatePicker();
 
-        add(availableSpacesPanel());
-        getContentPane().add(userType(), "UserTypePanel");
         getContentPane().add(loginPanel(), "LoginPanel");
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
-      
 
         setVisible(true);
-    }
-
-    private JPanel userType() {
-        JPanel userType = new JPanel(new GridBagLayout());
-        userType.setSize(400, 600);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 60, 10, 10);
-        addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
-
-        ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
-        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
-
-        JLabel admin = new JLabel(imageAdmin);
-        JLabel recep = new JLabel(imageRecep);
-
-        addComponent(userType, recep, gbc, 0, 1, 1);
-        addComponent(userType, admin, gbc, 1, 1, 1);
-
-        addComponent(userType, createButton("Recepcionista", "RecepcionistaUserType"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador", "AdministradorUserType"), gbc, 1, 2, 1);
-        
-        return userType;
     }
 
     private JPanel loginPanel() {
@@ -126,7 +83,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(login, createTextField("LoginUser"), gbc, 1, 0, 1);
         addComponent(login, createPasswordField("LoginPassword"), gbc, 1, 1, 1);
         addComponent(login, createButton("Ingresar", "IngresarLoginPanel"), gbc, 0, 2, 2);
-        addComponent(login, createButton("Regresar", "RegresarLoginPanel"), gbc, 0, 3, 2);
         return login;
     }
 
@@ -136,7 +92,7 @@ public class View extends JFrame implements ActionListener {
 
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
-
+        adminLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -221,7 +177,7 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
+        // textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
@@ -298,22 +254,18 @@ public class View extends JFrame implements ActionListener {
     private JPanel generateReportPanel() {
         JPanel generateReport = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
-        
-       
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-       // datePicker.addDateSelectionListener(this);
+        // datePicker.addDateSelectionListener(this);
         datePicker.setColor(Color.BLUE);
         addComponent(generateReport, datePicker, gbc, 0, 0, 1);
-        
-      
+
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
-        
         return generateReport;
     }
     
@@ -324,6 +276,7 @@ public class View extends JFrame implements ActionListener {
 
         recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
+        recepLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -380,30 +333,32 @@ public class View extends JFrame implements ActionListener {
         return recepPanel;
     }
 
-    private static boolean alertaMostrada = false;
-
     private JPanel availableSpacesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setSize(400, 600);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        String[] lines = presenter.availableSpaces().split("\n");
-        addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-        IntStream.range(0, lines.length)
-                .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12), gbc, 1, i + 1, 1));
-        addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4, 2);
-        if (!alertaMostrada) {
-            String[] etiquetas = { "Total", "Motos", "Carros" };
-            String alerta = IntStream.range(0, lines.length)
-                    .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
-                    .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
-                    .collect(Collectors.joining("\n"));
-            if (!alerta.isEmpty()) {
-                optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia", JOptionPane.WARNING_MESSAGE,
-                        "Entendido");
-                alertaMostrada = true;
-            }
-        }
+        // panel.setSize(400, 600);
+        // GridBagConstraints gbc = new GridBagConstraints();
+        // gbc.insets = new Insets(10, 10, 10, 10);
+
+        // String[] lines = presenter.availableSpaces().split("\n");
+        // addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
+        // IntStream.range(0, lines.length)
+        // .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
+        // gbc, 1, i + 1, 1));
+        // addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4,
+        // 2);
+        // if (!alertaMostrada) {
+        // String[] etiquetas = { "Total", "Motos", "Carros" };
+        // String alerta = IntStream.range(0, lines.length)
+        // .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
+        // .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
+        // .collect(Collectors.joining("\n"));
+        // if (!alerta.isEmpty()) {
+        // optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia",
+        // JOptionPane.WARNING_MESSAGE,
+        // "Entendido");
+        // alertaMostrada = true;
+        // }
+        // }
         return panel;
     }
 
@@ -549,46 +504,38 @@ public class View extends JFrame implements ActionListener {
 
     }
 
-    private boolean readLogin() {
+    private String readLogin() {
         String id = textFieldsMap.get("LoginUser").getText();
         String password = textFieldsMap.get("LoginPassword").getText();
         textFieldsMap.get("LoginUser").setText("");
         textFieldsMap.get("LoginPassword").setText("");
-        return presenter.logIn(id, password, userType);
+        return presenter.logIn(id, password);
     }
 
     public int optionPanel(String message, String tittle, int icon, String buttonText, String secondButton) {
         Object[] opciones = { buttonText, secondButton };
-      return  JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
+
     public int optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
-       return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
-            userType = "Recepcionista";
-            // llamado al metodo de comprobar login
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
-        if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
-            userType = "Administrador";
-    
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-      
-            if (userType.equals("Recepcionista") && readLogin())
+            String userRole = readLogin();
+            if (userRole.equals("Recepcionista")) {
                 cardLayout.show(getContentPane(), "RecepPanel");
-            else if (userType.equals("Administrador") && readLogin())
+            } else if (userRole.equals("Administrador")) {
                 cardLayout.show(getContentPane(), "AdminPanel");
-            else
+            } else {
                 JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error",
                         JOptionPane.ERROR_MESSAGE);
+            }
         }
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
@@ -598,12 +545,22 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == salesReport)
             adminCardLayout.show(adminRightPanel, "Sales Report");
-            
+
         else if (e.getSource() == logout)
             adminCardLayout.show(adminRightPanel, "Logout");
 
-        else if (e.getSource() == availableSpaces)
+        else if (e.getSource() == availableSpaces) {
+            Component[] components = recepRightPanel.getComponents();
+            for (Component comp : components) {
+                if (comp instanceof JPanel && !comp.isVisible()) {
+                    JPanel availableSpacesPanel = (JPanel) comp;
+                    availableSpacesPanel.revalidate();
+                    availableSpacesPanel.repaint();
+                }
+            }
             recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
+        }
+
 
         else if (e.getSource() == registerVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
@@ -618,7 +575,7 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
             readCreateRecepcionist();
-            
+
         else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
             readUpdateRecepcionist();
 
@@ -626,7 +583,7 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(adminRightPanel, "Welcome");
 
         } else if (e.getSource() == buttonsMap.get("SiLogOutAdmin")) {
-            cardLayout.show(getContentPane(), "UserTypePanel");
+            cardLayout.show(getContentPane(), "LoginPanel");
 
         } else if (e.getSource() == buttonsMap.get("ImprimirReciboTicketPanel")) {
             // imprimir recibo
@@ -641,7 +598,8 @@ public class View extends JFrame implements ActionListener {
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
 
         else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
-            cardLayout.show(getContentPane(), "UserTypePanel");
+
+            cardLayout.show(getContentPane(), "LoginPanel");
 
         else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
@@ -656,7 +614,7 @@ public class View extends JFrame implements ActionListener {
                     dateSale();
                 }
                 
-                
+           
             }
             else{
                 optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
@@ -666,7 +624,6 @@ public class View extends JFrame implements ActionListener {
         // falta RegresarSalesReport de admin
         // volver al incio en ticket panel
     }
-
     private void dateSale() {
         LocalDate date = datePicker.getSelectedDate();
         if (date != null) {
@@ -674,6 +631,4 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
-
-   
 }

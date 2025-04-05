@@ -26,7 +26,6 @@ public class SystemParking {
         admins = new ArrayList<>();
         admins.sort(Comparator.comparing(Admin::getId));
         admins.add(admin);
-        currentRecepcionist = recepcionist;
     }
 
     public ArrayList<Admin> getAdmins() {
@@ -132,7 +131,7 @@ public class SystemParking {
     }
 
     public String logIn(String id, String password) {
-       String user = "No encontrado";
+       String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
         if (index >= 0 && admins.get(index).getPassword().equals(password)) {
             currentAdmin = admins.get(index);

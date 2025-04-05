@@ -7,12 +7,8 @@ public class Presenter {
     private SystemParking system;
 
     public Presenter() {
-
         system = new SystemParking();
-        // TODO metodos de orrdenamiento
-
     }
-    // excepcion para logins???
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
@@ -52,8 +48,5 @@ public class Presenter {
     public String getFullName(String id) {
         return system.getFullName(id);
     }
-    // login
-    // meterle un while
-    // el int option...
 
 }

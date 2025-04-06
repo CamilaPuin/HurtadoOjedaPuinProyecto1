@@ -107,18 +107,16 @@ public class Parking {
         this.recepcionists = recepcionists;
     }
 
-public String updateAvailability() {
-    int availableCars = carscapacity - cars.size();
-    int availableMotorbikes = motorbikescapacity - motorbikes.size();
-    int totalAvailable = availableCars + availableMotorbikes;
-
-    return "Hay " + totalAvailable + " espacios disponibles\n" +
-           "Moto: " + availableMotorbikes + " espacios disponibles\n" +
-           "Carro: " + availableCars + " espacios disponibles";
-}
+    public String updateAvailability() {
+        return String.format(
+                "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
+                (carscapacity - cars.size()) + (motorbikescapacity - motorbikes.size()),
+                motorbikescapacity - motorbikes.size(),
+                carscapacity - cars.size());
+    }
 
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
-        if (type.equals("car")) {
+        if (type.equals("Carro")) {
             if (carscapacity > cars.size()) {
                 cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
@@ -126,7 +124,7 @@ public String updateAvailability() {
                 // TODO: throw exception?
             }
         }
-        if (type.equals("motorbike")) {
+        if (type.equals("Moto")) {
             if (motorbikescapacity > motorbikes.size()) {
                 motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
@@ -150,8 +148,6 @@ public String updateAvailability() {
         return vehicle;
     }
 
-    // TODO check whether it is necessary to re-evaluate the type of the vehicle and
-    // the variables
     public double calculateCost(String plate) {
         Vehicle vehicle = getVehicle(plate);
         double costPerHour = 0;

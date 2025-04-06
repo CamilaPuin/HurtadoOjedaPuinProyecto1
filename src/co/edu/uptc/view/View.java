@@ -383,10 +383,11 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel exitVehiclePanel() {
-        JPanel ticketOutPanel = new JPanel(new GridBagLayout());
+        ticketOutPanel = new JPanel(new GridBagLayout());
         ticketOutPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+
         addComponent(ticketOutPanel, createLabel("Ingrese la placa del vehiculo"), gbc, 0, 0, 2);
         addComponent(ticketOutPanel, createLabel("Placa"), gbc, 0, 1, 1);
         addComponent(ticketOutPanel, createTextField("PlacaExitVehicle"), gbc, 1, 1, 1);
@@ -396,29 +397,12 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createLabel("Cambio"), gbc, 0, 4, 1);
         addComponent(ticketOutPanel, createTextField("CambioExitVehicle"), gbc, 1, 4, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
-        if (textFieldsMap.get("PlacaExitVehicle").getText() != null &&
-                !textFieldsMap.get("PlacaExitVehicle").getText().isEmpty() &&
-                textFieldsMap.get("DineroExitVehicle").getText() != null &&
-                !textFieldsMap.get("DineroExitVehicle").getText().isEmpty()) {
-            Object[] data = {
-                    textFieldsMap.get("PlacaExitVehicle").getText(),
-                    presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
-                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-                    textFieldsMap.get("DineroExitVehicle").getText(),
-                    presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
-                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-                    presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
-            };
+        JButton generarReciboButton = createButton("Generar recibo", "GenerarReciboExitVehicle");
+        addComponent(ticketOutPanel, generarReciboButton, gbc, 0, 6, 2);
 
-            JTable table = new JTable(new Object[][] { data }, col);
-
-            addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
-        }
-        gbc.fill = GridBagConstraints.NONE;
-        addComponent(ticketOutPanel, createButton("Registrar salida", "RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
+        JButton registerButton = createButton("Registrar salida", "RegistrarSalidaExitVehicle");
+        addComponent(ticketOutPanel, registerButton, gbc, 0, 8, 2);
         return ticketOutPanel;
     }
 

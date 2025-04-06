@@ -85,8 +85,8 @@ public class View extends JFrame implements ActionListener {
         gbc.insets = new Insets(10, 60, 10, 10);
         addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
 
-        ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
-        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
+        ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/Administrador.png"));
+        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/Recepcionista.png"));
 
         JLabel admin = new JLabel(imageAdmin);
         JLabel recep = new JLabel(imageRecep);

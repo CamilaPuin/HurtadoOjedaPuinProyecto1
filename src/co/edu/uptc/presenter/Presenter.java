@@ -1,7 +1,7 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.SystemParking;
-import co.edu.uptc.model.Ticket;
+
 
 import java.time.LocalDate;
 

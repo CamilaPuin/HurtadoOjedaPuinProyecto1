@@ -154,6 +154,9 @@ public class Parking {
         if (vehicle != null) {
             costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
         }
+        else{
+            return -1;
+        }
         return costPerHour * getPassedTime(vehicle);
     }
 

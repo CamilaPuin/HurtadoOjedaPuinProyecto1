@@ -68,4 +68,15 @@ public class Presenter {
         return system.hoursVehicle(plate);
     }
 
+    public int numAttendedVehicles() {
+        return system.numAttendedVehicles();
+    }
+
+    public double income(){
+        return system.income();
+    }
+    public String[] obtainRecepcionistData(){
+        return system.obtainRecepcionistData();
+    }
+
 }

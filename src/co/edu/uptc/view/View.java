@@ -14,6 +14,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -57,6 +59,8 @@ public class View extends JFrame implements ActionListener {
     private JComboBox<String> comboBox;
     private DatePicker datePicker;
     private JPanel ticketOutPanel;
+    private String recepEntryTime;
+    private String recepExitTime;
 
     public View() {
         super("Parking UPTC");
@@ -270,7 +274,6 @@ public class View extends JFrame implements ActionListener {
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        // datePicker.addDateSelectionListener(this);
 
         // datePicker.setColor(Color.BLUE);
         // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
@@ -412,18 +415,32 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(consolidadoPanel, createLabel("Consolidado"), gbc, 0, 0, 2);
-        JTextArea consolidado = new JTextArea(5, 10);
-        consolidado.setText("Aquí va el consolidado");
+        String[] colOne = { "Nombre", "Apellidos", "Hora de entrada" };
+        Object[] dataOne = {
+                presenter.obtainRecepcionistData()[0],
+                presenter.obtainRecepcionistData()[1],
+                recepEntryTime
+        };
+        JTable tableOne = new JTable(new Object[][] { dataOne }, colOne);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(consolidadoPanel, consolidado, gbc, 0, 1, 2);
-        JTextArea consolidado2 = new JTextArea(5, 10);
-        consolidado2.setText("Aquí va el consolidado");
-        addComponent(consolidadoPanel, consolidado2, gbc, 0, 2, 2);
+        addComponent(consolidadoPanel, tableOne, gbc, 0, 1, 2);
+        String[] colTwo = { "Hora salida", "Total ingresos", "Total vehiculos ingresados" };
+        Object[] dataTwo = {
+                recepExitTime,
+                presenter.income(),
+                presenter.numAttendedVehicles()
+        };
+        JTable tableTwo = new JTable(new Object[][] { dataTwo }, colTwo);
+
+        addComponent(consolidadoPanel, tableTwo, gbc, 0, 2, 2);
         addComponent(consolidadoPanel, createLabel("¿Desea cerrar sesión?"), gbc, 0, 3, 2);
         gbc.fill = GridBagConstraints.NONE;
         gbc.ipadx = 10;
         addComponent(consolidadoPanel, createButton("Si", "SiRecepLogOut"), gbc, 0, 4, 1);
         addComponent(consolidadoPanel, createButton("No", "NoRecepLogOut"), gbc, 1, 4, 1);
+
+        consolidadoPanel.revalidate();
+        consolidadoPanel.repaint();
         return consolidadoPanel;
     }
 
@@ -535,6 +552,7 @@ public class View extends JFrame implements ActionListener {
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
             String userRole = readLogin();
             if (userRole.equals("Recepcionista")) {
+                entryTimeRecepcionist();
                 getContentPane().add(recepcionistPanel(), "RecepPanel");
                 cardLayout.show(getContentPane(), "RecepPanel");
             } else if (userRole.equals("Administrador")) {
@@ -577,8 +595,17 @@ public class View extends JFrame implements ActionListener {
         else if (e.getSource() == exitVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Exit Vehicle");
 
-        else if (e.getSource() == recepLogOut)
+        else if (e.getSource() == recepLogOut) {
+            exitTimeRecepcionist();
+            JPanel nuevoPanelLogOut = logOutRecep();
+            recepRightPanel.add(nuevoPanelLogOut, "Log Out");
+            recepRightPanel.remove(recepRightPanel.getComponent(1));
+            recepRightPanel.add(logOutRecep(), "Log Out");
+
             recepcionistCardLayout.show(recepRightPanel, "Log Out");
+            exitTimeRecepcionist();
+
+        }
 
         // mostrar el user type??
 
@@ -602,15 +629,18 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle")) {
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+            optionPanel("Operación exitosa", "Exito", 1, "OK");
             resetExitVehiclePanel();
-            readExitVehicle();}
+            readExitVehicle();
+        }
 
         else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
 
-        else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
-
+        else if (e.getSource() == buttonsMap.get("SiRecepLogOut")) {
             cardLayout.show(getContentPane(), "LoginPanel");
+
+        }
 
         else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
@@ -637,7 +667,7 @@ public class View extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == buttonsMap.get("GenerarReciboExitVehicle")) {
-           
+
             String placa = textFieldsMap.get("PlacaExitVehicle").getText();
             String dineroStr = textFieldsMap.get("DineroExitVehicle").getText();
 
@@ -650,7 +680,7 @@ public class View extends JFrame implements ActionListener {
                 double dinero = Double.parseDouble(dineroStr);
                 double cost = presenter.costTikect(placa, dinero);
                 if (cost == -1) {
-                    optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo",2, "Continuar");
+                    optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo", 2, "Continuar");
                 }
                 Object[] data = {
                         placa,
@@ -674,13 +704,13 @@ public class View extends JFrame implements ActionListener {
                 gbc.weighty = 1.0;
                 gbc.insets = new Insets(10, 10, 10, 10);
 
-
                 ticketOutPanel.add(scrollPane, gbc);
                 ticketOutPanel.revalidate();
                 ticketOutPanel.repaint();
 
             } catch (NumberFormatException ex) {
-                optionPanel("Ingrese un valor numérico válido en el campo 'Dinero'.", "Ingresar dinero",2, "Continuar");
+                optionPanel("Ingrese un valor numérico válido en el campo 'Dinero'.", "Ingresar dinero", 2,
+                        "Continuar");
             }
         }
     }
@@ -700,16 +730,24 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap.get("PlacaExitVehicle").setText("");
         textFieldsMap.get("DineroExitVehicle").setText("");
         textFieldsMap.get("CambioExitVehicle").setText("");
-    
+
         for (Component comp : ticketOutPanel.getComponents()) {
             if (comp instanceof JScrollPane || comp instanceof JTable) {
                 ticketOutPanel.remove(comp);
             }
         }
-    
+
         ticketOutPanel.revalidate();
         ticketOutPanel.repaint();
     }
-    
+
+    private void entryTimeRecepcionist() {
+        recepEntryTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+       
+    }
+
+    private void exitTimeRecepcionist() {
+        recepExitTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
 
 }

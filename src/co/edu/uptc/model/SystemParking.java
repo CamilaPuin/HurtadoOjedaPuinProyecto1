@@ -171,4 +171,16 @@ public class SystemParking {
         }
         return null;
     }
+    
+    public int numAttendedVehicles(){
+        return currentRecepcionist.numAttendedVehicles();
+    }
+    public double income(){
+        return currentRecepcionist.income();
+    }
+
+    public String[] obtainRecepcionistData(){
+     String[] recepcionistaData= {currentRecepcionist.getName(), currentRecepcionist.getLastName()};
+     return recepcionistaData;
+    }
 }

@@ -1,5 +1,7 @@
 package co.edu.uptc.model;
 
+
+
 public class Ticket {
     private String vehiclePlate;
     private double cost;

@@ -1,7 +1,7 @@
 package co.edu.uptc.presenter;
 
+import co.edu.uptc.model.Recepcionist;
 import co.edu.uptc.model.SystemParking;
-
 
 import java.time.LocalDate;
 
@@ -25,7 +25,7 @@ public class Presenter {
 
     public void salesReport(LocalDate date) {
         system.salesReport(date);
-    
+
     }
 
     public void logout() {
@@ -51,19 +51,21 @@ public class Presenter {
     public String getFullName(String id) {
         return system.getFullName(id);
     }
-   
-    
-    public double costTikect(String plate, double amountReceived){
+
+    public String[] obtainRecepcionist(String id) {
+        return system.obtainRecepcionist(id);
+    }
+
+    public double costTikect(String plate, double amountReceived) {
         return system.costTikect(plate, amountReceived);
     }
 
-    public double calculteChange(String plate, double amountReceived){
+    public double calculteChange(String plate, double amountReceived) {
         return system.calculteChange(plate, amountReceived);
     }
-    
-    public int hoursVehicle(String plate){
+
+    public int hoursVehicle(String plate) {
         return system.hoursVehicle(plate);
     }
-
 
 }

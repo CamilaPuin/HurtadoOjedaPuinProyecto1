@@ -16,6 +16,7 @@ public class Recepcionist extends User {
 
     public Recepcionist(String id) {
         super(id);
+        this.parking = new Parking("Recepcionist Parking");
     }
 
     public Parking getParking() {

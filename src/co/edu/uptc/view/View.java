@@ -1,20 +1,5 @@
 package co.edu.uptc.view;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import co.edu.uptc.presenter.Presenter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -32,8 +17,22 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import raven.datetime.component.date.DatePicker;
-
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+// import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
@@ -55,24 +54,19 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
-    private DatePicker datePicker;
+    // private DatePicker datePicker;
 
     public View() {
         super("Parking UPTC");
         setSize(800, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         cardLayout = new CardLayout();
         getContentPane().setLayout(cardLayout);
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        datePicker = new DatePicker();
-
+        // datePicker = new DatePicker();
         getContentPane().add(loginPanel(), "LoginPanel");
-        getContentPane().add(adminPanel(), "AdminPanel");
-        getContentPane().add(recepcionistPanel(), "RecepPanel");
-
 
         setVisible(true);
     }
@@ -93,7 +87,6 @@ public class View extends JFrame implements ActionListener {
     public JPanel adminPanel() {
         JPanel adminPanel = new JPanel(new GridLayout(1, 2));
         adminLeftPanel = new JPanel();
-
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         adminLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
@@ -101,20 +94,17 @@ public class View extends JFrame implements ActionListener {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
         createRecepcionist = new JButton("Create Recepcionist");
         updateRecepcionist = new JButton("Update Recepcionist");
         salesReport = new JButton("Sales Report");
         logout = new JButton("Logout");
         ImageIcon logo = new ImageIcon(getClass().getResource("/resources/logo.png"));
         JLabel logoLabel = new JLabel(logo);
-
         logoLabel.setAlignmentX(CENTER_ALIGNMENT);
         createRecepcionist.setAlignmentX(CENTER_ALIGNMENT);
         updateRecepcionist.setAlignmentX(CENTER_ALIGNMENT);
         salesReport.setAlignmentX(CENTER_ALIGNMENT);
         logout.setAlignmentX(CENTER_ALIGNMENT);
-
         centerPanel.add(logoLabel);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(createRecepcionist);
@@ -124,31 +114,25 @@ public class View extends JFrame implements ActionListener {
         centerPanel.add(salesReport);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(logout);
-
         adminLeftPanel.add(centerPanel, BorderLayout.CENTER);
         adminCardLayout = new CardLayout();
         adminRightPanel = new JPanel(adminCardLayout);
-
         JPanel welcome = welcome();
         JPanel createRecepcionistPanel = createRecepcionist();
         JPanel updateRecepcionistPanel = updateRecepcionist();
         JPanel salesReportPanel = salesReport();
         JPanel logoutPanel = logoutAdmin();
-
         adminRightPanel.add(welcome, "Welcome");
         adminRightPanel.add(createRecepcionistPanel, "Create Recepcionist");
         adminRightPanel.add(updateRecepcionistPanel, "Update Recepcionist");
         adminRightPanel.add(salesReportPanel, "Sales Report");
         adminRightPanel.add(logoutPanel, "Logout");
-
         createRecepcionist.addActionListener(this);
         updateRecepcionist.addActionListener(this);
         salesReport.addActionListener(this);
         logout.addActionListener(this);
-
         adminPanel.add(adminLeftPanel);
         adminPanel.add(adminRightPanel);
-
         return adminPanel;
     }
 
@@ -182,19 +166,42 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        // textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
-        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateNuevaContraseña"), gbc, 1, 5, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateConfirmarContraseña"), gbc, 1, 6, 1);
+
+        // Nuevo botón "Buscar" centrado justo debajo del campo Documento
+        gbc.insets = new Insets(5, 0, 15, 0);
+        addComponent(recepcionistPanel, createButton("Buscar", "buscarRecepcionist"), gbc, 0, 2, 2);
+        gbc.insets = new Insets(10, 10, 10, 10); // restaurar margen original
+
+        // Todo lo siguiente desplazado una fila hacia abajo
+        addComponent(recepcionistPanel, createLabel("Nombre"), gbc, 0, 3, 1);
+        addComponent(recepcionistPanel, createLabel("Direccion"), gbc, 0, 4, 1);
+        addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 5, 1);
+        addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
+        addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
+        addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateName"), gbc, 1, 3, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 4, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 5, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 6, 1);
+        addComponent(recepcionistPanel, createPasswordField("UpdateNewPassword"), gbc, 1, 7, 1);
+        addComponent(recepcionistPanel, createPasswordField("UpdateConfirmPassword"), gbc, 1, 8, 1);
+
         gbc.insets = new Insets(0, 0, 0, 0);
         addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 9, 2);
         addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 10, 2);
         addComponent(recepcionistPanel, createLabel("- Debe tener mínimo 8 dígitos"), gbc, 0, 11, 2);
+
         gbc.insets = new Insets(10, 0, 0, 0);
         addComponent(recepcionistPanel, createButton("Actualizar", "actualizarUpdateRecepcionist"), gbc, 0, 12, 2);
+
         return recepcionistPanel;
+    }
+
+    private void setRecepcionistInfo(String[] recepcionistInfo) {
+        textFieldsMap.get("UpdateName").setText(recepcionistInfo[0]);
+        textFieldsMap.get("UpdateDireccion").setText(recepcionistInfo[1]);
+        textFieldsMap.get("UpdateTelefono").setText(recepcionistInfo[2]);
+        textFieldsMap.get("UpdateEmail").setText(recepcionistInfo[3]);
     }
 
     private String getFullName(String id) {
@@ -265,8 +272,8 @@ public class View extends JFrame implements ActionListener {
         gbc.weightx = 1.0;
         // datePicker.addDateSelectionListener(this);
 
-        datePicker.setColor(Color.BLUE);
-        addComponent(generateReport, datePicker, gbc, 0, 0, 1);
+        // datePicker.setColor(Color.BLUE);
+        // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
@@ -275,9 +282,7 @@ public class View extends JFrame implements ActionListener {
     }
 
     public JPanel recepcionistPanel() {
-
         JPanel recepPanel = new JPanel(new GridLayout(1, 2));
-
         recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         recepLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
@@ -285,20 +290,17 @@ public class View extends JFrame implements ActionListener {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
         availableSpaces = new JButton("Available Spaces");
         registerVehicle = new JButton("Register Vehicle");
         exitVehicle = new JButton("Exit Vehicle");
         recepLogOut = new JButton("Log Out");
         ImageIcon logo = new ImageIcon(getClass().getResource("/resources/logo.png"));
         JLabel logoLabel = new JLabel(logo);
-
         logoLabel.setAlignmentX(CENTER_ALIGNMENT);
         availableSpaces.setAlignmentX(CENTER_ALIGNMENT);
         registerVehicle.setAlignmentX(CENTER_ALIGNMENT);
         exitVehicle.setAlignmentX(CENTER_ALIGNMENT);
         recepLogOut.setAlignmentX(CENTER_ALIGNMENT);
-
         centerPanel.add(logoLabel);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(availableSpaces);
@@ -308,11 +310,9 @@ public class View extends JFrame implements ActionListener {
         centerPanel.add(exitVehicle);
         centerPanel.add(Box.createVerticalStrut(10));
         centerPanel.add(recepLogOut);
-
         recepLeftPanel.add(centerPanel, BorderLayout.CENTER);
         recepcionistCardLayout = new CardLayout();
         recepRightPanel = new JPanel(recepcionistCardLayout);
-
         JPanel welcome = welcome();
         JPanel availableSpacesPanel = availableSpacesPanel();
         JPanel registerVehiclePanel = registerVehiclePanel();
@@ -325,44 +325,44 @@ public class View extends JFrame implements ActionListener {
         recepRightPanel.add(exitVehiclePanel, "Exit Vehicle");
         recepRightPanel.add(recepLogOutPanel, "Log Out");
         recepRightPanel.add(registerVehiclePanel2, "TicketPanel");
-
         availableSpaces.addActionListener(this);
         registerVehicle.addActionListener(this);
         exitVehicle.addActionListener(this);
         recepLogOut.addActionListener(this);
-
         recepPanel.add(recepLeftPanel);
         recepPanel.add(recepRightPanel);
-
         return recepPanel;
     }
 
     private JPanel availableSpacesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        // panel.setSize(400, 600);
-        // GridBagConstraints gbc = new GridBagConstraints();
-        // gbc.insets = new Insets(10, 10, 10, 10);
+        panel.setSize(400, 600);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-        // String[] lines = presenter.availableSpaces().split("\n");
-        // addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-        // IntStream.range(0, lines.length)
-        // .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
-        // gbc, 1, i + 1, 1));
-        // addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4,
-        // 2);
-        // if (!alertaMostrada) {
-        // String[] etiquetas = { "Total", "Motos", "Carros" };
-        // String alerta = IntStream.range(0, lines.length)
-        // .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
-        // .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
-        // .collect(Collectors.joining("\n"));
-        // if (!alerta.isEmpty()) {
-        // optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia",
-        // JOptionPane.WARNING_MESSAGE,
-        // "Entendido");
-        // alertaMostrada = true;
-        // }
-        // }
+        String[] lines = presenter.availableSpaces().split("\n");
+        if (!lines[0].equals("Hay -1 espacios disponibles")) {
+            addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
+            IntStream.range(0, lines.length)
+                    .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
+                            gbc, 1, i + 1, 1));
+            addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4,
+                    2);
+            boolean alertaMostrada = false;
+            if (!alertaMostrada) {
+                String[] etiquetas = { "Total", "Motos", "Carros" };
+                String alerta = IntStream.range(0, lines.length)
+                        .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
+                        .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
+                        .collect(Collectors.joining("\n"));
+                if (!alerta.isEmpty()) {
+                    optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia",
+                            JOptionPane.WARNING_MESSAGE,
+                            "Entendido");
+                    alertaMostrada = true;
+                }
+            }
+        }
         return panel;
     }
 
@@ -398,23 +398,25 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-       String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+        String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+        if (textFieldsMap.get("PlacaExitVehicle").getText() != null &&
+                !textFieldsMap.get("PlacaExitVehicle").getText().isEmpty() &&
+                textFieldsMap.get("DineroExitVehicle").getText() != null &&
+                !textFieldsMap.get("DineroExitVehicle").getText().isEmpty()) {
+            Object[] data = {
+                    textFieldsMap.get("PlacaExitVehicle").getText(),
+                    presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    textFieldsMap.get("DineroExitVehicle").getText(),
+                    presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
+            };
 
-        Object[] data = {
-            textFieldsMap.get("PlacaExitVehicle").getText(),
-            presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
-                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-            textFieldsMap.get("DineroExitVehicle").getText(),
-            presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
-                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-            presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
-        };
-        
-        JTable table = new JTable(new Object[][] { data }, col);
-        
+            JTable table = new JTable(new Object[][] { data }, col);
 
-        
-        addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
+            addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
+        }
         gbc.fill = GridBagConstraints.NONE;
         addComponent(ticketOutPanel, createButton("Registrar salida", "RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
         return ticketOutPanel;
@@ -549,8 +551,10 @@ public class View extends JFrame implements ActionListener {
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
             String userRole = readLogin();
             if (userRole.equals("Recepcionista")) {
+                getContentPane().add(recepcionistPanel(), "RecepPanel");
                 cardLayout.show(getContentPane(), "RecepPanel");
             } else if (userRole.equals("Administrador")) {
+                getContentPane().add(adminPanel(), "AdminPanel");
                 cardLayout.show(getContentPane(), "AdminPanel");
             } else {
                 JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error",
@@ -576,11 +580,12 @@ public class View extends JFrame implements ActionListener {
                     JPanel availableSpacesPanel = (JPanel) comp;
                     availableSpacesPanel.revalidate();
                     availableSpacesPanel.repaint();
+                    getContentPane().removeAll();
+                    getContentPane().add(recepcionistPanel(), "RecepPanel");
                 }
             }
             recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
         }
-
 
         else if (e.getSource() == registerVehicle)
             recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
@@ -626,29 +631,34 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
-
-        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
-            if (datePicker.getSelectedDate() != null) {
-                int option = optionPanel("Desea continuar con la fecha: " + datePicker.getSelectedDateAsString(),
-                        "Continuar", 3, "Si", "No");
-                if (option == 0) {
-                    dateSale();
-                }
-
-            } else {
-
-                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
-            }
+        // TODO Boton buscar
+        else if (e.getSource() == buttonsMap.get("buscarRecepcionist")) {
+            setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
         }
+
+        // else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
+        // if (datePicker.getSelectedDate() != null) {
+        // int option = optionPanel("Desea continuar con la fecha: " +
+        // datePicker.getSelectedDateAsString(),
+        // "Continuar", 3, "Si", "No");
+        // if (option == 0) {
+        // dateSale();
+        // }
+
+        // } else {
+
+        // optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+        // }
+        // }
         // si no de recepcionista
         // falta RegresarSalesReport de admin
         // volver al incio en ticket panel
     }
-    private void dateSale() {
-        LocalDate date = datePicker.getSelectedDate();
-        if (date != null) {
-            presenter.salesReport(date);
-        }
-    }
+    // private void dateSale() {
+    // LocalDate date = datePicker.getSelectedDate();
+    // if (date != null) {
+    // presenter.salesReport(date);
+    // }
+    // }
 
 }

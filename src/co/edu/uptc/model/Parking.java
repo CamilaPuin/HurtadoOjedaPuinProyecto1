@@ -158,6 +158,9 @@ public class Parking {
     }
 
     public static int getPassedTime(Vehicle vehicle) {
+        if (vehicle == null) {
+            return -1;
+        }
         Duration passedTime = Duration.between(vehicle.getEntryTime(), LocalTime.now());
         return (int) (passedTime.toMinutes() + 59) / 60;
     }

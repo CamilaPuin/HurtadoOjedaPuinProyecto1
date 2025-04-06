@@ -14,11 +14,12 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin","12345678");
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+                "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
+                "Calle de la casa, 1", "11", "22", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
@@ -65,6 +66,19 @@ public class SystemParking {
             return recepcionists.get(index).getName() + " " + recepcionists.get(index).getLastName();
         }
         return "";
+    }
+
+    public String[] obtainRecepcionist(String id) {
+        String[] recepcionistData = new String[4];
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            recepcionistData[0] = recepcionists.get(index).getName();
+            recepcionistData[1] = recepcionists.get(index).getAddress();
+            recepcionistData[2] = recepcionists.get(index).getPhone();
+            recepcionistData[3] = recepcionists.get(index).getEmail();
+        return recepcionistData;
+        }
+        return null;
     }
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
@@ -129,7 +143,7 @@ public class SystemParking {
         currentRecepcionist.registerVehicleExit(plate);
     }
     public String logIn(String id, String password) {
-       String user = "";
+        String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
         if (index >= 0 && admins.get(index).getPassword().equals(password)) {
             currentAdmin = admins.get(index);
@@ -154,6 +168,6 @@ public class SystemParking {
     }
 
     public int hoursVehicle(String plate) {
-      return  Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate)) ;
+        return Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate));
     }
 }

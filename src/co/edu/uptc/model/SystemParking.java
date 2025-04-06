@@ -146,7 +146,7 @@ public class SystemParking {
                 user = "Recepcionista";
             }
         }
-        return user;
+        return false;
     }
 
     public double costTikect(String plate, double amountReceived) {

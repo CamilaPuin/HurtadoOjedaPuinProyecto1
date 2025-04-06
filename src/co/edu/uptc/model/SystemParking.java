@@ -131,9 +131,8 @@ public class SystemParking {
         currentRecepcionist.registerVehicleExit(plate);
     }
 
-
     public String logIn(String id, String password) {
-       String user = "";
+        String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
         if (index >= 0 && admins.get(index).getPassword().equals(password)) {
             currentAdmin = admins.get(index);
@@ -158,6 +157,18 @@ public class SystemParking {
     }
 
     public int hoursVehicle(String plate) {
-      return  Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate)) ;
+        return Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate));
+    }
+    public String[] obtainRecepcionist(String id) {
+        String[] recepcionistData = new String[4];
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            recepcionistData[0] = recepcionists.get(index).getName();
+            recepcionistData[1] = recepcionists.get(index).getAddress();
+            recepcionistData[2] = recepcionists.get(index).getPhone();
+            recepcionistData[3] = recepcionists.get(index).getEmail();
+        return recepcionistData;
+        }
+        return null;
     }
 }

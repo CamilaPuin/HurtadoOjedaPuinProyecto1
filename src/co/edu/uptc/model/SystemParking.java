@@ -144,4 +144,16 @@ public class SystemParking {
         }
         return user;
     }
+
+    public double costTikect(String plate, double amountReceived) {
+        return currentRecepcionist.getParking().calculateCost(plate);
+    }
+
+    public double calculteChange(String plate, double amountReceived) {
+        return Ticket.calculateChange(amountReceived, costTikect(plate, amountReceived));
+    }
+
+    public int hoursVehicle(String plate) {
+      return  Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate)) ;
+    }
 }

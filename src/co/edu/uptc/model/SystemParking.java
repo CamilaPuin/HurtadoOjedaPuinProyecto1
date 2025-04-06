@@ -160,4 +160,5 @@ public class SystemParking {
     public int hoursVehicle(String plate) {
       return  Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate)) ;
     }
+
 }

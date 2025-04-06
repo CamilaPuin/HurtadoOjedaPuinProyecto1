@@ -52,6 +52,4 @@ public class Recepcionist extends User {
     public String seeParkingAvailability() {
         return parking.updateAvailability();
     }
-
-
 }

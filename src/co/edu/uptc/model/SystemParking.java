@@ -14,12 +14,12 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
-                "12345678");
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "11",
+                "11");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "11", "22", admin.getParking());
+                "Calle de la casa, 1", "22", "22", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));

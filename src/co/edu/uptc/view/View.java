@@ -226,9 +226,14 @@ public class View extends JFrame implements ActionListener {
         addComponent(report, createLabel("ingresos aqui"), gbc, 1, 1, 1);
         addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
         addComponent(report, createLabel("Numero aqui"), gbc, 1, 2, 1);
-        JTextArea consolidado = new JTextArea(5, 10);
-        consolidado.setText("Aquí va el consolidado");
-        addComponent(report, consolidado, gbc, 0, 3, 2);
+        String [] col = {"Nombre", "Apellidos", "Ingreso", "Vehiculos"};
+       
+        
+        JTable table = new JTable(presenter.getConsolidatedRecepcionists(), col);
+        JScrollPane scrollPane = new JScrollPane(table);
+        
+       
+        addComponent(report, scrollPane, gbc, 0, 3, 2);
         addComponent(report, createButton("Regresar al menú", "RegresarSalesReport"), gbc, 0, 4, 2);
         return report;
     }
@@ -259,10 +264,22 @@ public class View extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(ticketPanel, createButton("Imprimir recibo", "ImprimirReciboTicketPanel"), gbc, 0, 2, 1);
         addComponent(ticketPanel, createButton("Regresar", "MenuTicketPanel"), gbc, 0, 4, 1);
-        // TODO Aqui va el consolidado
-        JTextArea consolidado = new JTextArea(5, 10);
-        consolidado.setText("Aquí va el consolidado");
-        addComponent(ticketPanel, consolidado, gbc, 0, 3, 1);
+        String[] col = { "Placa", "Fecha", "Hora ingreso", "Tipo de vehiculo" };
+        Object[] data = {
+                textFieldsMap.get("PlacaRegisterVehicle").getText(),
+                LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+                comboBox.getSelectedItem().toString()
+        };
+        JTable table = new JTable(new Object[][] { data }, col);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(10, 20));
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1;
+        gbc.insets = new Insets(1, 1, 1, 1);
+        addComponent(ticketPanel, scrollPane, gbc, 0, 3, 1);
         return ticketPanel;
     }
 
@@ -422,8 +439,10 @@ public class View extends JFrame implements ActionListener {
                 recepEntryTime
         };
         JTable tableOne = new JTable(new Object[][] { dataOne }, colOne);
+        JScrollPane scrollPaneOne = new JScrollPane(tableOne);
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(consolidadoPanel, tableOne, gbc, 0, 1, 2);
+        addComponent(consolidadoPanel, scrollPaneOne, gbc, 0, 1, 2);
         String[] colTwo = { "Hora salida", "Total ingresos", "Total vehiculos ingresados" };
         Object[] dataTwo = {
                 recepExitTime,
@@ -431,8 +450,9 @@ public class View extends JFrame implements ActionListener {
                 presenter.numAttendedVehicles()
         };
         JTable tableTwo = new JTable(new Object[][] { dataTwo }, colTwo);
+        JScrollPane scrollPaneTwo = new JScrollPane(tableTwo);
 
-        addComponent(consolidadoPanel, tableTwo, gbc, 0, 2, 2);
+        addComponent(consolidadoPanel, scrollPaneTwo, gbc, 0, 2, 2);
         addComponent(consolidadoPanel, createLabel("¿Desea cerrar sesión?"), gbc, 0, 3, 2);
         gbc.fill = GridBagConstraints.NONE;
         gbc.ipadx = 10;
@@ -514,7 +534,6 @@ public class View extends JFrame implements ActionListener {
     private void readRegisterVehicle() {
         presenter.registerVehicle(textFieldsMap.get("PlacaRegisterVehicle").getText(),
                 comboBox.getSelectedItem().toString());
-        // pedir el ticket generado
         recepcionistCardLayout.show(recepRightPanel, "TicketPanel");
 
     }
@@ -743,7 +762,6 @@ public class View extends JFrame implements ActionListener {
 
     private void entryTimeRecepcionist() {
         recepEntryTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
-       
     }
 
     private void exitTimeRecepcionist() {

@@ -1,18 +1,17 @@
 package co.edu.uptc.presenter;
 
-import co.edu.uptc.model.System;
+import co.edu.uptc.model.Recepcionist;
+import co.edu.uptc.model.SystemParking;
+
 import java.time.LocalDate;
 
 public class Presenter {
-    private System system;
+    private SystemParking system;
 
     public Presenter() {
-
-        system = new System();
-        // TODO metodos de orrdenamiento
+        system = new SystemParking();
 
     }
-    // excepcion para logins???
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
@@ -26,6 +25,7 @@ public class Presenter {
 
     public void salesReport(LocalDate date) {
         system.salesReport(date);
+
     }
 
     public void logout() {
@@ -44,16 +44,28 @@ public class Presenter {
         system.exitVehicle(plate);
     }
 
-    public boolean logIn(String addrees, String password, String userType) {
-        return system.logIn(addrees, password, userType);
-
+    public String logIn(String addrees, String password) {
+        return system.logIn(addrees, password);
     }
 
     public String getFullName(String id) {
         return system.getFullName(id);
     }
-    // login
-    // meterle un while
-    // el int option...
+
+    public String[] obtainRecepcionist(String id) {
+        return system.obtainRecepcionist(id);
+    }
+
+    public double costTikect(String plate, double amountReceived) {
+        return system.costTikect(plate, amountReceived);
+    }
+
+    public double calculteChange(String plate, double amountReceived) {
+        return system.calculteChange(plate, amountReceived);
+    }
+
+    public int hoursVehicle(String plate) {
+        return system.hoursVehicle(plate);
+    }
 
 }

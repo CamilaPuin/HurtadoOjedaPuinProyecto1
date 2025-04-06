@@ -55,7 +55,8 @@ public class Ticket {
         this.hours = hours;
     }
 
-    public double calculateChange(double amountReceived, double cost) {
+
+    public static double calculateChange(double amountReceived, double cost) {
         return amountReceived - cost;
     }
 

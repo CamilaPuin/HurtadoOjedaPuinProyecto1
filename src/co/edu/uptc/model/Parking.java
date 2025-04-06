@@ -116,7 +116,7 @@ public class Parking {
     }
 
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
-        if (type.equals("car")) {
+        if (type.equals("Carro")) {
             if (carscapacity > cars.size()) {
                 cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
@@ -124,7 +124,7 @@ public class Parking {
                 // TODO: throw exception?
             }
         }
-        if (type.equals("motorbike")) {
+        if (type.equals("Moto")) {
             if (motorbikescapacity > motorbikes.size()) {
                 motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
@@ -157,7 +157,10 @@ public class Parking {
         return costPerHour * getPassedTime(vehicle);
     }
 
-    public int getPassedTime(Vehicle vehicle) {
+    public static int getPassedTime(Vehicle vehicle) {
+        if (vehicle == null) {
+            return -1;
+        }
         Duration passedTime = Duration.between(vehicle.getEntryTime(), LocalTime.now());
         return (int) (passedTime.toMinutes() + 59) / 60;
     }

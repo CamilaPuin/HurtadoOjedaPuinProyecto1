@@ -3,6 +3,7 @@ package co.edu.uptc.view;
 import co.edu.uptc.presenter.Presenter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,9 +27,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+// import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
@@ -50,7 +53,7 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
-    private String userType;
+    // private DatePicker datePicker;
 
     public View() {
         super("Parking UPTC");
@@ -61,28 +64,10 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        getContentPane().add(userType(), "UserTypePanel");
+        // datePicker = new DatePicker();
         getContentPane().add(loginPanel(), "LoginPanel");
-        getContentPane().add(adminPanel(), "AdminPanel");
-        getContentPane().add(recepcionistPanel(), "RecepPanel");
-        setVisible(true);
-    }
 
-    private JPanel userType() {
-        JPanel userType = new JPanel(new GridBagLayout());
-        userType.setSize(400, 600);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 60, 10, 10);
-        addComponent(userType, createLabel("Seleccione su tipo de usuario", 20), gbc, 0, 0, 2);
-        ImageIcon imageAdmin = new ImageIcon(getClass().getResource("/resources/administrador.png"));
-        ImageIcon imageRecep = new ImageIcon(getClass().getResource("/resources/recepcionista.png"));
-        JLabel admin = new JLabel(imageAdmin);
-        JLabel recep = new JLabel(imageRecep);
-        addComponent(userType, recep, gbc, 0, 1, 1);
-        addComponent(userType, admin, gbc, 1, 1, 1);
-        addComponent(userType, createButton("Recepcionista", "RecepcionistaUserType"), gbc, 0, 2, 1);
-        addComponent(userType, createButton("Administrador", "AdministradorUserType"), gbc, 1, 2, 1);
-        return userType;
+        setVisible(true);
     }
 
     private JPanel loginPanel() {
@@ -95,7 +80,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(login, createTextField("LoginUser"), gbc, 1, 0, 1);
         addComponent(login, createPasswordField("LoginPassword"), gbc, 1, 1, 1);
         addComponent(login, createButton("Ingresar", "IngresarLoginPanel"), gbc, 0, 2, 2);
-        addComponent(login, createButton("Regresar", "RegresarLoginPanel"), gbc, 0, 3, 2);
         return login;
     }
 
@@ -104,6 +88,8 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel = new JPanel();
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
+        adminLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
+
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -179,19 +165,42 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-        //textFieldsMap.get("NameFounded").setText(getFullName(textFieldsMap.get("UpdateDocumento").getText()));
-        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 2, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 3, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 4, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateNuevaContraseña"), gbc, 1, 5, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateConfirmarContraseña"), gbc, 1, 6, 1);
+
+        // Nuevo botón "Buscar" centrado justo debajo del campo Documento
+        gbc.insets = new Insets(5, 0, 15, 0);
+        addComponent(recepcionistPanel, createButton("Buscar", "buscarRecepcionist"), gbc, 0, 2, 2);
+        gbc.insets = new Insets(10, 10, 10, 10); // restaurar margen original
+
+        // Todo lo siguiente desplazado una fila hacia abajo
+        addComponent(recepcionistPanel, createLabel("Nombre"), gbc, 0, 3, 1);
+        addComponent(recepcionistPanel, createLabel("Direccion"), gbc, 0, 4, 1);
+        addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 5, 1);
+        addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
+        addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
+        addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateName"), gbc, 1, 3, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 4, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 5, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 6, 1);
+        addComponent(recepcionistPanel, createPasswordField("UpdateNewPassword"), gbc, 1, 7, 1);
+        addComponent(recepcionistPanel, createPasswordField("UpdateConfirmPassword"), gbc, 1, 8, 1);
+
         gbc.insets = new Insets(0, 0, 0, 0);
         addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 9, 2);
         addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 10, 2);
         addComponent(recepcionistPanel, createLabel("- Debe tener mínimo 8 dígitos"), gbc, 0, 11, 2);
+
         gbc.insets = new Insets(10, 0, 0, 0);
         addComponent(recepcionistPanel, createButton("Actualizar", "actualizarUpdateRecepcionist"), gbc, 0, 12, 2);
+
         return recepcionistPanel;
+    }
+
+    private void setRecepcionistInfo(String[] recepcionistInfo) {
+        textFieldsMap.get("UpdateName").setText(recepcionistInfo[0]);
+        textFieldsMap.get("UpdateDireccion").setText(recepcionistInfo[1]);
+        textFieldsMap.get("UpdateTelefono").setText(recepcionistInfo[2]);
+        textFieldsMap.get("UpdateEmail").setText(recepcionistInfo[3]);
     }
 
     private String getFullName(String id) {
@@ -252,9 +261,22 @@ public class View extends JFrame implements ActionListener {
         return ticketPanel;
     }
 
-    // TODO Panel vacio, va el selector de fechas de Santi
     private JPanel generateReportPanel() {
-        JPanel generateReport = new JPanel();
+        JPanel generateReport = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        // datePicker.addDateSelectionListener(this);
+
+        // datePicker.setColor(Color.BLUE);
+        // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
         return generateReport;
     }
 
@@ -262,6 +284,8 @@ public class View extends JFrame implements ActionListener {
         JPanel recepPanel = new JPanel(new GridLayout(1, 2));
         recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
+        recepLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
+
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -309,28 +333,33 @@ public class View extends JFrame implements ActionListener {
         return recepPanel;
     }
 
-    private static boolean alertaMostrada = false;
-
     private JPanel availableSpacesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+
         String[] lines = presenter.availableSpaces().split("\n");
-        addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-        IntStream.range(0, lines.length)
-                .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12), gbc, 1, i + 1, 1));
-        addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4, 2);
-        if (!alertaMostrada) {
-            String[] etiquetas = { "Total", "Motos", "Carros" };
-            String alerta = IntStream.range(0, lines.length)
-                    .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
-                    .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
-                    .collect(Collectors.joining("\n"));
-            if (!alerta.isEmpty()) {
-                optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia", JOptionPane.WARNING_MESSAGE,
-                        "Entendido");
-                alertaMostrada = true;
+        if (!lines[0].equals("Hay -1 espacios disponibles")) {
+            addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
+            IntStream.range(0, lines.length)
+                    .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
+                            gbc, 1, i + 1, 1));
+            addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4,
+                    2);
+            boolean alertaMostrada = false;
+            if (!alertaMostrada) {
+                String[] etiquetas = { "Total", "Motos", "Carros" };
+                String alerta = IntStream.range(0, lines.length)
+                        .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
+                        .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
+                        .collect(Collectors.joining("\n"));
+                if (!alerta.isEmpty()) {
+                    optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia",
+                            JOptionPane.WARNING_MESSAGE,
+                            "Entendido");
+                    alertaMostrada = true;
+                }
             }
         }
         return panel;
@@ -367,9 +396,26 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createTextField("CambioExitVehicle"), gbc, 1, 4, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JTextArea consolidado = new JTextArea(5, 10);
-        consolidado.setText("Aquí va el consolidado");
-        addComponent(ticketOutPanel, consolidado, gbc, 0, 6, 2);
+
+        String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+        if (textFieldsMap.get("PlacaExitVehicle").getText() != null &&
+                !textFieldsMap.get("PlacaExitVehicle").getText().isEmpty() &&
+                textFieldsMap.get("DineroExitVehicle").getText() != null &&
+                !textFieldsMap.get("DineroExitVehicle").getText().isEmpty()) {
+            Object[] data = {
+                    textFieldsMap.get("PlacaExitVehicle").getText(),
+                    presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    textFieldsMap.get("DineroExitVehicle").getText(),
+                    presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
+            };
+
+            JTable table = new JTable(new Object[][] { data }, col);
+
+            addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
+        }
         gbc.fill = GridBagConstraints.NONE;
         addComponent(ticketOutPanel, createButton("Registrar salida", "RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
         return ticketOutPanel;
@@ -473,97 +519,145 @@ public class View extends JFrame implements ActionListener {
 
     private void readExitVehicle() {
         presenter.exitVehicle(textFieldsMap.get("PlacaExitVehicle").getText());
+
         // dinero???
         // textFieldsMap
 
     }
 
-    private boolean readLogin() {
+    private String readLogin() {
         String id = textFieldsMap.get("LoginUser").getText();
         String password = textFieldsMap.get("LoginPassword").getText();
         textFieldsMap.get("LoginUser").setText("");
         textFieldsMap.get("LoginPassword").setText("");
-        return presenter.logIn(id, password, userType);
+        return presenter.logIn(id, password);
     }
 
-    public void optionPanel(String message, String tittle, int icon, String buttonText) {
+    public int optionPanel(String message, String tittle, int icon, String buttonText, String secondButton) {
+        Object[] opciones = { buttonText, secondButton };
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+                opciones[0]);
+    }
+
+    public int optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
-        JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == buttonsMap.get("RecepcionistaUserType")) {
-            userType = "Recepcionista";
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
-        if (e.getSource() == buttonsMap.get("AdministradorUserType")) {
-            userType = "Administrador";
-            cardLayout.show(getContentPane(), "LoginPanel");
-        }
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
-            if (userType.equals("Recepcionista") && readLogin())
+            String userRole = readLogin();
+            if (userRole.equals("Recepcionista")) {
+                getContentPane().add(recepcionistPanel(), "RecepPanel");
                 cardLayout.show(getContentPane(), "RecepPanel");
-            else if (userType.equals("Administrador") && readLogin())
+            } else if (userRole.equals("Administrador")) {
+                getContentPane().add(adminPanel(), "AdminPanel");
                 cardLayout.show(getContentPane(), "AdminPanel");
-            else
+            } else {
                 JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos", "Error",
                         JOptionPane.ERROR_MESSAGE);
+            }
         }
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
+
         else if (e.getSource() == updateRecepcionist)
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
+
         else if (e.getSource() == salesReport)
             adminCardLayout.show(adminRightPanel, "Sales Report");
+
         else if (e.getSource() == logout)
             adminCardLayout.show(adminRightPanel, "Logout");
-        else if (e.getSource() == availableSpaces)
-            recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
-        else if (e.getSource() == registerVehicle)
-            recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
-        else if (e.getSource() == exitVehicle)
-            recepcionistCardLayout.show(recepRightPanel, "Exit Vehicle");
-        else if (e.getSource() == recepLogOut)
-            recepcionistCardLayout.show(recepRightPanel, "Log Out");
-        // mostrar el user type??
-        else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
-            readCreateRecepcionist();
-        else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
-            readUpdateRecepcionist();
-        else if (e.getSource() == buttonsMap.get("NoLogOutAdmin")) {
-            cardLayout.show(adminRightPanel, "Welcome");
-        } else if (e.getSource() == buttonsMap.get("SiLogOutAdmin")) {
-            cardLayout.show(getContentPane(), "UserTypePanel");
-        } else if (e.getSource() == buttonsMap.get("ImprimirReciboTicketPanel")) {
-            // imprimir recibo
-        } else if (e.getSource() == buttonsMap.get("SiguienteRegisterVehicle"))
-            readRegisterVehicle();
-        else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle"))
-            readExitVehicle();
-        else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
-            recepcionistCardLayout.show(recepRightPanel, "Welcome");
-        else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
-            cardLayout.show(getContentPane(), "UserTypePanel");
-        else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
-            recepcionistCardLayout.show(recepRightPanel, "Welcome");
-        else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
-            recepcionistCardLayout.show(recepRightPanel, "Welcome");
 
-        // Lógica para el botón "Buscar" en actualizar recepcionista
-        else if (e.getSource() == buttonsMap.get("buscarRecepcionist")) {
-            // Obtener el ID del campo de texto
-            String documento = textFieldsMap.get("UpdateDocumento").getText();
-            // Buscar el nombre completo
-            String nombre = getFullName(documento);
-            // Mostrar el resultado en el campo NameFounded
-            textFieldsMap.get("NameFounded").setText(nombre);
+        else if (e.getSource() == availableSpaces) {
+            Component[] components = recepRightPanel.getComponents();
+            for (Component comp : components) {
+                if (comp instanceof JPanel && !comp.isVisible()) {
+                    JPanel availableSpacesPanel = (JPanel) comp;
+                    availableSpacesPanel.revalidate();
+                    availableSpacesPanel.repaint();
+                    getContentPane().removeAll();
+                    getContentPane().add(recepcionistPanel(), "RecepPanel");
+                }
+            }
+            recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
         }
 
+        else if (e.getSource() == registerVehicle)
+            recepcionistCardLayout.show(recepRightPanel, "Register Vehicle");
+
+        else if (e.getSource() == exitVehicle)
+            recepcionistCardLayout.show(recepRightPanel, "Exit Vehicle");
+
+        else if (e.getSource() == recepLogOut)
+            recepcionistCardLayout.show(recepRightPanel, "Log Out");
+
+        // mostrar el user type??
+
+        else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
+            readCreateRecepcionist();
+
+        else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
+            readUpdateRecepcionist();
+
+        else if (e.getSource() == buttonsMap.get("NoLogOutAdmin")) {
+            cardLayout.show(adminRightPanel, "Welcome");
+
+        } else if (e.getSource() == buttonsMap.get("SiLogOutAdmin")) {
+            cardLayout.show(getContentPane(), "LoginPanel");
+
+        } else if (e.getSource() == buttonsMap.get("ImprimirReciboTicketPanel")) {
+            // imprimir recibo
+
+        } else if (e.getSource() == buttonsMap.get("SiguienteRegisterVehicle"))
+            readRegisterVehicle();
+
+        else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle"))
+            readExitVehicle();
+
+        else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
+            recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
+        else if (e.getSource() == buttonsMap.get("SiRecepLogOut"))
+
+            cardLayout.show(getContentPane(), "LoginPanel");
+
+        else if (e.getSource() == buttonsMap.get("MenuTicketPanel"))
+            recepcionistCardLayout.show(recepRightPanel, "Welcome");
+
+        else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
+            recepcionistCardLayout.show(recepRightPanel, "Welcome");
+        // TODO Boton buscar
+        else if (e.getSource() == buttonsMap.get("buscarRecepcionist")) {
+            setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
+        }
+
+        // else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
+        // if (datePicker.getSelectedDate() != null) {
+        // int option = optionPanel("Desea continuar con la fecha: " +
+        // datePicker.getSelectedDateAsString(),
+        // "Continuar", 3, "Si", "No");
+        // if (option == 0) {
+        // dateSale();
+        // }
+
+        // } else {
+
+        // optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+        // }
+        // }
         // si no de recepcionista
         // falta RegresarSalesReport de admin
         // volver al incio en ticket panel
     }
+    // private void dateSale() {
+    // LocalDate date = datePicker.getSelectedDate();
+    // if (date != null) {
+    // presenter.salesReport(date);
+    // }
+    // }
 
 }

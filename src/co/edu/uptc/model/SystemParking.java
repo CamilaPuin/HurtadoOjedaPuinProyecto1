@@ -14,9 +14,7 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
-
-                "12345678");
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin","12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
@@ -130,8 +128,6 @@ public class SystemParking {
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
     }
-
-
     public String logIn(String id, String password) {
        String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
@@ -146,7 +142,7 @@ public class SystemParking {
                 user = "Recepcionista";
             }
         }
-        return false;
+        return user;
     }
 
     public double costTikect(String plate, double amountReceived) {

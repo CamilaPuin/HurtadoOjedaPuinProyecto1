@@ -28,6 +28,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -415,19 +416,7 @@ public class View extends JFrame implements ActionListener {
         
         addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
 
-       String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
-
-        Object[] data = {
-            textFieldsMap.get("PlacaExitVehicle").getText(),
-            presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
-                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-            textFieldsMap.get("DineroExitVehicle").getText(),
-            presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
-                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
-            presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
-        };
-        
-        JTable table = new JTable(new Object[][] { data }, col);
+      
         
 
         
@@ -552,7 +541,7 @@ public class View extends JFrame implements ActionListener {
 
     public int optionPanel(String message, String tittle, int icon, String buttonText, String secondButton) {
         Object[] opciones = { buttonText, secondButton };
-        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
+        
         return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }
@@ -560,7 +549,6 @@ public class View extends JFrame implements ActionListener {
 
     public int optionPanel(String message, String tittle, int icon, String buttonText) {
         Object[] opciones = { buttonText };
-        return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
         return JOptionPane.showOptionDialog(null, message, tittle, JOptionPane.DEFAULT_OPTION, icon, null, opciones,
                 opciones[0]);
     }

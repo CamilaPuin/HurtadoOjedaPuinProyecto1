@@ -1,5 +1,20 @@
 package co.edu.uptc.view;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import co.edu.uptc.presenter.Presenter;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -16,21 +31,8 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.WindowConstants;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import raven.datetime.component.date.DatePicker;
+
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
@@ -70,6 +72,7 @@ public class View extends JFrame implements ActionListener {
         getContentPane().add(adminPanel(), "AdminPanel");
         getContentPane().add(recepcionistPanel(), "RecepPanel");
 
+
         setVisible(true);
     }
 
@@ -93,6 +96,7 @@ public class View extends JFrame implements ActionListener {
         adminLeftPanel.setLayout(new BoxLayout(adminLeftPanel, BoxLayout.Y_AXIS));
         adminLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         adminLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
+
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -250,7 +254,6 @@ public class View extends JFrame implements ActionListener {
         return ticketPanel;
     }
 
-    // TODO Panel vacio, va el selector de fechas de Santi
     private JPanel generateReportPanel() {
         JPanel generateReport = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -260,6 +263,7 @@ public class View extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         // datePicker.addDateSelectionListener(this);
+
         datePicker.setColor(Color.BLUE);
         addComponent(generateReport, datePicker, gbc, 0, 0, 1);
 
@@ -268,7 +272,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
         return generateReport;
     }
-    
 
     public JPanel recepcionistPanel() {
 
@@ -393,9 +396,24 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createTextField("CambioExitVehicle"), gbc, 1, 4, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JTextArea consolidado = new JTextArea(5, 10);
-        consolidado.setText("Aquí va el consolidado");
-        addComponent(ticketOutPanel, consolidado, gbc, 0, 6, 2);
+
+       String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+
+        Object[] data = {
+            textFieldsMap.get("PlacaExitVehicle").getText(),
+            presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
+                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+            textFieldsMap.get("DineroExitVehicle").getText(),
+            presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
+                Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+            presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
+        };
+        
+        JTable table = new JTable(new Object[][] { data }, col);
+        
+
+        
+        addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
         gbc.fill = GridBagConstraints.NONE;
         addComponent(ticketOutPanel, createButton("Registrar salida", "RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
         return ticketOutPanel;
@@ -499,6 +517,7 @@ public class View extends JFrame implements ActionListener {
 
     private void readExitVehicle() {
         presenter.exitVehicle(textFieldsMap.get("PlacaExitVehicle").getText());
+
         // dinero???
         // textFieldsMap
 
@@ -607,16 +626,16 @@ public class View extends JFrame implements ActionListener {
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
 
-        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")){
-            if (datePicker.getSelectedDate() != null){
-                int option= optionPanel("Desea continuar con la fecha: "+ datePicker.getSelectedDateAsString(), "Continuar", 3, "Si", "No");
-                if (option == 0){
+        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
+            if (datePicker.getSelectedDate() != null) {
+                int option = optionPanel("Desea continuar con la fecha: " + datePicker.getSelectedDateAsString(),
+                        "Continuar", 3, "Si", "No");
+                if (option == 0) {
                     dateSale();
                 }
-                
-           
-            }
-            else{
+
+            } else {
+
                 optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
             }
         }

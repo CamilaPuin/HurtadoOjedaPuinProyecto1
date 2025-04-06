@@ -762,7 +762,6 @@ public class View extends JFrame implements ActionListener {
 
     private void entryTimeRecepcionist() {
         recepEntryTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
-
     }
 
     private void exitTimeRecepcionist() {

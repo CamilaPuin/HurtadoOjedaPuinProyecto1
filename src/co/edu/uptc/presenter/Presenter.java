@@ -79,7 +79,6 @@ public class Presenter {
     public String[] obtainRecepcionistData(){
         return system.obtainRecepcionistData();
     }
-
     public Object[][] getConsolidatedRecepcionists() {
         return system.getConsolidatedRecepcionists();
     }

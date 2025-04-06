@@ -33,8 +33,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
-
 import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
@@ -59,7 +57,6 @@ public class View extends JFrame implements ActionListener {
     private JComboBox<String> comboBox;
     private DatePicker datePicker;
     private JPanel ticketOutPanel;
-    private JTable table;
 
     public View() {
         super("Parking UPTC");
@@ -70,7 +67,7 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        datePicker = new DatePicker();
+        // datePicker = new DatePicker();
         getContentPane().add(loginPanel(), "LoginPanel");
 
         setVisible(true);
@@ -243,6 +240,7 @@ public class View extends JFrame implements ActionListener {
         return logOutPanel;
     }
 
+    // TODO parametros??
     private JPanel ticketPanel() {
         JPanel ticketPanel = new JPanel(new GridBagLayout());
         ticketPanel.setSize(400, 600);
@@ -274,8 +272,8 @@ public class View extends JFrame implements ActionListener {
         gbc.weightx = 1.0;
         // datePicker.addDateSelectionListener(this);
 
-        datePicker.setColor(Color.BLUE);
-        addComponent(generateReport, datePicker, gbc, 0, 0, 1);
+        // datePicker.setColor(Color.BLUE);
+        // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
@@ -385,49 +383,43 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel exitVehiclePanel() {
-        ticketOutPanel = new JPanel(new GridBagLayout());
+        JPanel ticketOutPanel = new JPanel(new GridBagLayout());
         ticketOutPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 5, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(ticketOutPanel, createLabel("Ingrese la placa del vehiculo"), gbc, 0, 0, 2);
         addComponent(ticketOutPanel, createLabel("Placa"), gbc, 0, 1, 1);
+        addComponent(ticketOutPanel, createTextField("PlacaExitVehicle"), gbc, 1, 1, 1);
         addComponent(ticketOutPanel, createLabel("Ingrese el dinero para generar el recibo"), gbc, 0, 2, 2);
         addComponent(ticketOutPanel, createLabel("Dinero"), gbc, 0, 3, 1);
-        addComponent(ticketOutPanel, createTextField("PlacaExitVehicle"), gbc, 1, 1, 1);
         addComponent(ticketOutPanel, createTextField("DineroExitVehicle"), gbc, 1, 3, 1);
+        addComponent(ticketOutPanel, createLabel("Cambio"), gbc, 0, 4, 1);
+        addComponent(ticketOutPanel, createTextField("CambioExitVehicle"), gbc, 1, 4, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
-        DefaultTableModel model = new DefaultTableModel(col, 0);
-        table = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        addComponent(ticketOutPanel, scrollPane, gbc, 0, 6, 2);
+        if (textFieldsMap.get("PlacaExitVehicle").getText() != null &&
+                !textFieldsMap.get("PlacaExitVehicle").getText().isEmpty() &&
+                textFieldsMap.get("DineroExitVehicle").getText() != null &&
+                !textFieldsMap.get("DineroExitVehicle").getText().isEmpty()) {
+            Object[] data = {
+                    textFieldsMap.get("PlacaExitVehicle").getText(),
+                    presenter.costTikect(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    textFieldsMap.get("DineroExitVehicle").getText(),
+                    presenter.calculteChange(textFieldsMap.get("PlacaExitVehicle").getText(),
+                            Double.parseDouble(textFieldsMap.get("DineroExitVehicle").getText())),
+                    presenter.hoursVehicle(textFieldsMap.get("PlacaExitVehicle").getText())
+            };
 
+            JTable table = new JTable(new Object[][] { data }, col);
+
+            addComponent(ticketOutPanel, table, gbc, 0, 6, 2);
+        }
         gbc.fill = GridBagConstraints.NONE;
         addComponent(ticketOutPanel, createButton("Registrar salida", "RegistrarSalidaExitVehicle"), gbc, 0, 7, 2);
         return ticketOutPanel;
-    }
-
-    private void updateTable() {
-        String placa = textFieldsMap.get("PlacaExitVehicle").getText();
-        String dineroStr = textFieldsMap.get("DineroExitVehicle").getText();
-
-        if (placa != null && !placa.isEmpty() && dineroStr != null && !dineroStr.isEmpty()) {
-            double dinero = Double.parseDouble(dineroStr);
-            Object[] data = {
-                    placa,
-                    presenter.costTikect(placa, dinero),
-                    dineroStr,
-                    presenter.calculteChange(placa, dinero),
-                    presenter.hoursVehicle(placa)
-            };
-            String col[] = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
-            table.setModel(new DefaultTableModel(new Object[][] { data }, col));
-            ticketOutPanel.revalidate();
-            ticketOutPanel.repaint();
-        }
     }
 
     private JPanel logOutRecep() {
@@ -498,6 +490,7 @@ public class View extends JFrame implements ActionListener {
         return button;
     }
 
+    // TODO passwords
     private void readCreateRecepcionist() {
         presenter.createRecepcionist(
                 textFieldsMap.get("CreateNombres").getText(),
@@ -520,11 +513,17 @@ public class View extends JFrame implements ActionListener {
     private void readRegisterVehicle() {
         presenter.registerVehicle(textFieldsMap.get("PlacaRegisterVehicle").getText(),
                 comboBox.getSelectedItem().toString());
+        // pedir el ticket generado
         recepcionistCardLayout.show(recepRightPanel, "TicketPanel");
+
     }
 
     private void readExitVehicle() {
         presenter.exitVehicle(textFieldsMap.get("PlacaExitVehicle").getText());
+
+        // dinero???
+        // textFieldsMap
+
     }
 
     private String readLogin() {
@@ -597,6 +596,8 @@ public class View extends JFrame implements ActionListener {
         else if (e.getSource() == recepLogOut)
             recepcionistCardLayout.show(recepRightPanel, "Log Out");
 
+        // mostrar el user type??
+
         else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
             readCreateRecepcionist();
 
@@ -616,9 +617,9 @@ public class View extends JFrame implements ActionListener {
             readRegisterVehicle();
 
         else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle")) {
-            readExitVehicle();
-            updateTable();
-        }
+            recepcionistCardLayout.show(recepRightPanel, "Welcome");
+            resetExitVehiclePanel();
+            readExitVehicle();}
 
         else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
@@ -632,6 +633,7 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
+        // TODO Boton buscar
         else if (e.getSource() == buttonsMap.get("buscarRecepcionist")) {
             setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
         }
@@ -650,10 +652,58 @@ public class View extends JFrame implements ActionListener {
                 optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
             }
         }
-        // si no de recepcionista
-        // falta RegresarSalesReport de admin
-        // volver al incio en ticket panel
+        if (e.getSource() == buttonsMap.get("GenerarReciboExitVehicle")) {
+           
+            String placa = textFieldsMap.get("PlacaExitVehicle").getText();
+            String dineroStr = textFieldsMap.get("DineroExitVehicle").getText();
+
+            if (placa.isEmpty() || dineroStr.isEmpty()) {
+                optionPanel("Por favor, complete los campos de placa y dinero.", "Rellenar datos", 2, "Aceptar");
+
+            }
+
+            try {
+                double dinero = Double.parseDouble(dineroStr);
+                double cost = presenter.costTikect(placa, dinero);
+                if (cost == -1) {
+                    optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo",2, "Continuar");
+                }
+                Object[] data = {
+                        placa,
+                        cost,
+                        dineroStr,
+                        presenter.calculteChange(placa, dinero),
+                        presenter.hoursVehicle(placa)
+                };
+
+                String[] col = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+                JTable table = new JTable(new Object[][] { data }, col);
+                JScrollPane scrollPane = new JScrollPane(table);
+                scrollPane.setPreferredSize(new Dimension(100, 20));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridx = 0;
+                gbc.gridy = 7;
+                gbc.gridwidth = 2;
+                gbc.fill = GridBagConstraints.BOTH;
+                gbc.weightx = 1.0;
+                gbc.weighty = 1.0;
+                gbc.insets = new Insets(10, 10, 10, 10);
+
+
+                ticketOutPanel.add(scrollPane, gbc);
+                ticketOutPanel.revalidate();
+                ticketOutPanel.repaint();
+
+            } catch (NumberFormatException ex) {
+                optionPanel("Ingrese un valor numérico válido en el campo 'Dinero'.", "Ingresar dinero",2, "Continuar");
+            }
+        }
     }
+
+    // si no de recepcionista
+    // falta RegresarSalesReport de admin
+    // volver al incio en ticket panel
 
     private void dateSale() {
         LocalDate date = datePicker.getSelectedDate();
@@ -661,5 +711,21 @@ public class View extends JFrame implements ActionListener {
             presenter.salesReport(date);
         }
     }
+
+    private void resetExitVehiclePanel() {
+        textFieldsMap.get("PlacaExitVehicle").setText("");
+        textFieldsMap.get("DineroExitVehicle").setText("");
+        textFieldsMap.get("CambioExitVehicle").setText("");
+    
+        for (Component comp : ticketOutPanel.getComponents()) {
+            if (comp instanceof JScrollPane || comp instanceof JTable) {
+                ticketOutPanel.remove(comp);
+            }
+        }
+    
+        ticketOutPanel.revalidate();
+        ticketOutPanel.repaint();
+    }
+    
 
 }

@@ -39,6 +39,7 @@ public class Presenter {
     public void registerVehicle(String plate, String type) {
         system.registerVehicle(plate, type);
     }
+    
 
     public void exitVehicle(String plate) {
         system.exitVehicle(plate);
@@ -77,6 +78,10 @@ public class Presenter {
     }
     public String[] obtainRecepcionistData(){
         return system.obtainRecepcionistData();
+    }
+
+    public Object[][] getConsolidatedRecepcionists() {
+        return system.getConsolidatedRecepcionists();
     }
 
 }

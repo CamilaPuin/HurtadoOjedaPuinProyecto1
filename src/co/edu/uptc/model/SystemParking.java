@@ -21,8 +21,12 @@ public class SystemParking {
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
+        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta", "recepcionist@recepcionist.com",
+                "123456789",
+                "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
+        recepcionists.add(recepcionistTwo);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
         admins = new ArrayList<>();
         admins.sort(Comparator.comparing(Admin::getId));
@@ -159,6 +163,7 @@ public class SystemParking {
     public int hoursVehicle(String plate) {
         return Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate));
     }
+
     public String[] obtainRecepcionist(String id) {
         String[] recepcionistData = new String[4];
         int index = searchRecepcionist(id);
@@ -167,20 +172,34 @@ public class SystemParking {
             recepcionistData[1] = recepcionists.get(index).getAddress();
             recepcionistData[2] = recepcionists.get(index).getPhone();
             recepcionistData[3] = recepcionists.get(index).getEmail();
-        return recepcionistData;
+            return recepcionistData;
         }
         return null;
     }
-    
-    public int numAttendedVehicles(){
+
+    public int numAttendedVehicles() {
         return currentRecepcionist.numAttendedVehicles();
     }
-    public double income(){
+
+    public double income() {
         return currentRecepcionist.income();
     }
 
-    public String[] obtainRecepcionistData(){
-     String[] recepcionistaData= {currentRecepcionist.getName(), currentRecepcionist.getLastName()};
-     return recepcionistaData;
+    public String[] obtainRecepcionistData() {
+        String[] recepcionistData = { currentRecepcionist.getName(), currentRecepcionist.getLastName() };
+        return recepcionistData;
     }
+
+    public Object[][] getConsolidatedRecepcionists() {
+        Object[][] data = new Object[recepcionists.size()][4];
+        for (int i = 0; i < recepcionists.size(); i++) {
+            Recepcionist r = recepcionists.get(i);
+            data[i][0] = r.getName();
+            data[i][1] = r.getLastName();
+            data[i][2] = r.income();
+            data[i][3] = r.numAttendedVehicles();
+        }
+        return data;
+    }
+
 }

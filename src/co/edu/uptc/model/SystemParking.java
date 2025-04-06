@@ -142,7 +142,6 @@ public class SystemParking {
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
     }
-
     public String logIn(String id, String password) {
         String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));

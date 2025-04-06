@@ -1,9 +1,9 @@
+package co.edu.uptc.model;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import com.github.weisj.jsvg.animation.time.Duration;
 
 public class Parking {
     private String name;

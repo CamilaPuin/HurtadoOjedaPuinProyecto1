@@ -31,6 +31,10 @@ public class Recepcionist extends User {
         return attendedVehicles;
     }
 
+    public int numAttendedVehicles() {
+        return getAttendedVehicles().size();
+    }
+
     public void setAttendedVehicles(ArrayList<Vehicle> attendedVehicles) {
         this.attendedVehicles = attendedVehicles;
     }
@@ -52,6 +56,17 @@ public class Recepcionist extends User {
     public String seeParkingAvailability() {
         return parking.updateAvailability();
     }
+
+    public double income(){
+        double totalIncome = 0;
+        for (Vehicle vehicle : attendedVehicles) {
+           totalIncome+= parking.calculateCost(vehicle.getPlate());
+            
+        }
+        return totalIncome;
+    }
+
+    
 
 
 }

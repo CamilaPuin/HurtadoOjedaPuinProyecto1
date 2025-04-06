@@ -11,6 +11,7 @@ public class Recepcionist extends User {
             String password, Parking parking) {
         super(name, lastName, email, phone, address, id, password);
         this.parking = parking;
+        attendedVehicles = new ArrayList<>();
     }
 
     public Recepcionist(String id) {
@@ -42,7 +43,6 @@ public class Recepcionist extends User {
         attendedVehicles.add(parking.deleteVehicle(plate));
     }
 
-    // TODO static methods and params
     public Ticket generateTicket(String plate, double amountReceived) {
         return new Ticket(plate, parking.calculateCost(plate), amountReceived,
                 parking.getPassedTime(parking.getVehicle(plate)));

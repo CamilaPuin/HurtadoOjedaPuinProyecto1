@@ -55,8 +55,8 @@ public class Ticket {
         this.hours = hours;
     }
 
-    // TODO move to other class??
-    public static double calculateChange(double amountReceived, double cost) {
+
+    public double calculateChange(double amountReceived, double cost) {
         return amountReceived - cost;
     }
 

@@ -9,12 +9,9 @@ public class Presenter {
     private SystemParking system;
 
     public Presenter() {
-
         system = new SystemParking();
-        // TODO metodos de orrdenamiento
 
     }
-    // excepcion para logins???
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
@@ -47,9 +44,8 @@ public class Presenter {
         system.exitVehicle(plate);
     }
 
-    public boolean logIn(String addrees, String password, String userType) {
-        return system.logIn(addrees, password, userType);
-
+    public String logIn(String addrees, String password) {
+        return system.logIn(addrees, password);
     }
 
     public String getFullName(String id) {
@@ -69,8 +65,5 @@ public class Presenter {
         return system.hoursVehicle(plate);
     }
 
-   
-    // meterle un while
-    // el int option...
 
 }

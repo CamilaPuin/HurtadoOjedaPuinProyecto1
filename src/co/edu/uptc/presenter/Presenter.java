@@ -39,6 +39,7 @@ public class Presenter {
     public void registerVehicle(String plate, String type) {
         system.registerVehicle(plate, type);
     }
+    
 
     public void exitVehicle(String plate) {
         system.exitVehicle(plate);
@@ -68,4 +69,21 @@ public class Presenter {
         return system.hoursVehicle(plate);
     }
 
+<<<<<<< HEAD
+=======
+    public int numAttendedVehicles() {
+        return system.numAttendedVehicles();
+    }
+
+    public double income(){
+        return system.income();
+    }
+    public String[] obtainRecepcionistData(){
+        return system.obtainRecepcionistData();
+    }
+    public Object[][] getConsolidatedRecepcionists() {
+        return system.getConsolidatedRecepcionists();
+    }
+
+>>>>>>> main
 }

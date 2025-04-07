@@ -15,13 +15,25 @@ public class SystemParking {
 
     public SystemParking() {
         Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
                 "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
+<<<<<<< HEAD
                 "Calle de la casa, 1", "11", "22", admin.getParking());
+=======
+                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
+        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta", "recepcionist@recepcionist.com",
+                "123456789",
+                "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
+>>>>>>> main
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
+        recepcionists.add(recepcionistTwo);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
         admins = new ArrayList<>();
         admins.sort(Comparator.comparing(Admin::getId));
@@ -142,6 +154,7 @@ public class SystemParking {
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
     }
+
     public String logIn(String id, String password) {
         String user = "";
         int index = Collections.binarySearch(admins, new Admin(id), Comparator.comparing(Admin::getId));
@@ -170,4 +183,44 @@ public class SystemParking {
     public int hoursVehicle(String plate) {
         return Parking.getPassedTime(currentRecepcionist.getParking().getVehicle(plate));
     }
+
+    public String[] obtainRecepcionist(String id) {
+        String[] recepcionistData = new String[4];
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            recepcionistData[0] = recepcionists.get(index).getName();
+            recepcionistData[1] = recepcionists.get(index).getAddress();
+            recepcionistData[2] = recepcionists.get(index).getPhone();
+            recepcionistData[3] = recepcionists.get(index).getEmail();
+            return recepcionistData;
+        }
+        return null;
+    }
+
+    public int numAttendedVehicles() {
+        return currentRecepcionist.numAttendedVehicles();
+    }
+
+    public double income() {
+        return currentRecepcionist.income();
+    }
+
+    public String[] obtainRecepcionistData() {
+        String[] recepcionistData = { currentRecepcionist.getName(), currentRecepcionist.getLastName() };
+        return recepcionistData;
+    }
+
+    public Object[][] getConsolidatedRecepcionists() {
+        Object[][] data = new Object[recepcionists.size()][4];
+        for (int i = 0; i < recepcionists.size(); i++) {
+            Recepcionist r = recepcionists.get(i);
+            data[i][0] = r.getName();
+            data[i][1] = r.getLastName();
+            data[i][2] = r.income();
+            data[i][3] = r.numAttendedVehicles();
+        }
+        return data;
+    }
+
+
 }

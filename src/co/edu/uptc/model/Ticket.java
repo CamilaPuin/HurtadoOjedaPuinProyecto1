@@ -1,5 +1,7 @@
 package co.edu.uptc.model;
 
+
+
 public class Ticket {
     private String vehiclePlate;
     private double cost;
@@ -55,7 +57,7 @@ public class Ticket {
         this.hours = hours;
     }
 
-
+    // TODO move to other class??
     public static double calculateChange(double amountReceived, double cost) {
         return amountReceived - cost;
     }

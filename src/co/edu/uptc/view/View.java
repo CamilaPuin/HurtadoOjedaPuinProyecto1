@@ -35,6 +35,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
+
 import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
@@ -61,6 +63,9 @@ public class View extends JFrame implements ActionListener {
     private JPanel ticketOutPanel;
     private String recepEntryTime;
     private String recepExitTime;
+    private JPanel ticketPanel;
+    private DefaultTableModel tableModel;
+    private JTable ticketRegisterTable;
 
     public View() {
         super("Parking UPTC");
@@ -226,13 +231,11 @@ public class View extends JFrame implements ActionListener {
         addComponent(report, createLabel("ingresos aqui"), gbc, 1, 1, 1);
         addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
         addComponent(report, createLabel("Numero aqui"), gbc, 1, 2, 1);
-        String [] col = {"Nombre", "Apellidos", "Ingreso", "Vehiculos"};
-       
-        
+        String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehiculos" };
+
         JTable table = new JTable(presenter.getConsolidatedRecepcionists(), col);
         JScrollPane scrollPane = new JScrollPane(table);
-        
-       
+
         addComponent(report, scrollPane, gbc, 0, 3, 2);
         addComponent(report, createButton("Regresar al menú", "RegresarSalesReport"), gbc, 0, 4, 2);
         return report;
@@ -249,13 +252,13 @@ public class View extends JFrame implements ActionListener {
         return logOutPanel;
     }
 
-    // TODO parametros??
-    private JPanel ticketPanel() {
-        JPanel ticketPanel = new JPanel(new GridBagLayout());
+    private JPanel ticketPanel(String plate) {
+        ticketPanel = new JPanel(new GridBagLayout());
         ticketPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+
         addComponent(ticketPanel, createLabel("Su ticket ha sido generado exitosamente"), gbc, 0, 0, 1);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
@@ -264,23 +267,32 @@ public class View extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(ticketPanel, createButton("Imprimir recibo", "ImprimirReciboTicketPanel"), gbc, 0, 2, 1);
         addComponent(ticketPanel, createButton("Regresar", "MenuTicketPanel"), gbc, 0, 4, 1);
-        String[] col = { "Placa", "Fecha", "Hora ingreso", "Tipo de vehiculo" };
-        Object[] data = {
-                textFieldsMap.get("PlacaRegisterVehicle").getText(),
-                LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
-                comboBox.getSelectedItem().toString()
-        };
-        JTable table = new JTable(new Object[][] { data }, col);
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        String[] col = { "Placa", "Fecha", "Hora ingreso", "Tipo de vehiculo" };
+        tableModel = new DefaultTableModel(col, 0);
+        ticketRegisterTable = new JTable(tableModel);
+        updateTable(plate);
+
+        JScrollPane scrollPane = new JScrollPane(ticketRegisterTable);
         scrollPane.setPreferredSize(new Dimension(10, 20));
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 0.1;
         gbc.insets = new Insets(1, 1, 1, 1);
         addComponent(ticketPanel, scrollPane, gbc, 0, 3, 1);
+
         return ticketPanel;
+    }
+
+    private void updateTable(String plate) {
+        tableModel.setRowCount(0);
+        Object[] data = {
+                plate,
+                LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+                comboBox.getSelectedItem().toString()
+        };
+        tableModel.addRow(data);
     }
 
     private JPanel generateReportPanel() {
@@ -336,7 +348,7 @@ public class View extends JFrame implements ActionListener {
         JPanel welcome = welcome();
         JPanel availableSpacesPanel = availableSpacesPanel();
         JPanel registerVehiclePanel = registerVehiclePanel();
-        JPanel registerVehiclePanel2 = ticketPanel();
+        ticketPanel = ticketPanel("");
         JPanel exitVehiclePanel = exitVehiclePanel();
         JPanel recepLogOutPanel = logOutRecep();
         recepRightPanel.add(welcome, "Welcome");
@@ -344,7 +356,7 @@ public class View extends JFrame implements ActionListener {
         recepRightPanel.add(registerVehiclePanel, "Register Vehicle");
         recepRightPanel.add(exitVehiclePanel, "Exit Vehicle");
         recepRightPanel.add(recepLogOutPanel, "Log Out");
-        recepRightPanel.add(registerVehiclePanel2, "TicketPanel");
+        recepRightPanel.add(ticketPanel, "TicketPanel");
         availableSpaces.addActionListener(this);
         registerVehicle.addActionListener(this);
         exitVehicle.addActionListener(this);
@@ -414,8 +426,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createLabel("Ingrese el dinero para generar el recibo"), gbc, 0, 2, 2);
         addComponent(ticketOutPanel, createLabel("Dinero"), gbc, 0, 3, 1);
         addComponent(ticketOutPanel, createTextField("DineroExitVehicle"), gbc, 1, 3, 1);
-        addComponent(ticketOutPanel, createLabel("Cambio"), gbc, 0, 4, 1);
-        addComponent(ticketOutPanel, createTextField("CambioExitVehicle"), gbc, 1, 4, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
 
         JButton generarReciboButton = createButton("Generar recibo", "GenerarReciboExitVehicle");
@@ -511,39 +521,62 @@ public class View extends JFrame implements ActionListener {
         return button;
     }
 
-    // TODO passwords
     private void readCreateRecepcionist() {
-        presenter.createRecepcionist(
-                textFieldsMap.get("CreateNombres").getText(),
-                textFieldsMap.get("CreateApellidos").getText(),
-                textFieldsMap.get("CreateEmail").getText(),
-                textFieldsMap.get("CreateTelefono").getText(),
-                textFieldsMap.get("CreateDireccion").getText(),
-                textFieldsMap.get("CreateDocumento").getText());
+        if (validEmail(textFieldsMap.get("CreateEmail").getText())) {
+            presenter.createRecepcionist(
+                    textFieldsMap.get("CreateNombres").getText(),
+                    textFieldsMap.get("CreateApellidos").getText(),
+                    textFieldsMap.get("CreateEmail").getText(),
+                    textFieldsMap.get("CreateTelefono").getText(),
+                    textFieldsMap.get("CreateDireccion").getText(),
+                    textFieldsMap.get("CreateDocumento").getText());
+            JOptionPane.showMessageDialog(this, "Recepcionista registrado con éxito", "Recepcionista registrado",
+                    JOptionPane.INFORMATION_MESSAGE);
+            textFieldsMap.get("CreateNombres").setText("");
+            textFieldsMap.get("CreateApellidos").setText("");
+            textFieldsMap.get("CreateEmail").setText("");
+            textFieldsMap.get("CreateTelefono").setText("");
+            textFieldsMap.get("CreateDireccion").setText("");
+            textFieldsMap.get("CreateDocumento").setText("");
+        } else
+            JOptionPane.showMessageDialog(this, "Formato de correo electrónico inválido", "Email invalido",
+                    JOptionPane.ERROR_MESSAGE);
     }
 
     private void readUpdateRecepcionist() {
-        presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
-                textFieldsMap.get("UpdateTelefono").getText(),
-                textFieldsMap.get("UpdateDireccion").getText(),
-                textFieldsMap.get("UpdateDocumento").getText(),
-                textFieldsMap.get("UpdateNuevaContraseña").getText(),
-                textFieldsMap.get("UpdateConfirmarContraseña").getText());
+        if (validEmail(textFieldsMap.get("UpdateEmail").getText())) {
+            presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
+                    textFieldsMap.get("UpdateTelefono").getText(),
+                    textFieldsMap.get("UpdateDireccion").getText(),
+                    textFieldsMap.get("UpdateDocumento").getText(),
+                    textFieldsMap.get("UpdateNuevaContraseña").getText(),
+                    textFieldsMap.get("UpdateConfirmarContraseña").getText());
+            textFieldsMap.get("UpdateNombres").setText("");
+            textFieldsMap.get("UpdateApellidos").setText("");
+            textFieldsMap.get("UpdateDireccion").setText("");
+            textFieldsMap.get("UpdateTelefono").setText("");
+            textFieldsMap.get("UpdateEmail").setText("");
+            textFieldsMap.get("UpdateDocumento").setText("");
+            textFieldsMap.get("UpdateNuevaContraseña").setText("");
+            textFieldsMap.get("UpdateConfirmarContraseña").setText("");
+            JOptionPane.showMessageDialog(this, "Información actualizada", "Información actualizada",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(this, "Formato de correo electrónico inválido", "Email invalido",
+                    JOptionPane.ERROR_MESSAGE);
     }
 
     private void readRegisterVehicle() {
         presenter.registerVehicle(textFieldsMap.get("PlacaRegisterVehicle").getText(),
                 comboBox.getSelectedItem().toString());
+        updateTable(textFieldsMap.get("PlacaRegisterVehicle").getText());
         recepcionistCardLayout.show(recepRightPanel, "TicketPanel");
-
+        textFieldsMap.get("PlacaRegisterVehicle").setText("");
+        comboBox.setSelectedIndex(0);
     }
 
     private void readExitVehicle() {
         presenter.exitVehicle(textFieldsMap.get("PlacaExitVehicle").getText());
-
-        // dinero???
-        // textFieldsMap
-
     }
 
     private String readLogin() {
@@ -626,9 +659,7 @@ public class View extends JFrame implements ActionListener {
 
         }
 
-        // mostrar el user type??
-
-        else if (e.getSource() == buttonsMap.get("crearCreateRecepcionistr"))
+        else if (e.getSource() == buttonsMap.get("crearCreateRecepcionist"))
             readCreateRecepcionist();
 
         else if (e.getSource() == buttonsMap.get("actualizarUpdateRecepcionist"))
@@ -641,7 +672,7 @@ public class View extends JFrame implements ActionListener {
             cardLayout.show(getContentPane(), "LoginPanel");
 
         } else if (e.getSource() == buttonsMap.get("ImprimirReciboTicketPanel")) {
-            // imprimir recibo
+            JOptionPane.showMessageDialog(this, "Imprimiendo recibo", "Recibo", JOptionPane.INFORMATION_MESSAGE);
 
         } else if (e.getSource() == buttonsMap.get("SiguienteRegisterVehicle"))
             readRegisterVehicle();
@@ -692,7 +723,7 @@ public class View extends JFrame implements ActionListener {
 
             if (placa.isEmpty() || dineroStr.isEmpty()) {
                 optionPanel("Por favor, complete los campos de placa y dinero.", "Rellenar datos", 2, "Aceptar");
-
+                textFieldsMap.get("PlacaExitVehicle").setText("");
             }
 
             try {
@@ -700,30 +731,32 @@ public class View extends JFrame implements ActionListener {
                 double cost = presenter.costTikect(placa, dinero);
                 if (cost == -1) {
                     optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo", 2, "Continuar");
+
+                } else {
+                    Object[] data = {
+                            placa,
+                            cost,
+                            dineroStr,
+                            presenter.calculteChange(placa, dinero),
+                            presenter.hoursVehicle(placa)
+                    };
+
+                    String[] col = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
+                    JTable table = new JTable(new Object[][] { data }, col);
+                    JScrollPane scrollPane = new JScrollPane(table);
+                    scrollPane.setPreferredSize(new Dimension(100, 20));
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = 0;
+                    gbc.gridy = 7;
+                    gbc.gridwidth = 2;
+                    gbc.fill = GridBagConstraints.BOTH;
+                    gbc.weightx = 1.0;
+                    gbc.weighty = 1.0;
+                    gbc.insets = new Insets(10, 10, 10, 10);
+
+                    ticketOutPanel.add(scrollPane, gbc);
                 }
-                Object[] data = {
-                        placa,
-                        cost,
-                        dineroStr,
-                        presenter.calculteChange(placa, dinero),
-                        presenter.hoursVehicle(placa)
-                };
-
-                String[] col = { "Placa", "Valor", "Recibido", "Cambio", "Horas" };
-                JTable table = new JTable(new Object[][] { data }, col);
-                JScrollPane scrollPane = new JScrollPane(table);
-                scrollPane.setPreferredSize(new Dimension(100, 20));
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 7;
-                gbc.gridwidth = 2;
-                gbc.fill = GridBagConstraints.BOTH;
-                gbc.weightx = 1.0;
-                gbc.weighty = 1.0;
-                gbc.insets = new Insets(10, 10, 10, 10);
-
-                ticketOutPanel.add(scrollPane, gbc);
                 ticketOutPanel.revalidate();
                 ticketOutPanel.repaint();
 
@@ -733,10 +766,6 @@ public class View extends JFrame implements ActionListener {
             }
         }
     }
-
-    // si no de recepcionista
-    // falta RegresarSalesReport de admin
-    // volver al incio en ticket panel
 
     private void dateSale() {
         LocalDate date = datePicker.getSelectedDate();
@@ -748,14 +777,11 @@ public class View extends JFrame implements ActionListener {
     private void resetExitVehiclePanel() {
         textFieldsMap.get("PlacaExitVehicle").setText("");
         textFieldsMap.get("DineroExitVehicle").setText("");
-        textFieldsMap.get("CambioExitVehicle").setText("");
-
         for (Component comp : ticketOutPanel.getComponents()) {
             if (comp instanceof JScrollPane || comp instanceof JTable) {
                 ticketOutPanel.remove(comp);
             }
         }
-
         ticketOutPanel.revalidate();
         ticketOutPanel.repaint();
     }
@@ -766,6 +792,10 @@ public class View extends JFrame implements ActionListener {
 
     private void exitTimeRecepcionist() {
         recepExitTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+    }
+
+    public static boolean validEmail(String email) {
+        return email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
     }
 
 }

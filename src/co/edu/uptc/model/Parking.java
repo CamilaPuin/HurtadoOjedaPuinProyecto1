@@ -119,21 +119,16 @@ public class Parking {
             if (carscapacity > cars.size()) {
                 cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
-            } else {
-                // TODO: throw exception?
-            }
+            } 
         }
         if (type.equals("Moto")) {
             if (motorbikescapacity > motorbikes.size()) {
                 motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-            } else {
-                // TODO: throw exception?
-            }
+            } 
         }
     }
 
-    // TODO check method type
     public Vehicle deleteVehicle(String plate) {
         Vehicle vehicle = getVehicle(plate);
         if (vehicle != null) {
@@ -143,7 +138,6 @@ public class Parking {
                 motorbikes.remove(vehicle);
             }
         }
-        // TODO throw exception if plate not found???
         return vehicle;
     }
 
@@ -178,7 +172,6 @@ public class Parking {
                 vehicle = motorbikes.get(index);
             }
         }
-        // TODO throw exception if plate not found??? and double retur?n
         return vehicle;
     }
 

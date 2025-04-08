@@ -62,10 +62,23 @@ public class Recepcionist extends User {
     public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
+<<<<<<< HEAD
             if (vehicle != null) {
                 totalIncome += parking.calculateCost(vehicle.getPlate());
             }
         }
         return totalIncome;
     }
+=======
+            totalIncome += parking.calculateCost(vehicle.getPlate());
+
+        }
+        return totalIncome;
+    }
+
+    public boolean foundedVehicle(String plate) {
+        return parking.foundedVehicle(plate);
+    }
+
+>>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
 }

@@ -117,6 +117,7 @@ public class Parking {
     }
 
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
+<<<<<<< HEAD
         switch (type) {
             case "Carro" -> {
                 if (carscapacity > cars.size()) {
@@ -135,6 +136,19 @@ public class Parking {
                     System.out.println("No hay espacio disponible para motos.");
             }
             default -> System.out.println("Tipo de vehículo no reconocido.");
+=======
+        if (type.equals("Carro")) {
+            if (carscapacity > cars.size()) {
+                cars.add(new Vehicle(plate, type, entryTime));
+                cars.sort(Comparator.comparing(Vehicle::getPlate));
+            }
+        }
+        if (type.equals("Moto")) {
+            if (motorbikescapacity > motorbikes.size()) {
+                motorbikes.add(new Vehicle(plate, type, entryTime));
+                motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+            }
+>>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
         }
     }
 
@@ -157,7 +171,11 @@ public class Parking {
         double costPerHour;
         if (vehicle != null)
             costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
+<<<<<<< HEAD
         else
+=======
+        } else {
+>>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
             return -1;
         return costPerHour * getPassedTime(vehicle);
     }
@@ -183,11 +201,8 @@ public class Parking {
         return vehicle;
     }
 
-    @Override
-    public String toString() {
-        return "Parking [name=" + name + ", address=" + address + ", id=" + id + ", carscapacity=" + carscapacity
-                + ", motorbikescapacity=" + motorbikescapacity + ", openingHour=" + openingHour + ", motorbikes="
-                + motorbikes + ", cars=" + cars + ", recepcionists=" + recepcionists + "]";
+    public boolean foundedVehicle(String plate) {
+        return Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0;
     }
 
 }

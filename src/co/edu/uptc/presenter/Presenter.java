@@ -18,6 +18,7 @@ public class Presenter {
         system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
+<<<<<<< HEAD
     public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
             String newPassword, String confirmPassword) {
         String oldPassword = system.getRecepcionistPassword(id);
@@ -28,6 +29,11 @@ public class Presenter {
         if (!validatePassword(newPassword, oldPassword))
             return false;
         return system.updateRecepcionist(id, name, address, phone, email, newPassword);
+=======
+    public boolean updateRecepcionist(String id, String address, String phone, String email, String newPassword,
+            String confirmPassword) {
+        return system.updateRecepcionist(id, address, phone, email, newPassword, confirmPassword);
+>>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
     }
 
     public void salesReport(LocalDate date) {
@@ -95,6 +101,7 @@ public class Presenter {
         return system.getConsolidatedRecepcionists();
     }
 
+<<<<<<< HEAD
     public boolean validatePassword(String newPassword, String oldPassword) {
         if (newPassword.equals(oldPassword)) {
             view.showErrorMessage("La nueva contraseña no puede ser igual a la anterior.");
@@ -111,4 +118,9 @@ public class Presenter {
         return true;
     }
 
+=======
+    public boolean foundedVehicle(String plate) {
+        return system.foundedVehicle(plate);
+    }
+>>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
 }

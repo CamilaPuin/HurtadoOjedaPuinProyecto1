@@ -76,8 +76,9 @@ public class SystemParking {
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
 
-        recepcionists.add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
-        recepcionists.sort(Comparator.comparing(Recepcionist::getId)); 
+        recepcionists
+                .add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
+        recepcionists.sort(Comparator.comparing(Recepcionist::getId));
     }
 
     private String generatePassword() {
@@ -93,24 +94,20 @@ public class SystemParking {
 
     }
 
-    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+    public boolean updateRecepcionist(String id, String address, String phone, String email,
             String newPassword, String confirmPassword) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
             Recepcionist recepcionist = recepcionists.get(index);
-            recepcionist.setName(name);
             recepcionist.setAddress(address);
             recepcionist.setPhone(phone);
             recepcionist.setEmail(email);
             if (checkPassword(recepcionist, confirmPassword, newPassword))
                 recepcionist.setPassword(newPassword);
             return true;
-        }
-        return false;
+        } else
+            return false;
 
-            recepcionist.setPassword(password);
-            return true; 
-        }
     }
 
     public int searchRecepcionist(String id) {

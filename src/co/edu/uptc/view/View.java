@@ -545,12 +545,12 @@ public class View extends JFrame implements ActionListener {
 
     private void readUpdateRecepcionist() {
         if (validEmail(textFieldsMap.get("UpdateEmail").getText())) {
-            presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
-                    textFieldsMap.get("UpdateTelefono").getText(),
+            presenter.updateRecepcionist(textFieldsMap.get("UpdateDocumento").getText(),
                     textFieldsMap.get("UpdateDireccion").getText(),
-                    textFieldsMap.get("UpdateDocumento").getText(),
-                    textFieldsMap.get("UpdateNuevaContraseña").getText(),
-                    textFieldsMap.get("UpdateConfirmarContraseña").getText());
+                    textFieldsMap.get("UpdateTelefono").getText(),
+                    textFieldsMap.get("UpdateEmail").getText(),
+                    textFieldsMap.get("UpdateNewPassword").getText(),
+                    textFieldsMap.get("UpdateConfirmPassword").getText());
             textFieldsMap.get("UpdateNombres").setText("");
             textFieldsMap.get("UpdateApellidos").setText("");
             textFieldsMap.get("UpdateDireccion").setText("");
@@ -752,8 +752,8 @@ public class View extends JFrame implements ActionListener {
 
                     ticketOutPanel.add(scrollPane, gbc);
                     presenter.exitVehicle(placa);
-                    if(!presenter.foundedVehicle(placa) )
-                   optionPanel("Operación exitosa", "Exito", 1, "OK");
+                    if (!presenter.foundedVehicle(placa))
+                        optionPanel("Operación exitosa", "Exito", 1, "OK");
                 }
                 ticketOutPanel.revalidate();
                 ticketOutPanel.repaint();

@@ -14,7 +14,6 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-<<<<<<< HEAD
         Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "2",
 
                 "2");
@@ -23,15 +22,6 @@ public class SystemParking {
                 "123456789",
                 "Calle de la casa, 1", "1", "1", admin.getParking());
         Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
-=======
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "12345678", "Calle de la casa, 1", "admin",
-                "12345678");
-        admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
-        Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
-                "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
-        Recepcionist recepcionistTwo = new Recepcionist("Sapopeta", "Sacudeme la trompeta",
->>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
                 "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "1", "1", admin.getParking());
@@ -86,15 +76,9 @@ public class SystemParking {
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-<<<<<<< HEAD
         Recepcionist newRecepcionist = currentAdmin.createRecepcionist(name, lastName, email, phone, address, id,
                 generatePassword());
         recepcionists.add(newRecepcionist);
-=======
-
-        recepcionists
-                .add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
->>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
     }
 
@@ -111,7 +95,6 @@ public class SystemParking {
 
     }
 
-<<<<<<< HEAD
     public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
             String password) {
         int index = searchRecepcionist(id);
@@ -133,22 +116,6 @@ public class SystemParking {
             return recepcionists.get(index).getPassword();
         }
         return null; 
-=======
-    public boolean updateRecepcionist(String id, String address, String phone, String email,
-            String newPassword, String confirmPassword) {
-        int index = searchRecepcionist(id);
-        if (index >= 0) {
-            Recepcionist recepcionist = recepcionists.get(index);
-            recepcionist.setAddress(address);
-            recepcionist.setPhone(phone);
-            recepcionist.setEmail(email);
-            if (checkPassword(recepcionist, confirmPassword, newPassword))
-                recepcionist.setPassword(newPassword);
-            return true;
-        } else
-            return false;
-
->>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
     }
 
     public int searchRecepcionist(String id) {
@@ -156,14 +123,6 @@ public class SystemParking {
                 Comparator.comparing(Recepcionist::getId));
     }
 
-<<<<<<< HEAD
-=======
-    private boolean checkPassword(Recepcionist recepcionist, String password, String passwordConfirm) {
-        return (!recepcionist.getPassword().equals(password) && passwordConfirm.equals(password)
-                && password.length() >= 8);
-    }
-
->>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
     public void salesReport(LocalDate date) {
         currentAdmin.generateSalesReport(date);
     }
@@ -258,10 +217,4 @@ public class SystemParking {
         return data;
     }
 
-<<<<<<< HEAD
-=======
-    public boolean foundedVehicle(String plate) {
-        return currentRecepcionist.foundedVehicle(plate);
-    }
->>>>>>> c99c69e040530b97f1933f840f99c706dc22bccf
 }

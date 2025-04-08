@@ -14,14 +14,15 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "2",
 
-                "12345678");
+                "2");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
-        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta", "recepcionist@recepcionist.com",
+                "Calle de la casa, 1", "1", "1", admin.getParking());
+        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
+                "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
@@ -75,7 +76,10 @@ public class SystemParking {
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword());
+        Recepcionist newRecepcionist = currentAdmin.createRecepcionist(name, lastName, email, phone, address, id,
+                generatePassword());
+        recepcionists.add(newRecepcionist);
+        recepcionists.sort(Comparator.comparing(Recepcionist::getId));
     }
 
     private String generatePassword() {
@@ -91,26 +95,32 @@ public class SystemParking {
 
     }
 
-    public void updateRecepcionist(String email, String phone, String address,
-            String id, String password, String passwordConfirm) {
+    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+            String password) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
-            if (password != null && passwordConfirm != null) {
-                if (checkPassword(index, password, passwordConfirm))
-                    currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
-            }
-            currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
+            Recepcionist recepcionist = recepcionists.get(index);
+            recepcionist.setName(name);
+            recepcionist.setAddress(address);
+            recepcionist.setPhone(phone);
+            recepcionist.setEmail(email);
+            recepcionist.setPassword(password);
+            return true;
         }
+        return false;
+    }
+
+    public String getRecepcionistPassword(String id) {
+        int index = searchRecepcionist(id);
+        if (index >= 0) {
+            return recepcionists.get(index).getPassword();
+        }
+        return null; 
     }
 
     public int searchRecepcionist(String id) {
         return Collections.binarySearch(recepcionists, new Recepcionist(id),
                 Comparator.comparing(Recepcionist::getId));
-    }
-
-    private boolean checkPassword(int index, String password, String passwordConfirm) {
-        return (!recepcionists.get(index).getPassword().equals(password) && passwordConfirm.equals(password)
-                && password.length() >= 8);
     }
 
     public void salesReport(LocalDate date) {
@@ -127,8 +137,12 @@ public class SystemParking {
     }
 
     public void registerVehicle(String plate, String type) {
+        // Depuración
+        System.out.println("SystemParking - Llamando a Recepcionist.registerEntryVehicle con:");
+        System.out.println("Placa: " + plate);
+        System.out.println("Tipo: " + type);
+    
         currentRecepcionist.registerEntryVehicle(plate, type);
-
     }
 
     public void exitVehicle(String plate) {
@@ -201,6 +215,5 @@ public class SystemParking {
         }
         return data;
     }
-
 
 }

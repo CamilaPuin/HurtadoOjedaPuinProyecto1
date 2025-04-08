@@ -1,4 +1,5 @@
 package co.edu.uptc.model;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -107,56 +108,63 @@ public class Parking {
     }
 
     public String updateAvailability() {
+        int availableCars = carscapacity - cars.size();
+        int availableMotorbikes = motorbikescapacity - motorbikes.size();
+        int totalAvailable = availableCars + availableMotorbikes;
         return String.format(
                 "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
-                (carscapacity - cars.size()) + (motorbikescapacity - motorbikes.size()),
-                motorbikescapacity - motorbikes.size(),
-                carscapacity - cars.size());
+                totalAvailable, availableMotorbikes, availableCars);
     }
 
     public void registerVehicle(String plate, String type, LocalTime entryTime) {
-        if (type.equals("Carro")) {
-            if (carscapacity > cars.size()) {
-                cars.add(new Vehicle(plate, type, entryTime));
-                cars.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
-        }
-        if (type.equals("Moto")) {
-            if (motorbikescapacity > motorbikes.size()) {
-                motorbikes.add(new Vehicle(plate, type, entryTime));
-                motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
+        switch (type) {
+            case "Carro" -> {
+                if (carscapacity > cars.size()) {
+                    Vehicle vehicle = new Vehicle(plate, type, entryTime);
+                    cars.add(vehicle);
+                    cars.sort(Comparator.comparing(Vehicle::getPlate));
+                } else
+                    System.out.println("No hay espacio disponible para carros.");
+            }
+            case "Moto" -> {
+                if (motorbikescapacity > motorbikes.size()) {
+                    Vehicle vehicle = new Vehicle(plate, type, entryTime);
+                    motorbikes.add(vehicle);
+                    motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+                } else
+                    System.out.println("No hay espacio disponible para motos.");
+            }
+            default -> System.out.println("Tipo de vehículo no reconocido.");
         }
     }
 
     public Vehicle deleteVehicle(String plate) {
-        Vehicle vehicle = getVehicle(plate);
-        if (vehicle != null) {
-            if (vehicle.getType().equals("car")) {
-                cars.remove(vehicle);
-            } else {
-                motorbikes.remove(vehicle);
-            }
-        }
-        return vehicle;
+        cars.sort(Comparator.comparing(Vehicle::getPlate));
+        motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+        int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0)
+            return cars.remove(index);
+
+        index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0)
+            return motorbikes.remove(index);
+        System.out.println("No se encontró el vehículo con la placa: " + plate);
+        return null;
     }
 
     public double calculateCost(String plate) {
         Vehicle vehicle = getVehicle(plate);
-        double costPerHour = 0;
-        if (vehicle != null) {
+        double costPerHour;
+        if (vehicle != null)
             costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-        }
-        else{
+        else
             return -1;
-        }
         return costPerHour * getPassedTime(vehicle);
     }
 
     public static int getPassedTime(Vehicle vehicle) {
-        if (vehicle == null) {
+        if (vehicle == null)
             return -1;
-        }
         Duration passedTime = Duration.between(vehicle.getEntryTime(), LocalTime.now());
         return (int) (passedTime.toMinutes() + 59) / 60;
     }

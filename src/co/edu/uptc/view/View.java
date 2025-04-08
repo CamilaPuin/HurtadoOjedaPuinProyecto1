@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -32,12 +31,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-import raven.datetime.component.date.DatePicker;
+// import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
     private CardLayout cardLayout;
@@ -59,7 +57,7 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
-    private DatePicker datePicker;
+    // private DatePicker datePicker;
     private JPanel ticketOutPanel;
     private String recepEntryTime;
     private String recepExitTime;
@@ -73,7 +71,7 @@ public class View extends JFrame implements ActionListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         cardLayout = new CardLayout();
         getContentPane().setLayout(cardLayout);
-        presenter = new Presenter();
+        this.presenter = new Presenter(this);
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
         // datePicker = new DatePicker();
@@ -177,36 +175,37 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
-
         gbc.insets = new Insets(5, 0, 15, 0);
         addComponent(recepcionistPanel, createButton("Buscar", "buscarRecepcionist"), gbc, 0, 2, 2);
         gbc.insets = new Insets(10, 10, 10, 10);
-
         addComponent(recepcionistPanel, createLabel("Nombre"), gbc, 0, 3, 1);
+        JTextField nameField = createTextField("UpdateName");
+        nameField.setEnabled(false);
+        addComponent(recepcionistPanel, nameField, gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createLabel("Direccion"), gbc, 0, 4, 1);
-        addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 5, 1);
-        addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
-        addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
-        addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
-        addComponent(recepcionistPanel, createTextField("UpdateName"), gbc, 1, 3, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 4, 1);
+        addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 5, 1);
         addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 5, 1);
+        addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
         addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 6, 1);
+        addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
         addComponent(recepcionistPanel, createPasswordField("UpdateNewPassword"), gbc, 1, 7, 1);
+        addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
         addComponent(recepcionistPanel, createPasswordField("UpdateConfirmPassword"), gbc, 1, 8, 1);
-
         gbc.insets = new Insets(0, 0, 0, 0);
         addComponent(recepcionistPanel, createLabel("- La nueva contraseña no debe ser repetida"), gbc, 0, 9, 2);
         addComponent(recepcionistPanel, createLabel("- No tener caracteres especiales"), gbc, 0, 10, 2);
         addComponent(recepcionistPanel, createLabel("- Debe tener mínimo 8 dígitos"), gbc, 0, 11, 2);
-
         gbc.insets = new Insets(10, 0, 0, 0);
         addComponent(recepcionistPanel, createButton("Actualizar", "actualizarUpdateRecepcionist"), gbc, 0, 12, 2);
-
         return recepcionistPanel;
     }
 
-    private void setRecepcionistInfo(String[] recepcionistInfo) {
+    public void setRecepcionistInfo(String[] recepcionistInfo) {
+        if (recepcionistInfo == null) {
+            JOptionPane.showMessageDialog(this, "Recepcionista no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         textFieldsMap.get("UpdateName").setText(recepcionistInfo[0]);
         textFieldsMap.get("UpdateDireccion").setText(recepcionistInfo[1]);
         textFieldsMap.get("UpdateTelefono").setText(recepcionistInfo[2]);
@@ -232,10 +231,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
         addComponent(report, createLabel("Numero aqui"), gbc, 1, 2, 1);
         String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehiculos" };
-
         JTable table = new JTable(presenter.getConsolidatedRecepcionists(), col);
         JScrollPane scrollPane = new JScrollPane(table);
-
         addComponent(report, scrollPane, gbc, 0, 3, 2);
         addComponent(report, createButton("Regresar al menú", "RegresarSalesReport"), gbc, 0, 4, 2);
         return report;
@@ -258,7 +255,6 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
         addComponent(ticketPanel, createLabel("Su ticket ha sido generado exitosamente"), gbc, 0, 0, 1);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
@@ -267,12 +263,10 @@ public class View extends JFrame implements ActionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(ticketPanel, createButton("Imprimir recibo", "ImprimirReciboTicketPanel"), gbc, 0, 2, 1);
         addComponent(ticketPanel, createButton("Regresar", "MenuTicketPanel"), gbc, 0, 4, 1);
-
         String[] col = { "Placa", "Fecha", "Hora ingreso", "Tipo de vehiculo" };
         tableModel = new DefaultTableModel(col, 0);
         ticketRegisterTable = new JTable(tableModel);
         updateTable(plate);
-
         JScrollPane scrollPane = new JScrollPane(ticketRegisterTable);
         scrollPane.setPreferredSize(new Dimension(10, 20));
         gbc.fill = GridBagConstraints.BOTH;
@@ -280,7 +274,6 @@ public class View extends JFrame implements ActionListener {
         gbc.weighty = 0.1;
         gbc.insets = new Insets(1, 1, 1, 1);
         addComponent(ticketPanel, scrollPane, gbc, 0, 3, 1);
-
         return ticketPanel;
     }
 
@@ -300,13 +293,10 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
-
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-
         // datePicker.setColor(Color.BLUE);
         // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
-
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         addComponent(generateReport, createButton("Confirmar", "ConfirmarDateSales"), gbc, 0, 1, 1);
@@ -318,7 +308,6 @@ public class View extends JFrame implements ActionListener {
         recepLeftPanel = new JPanel(new BorderLayout());
         recepLeftPanel.setPreferredSize(new Dimension(150, getHeight()));
         recepLeftPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 2, Color.GRAY));
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -366,36 +355,62 @@ public class View extends JFrame implements ActionListener {
         return recepPanel;
     }
 
+    private boolean alertaTotalMostrada = false;
+    private boolean alertaMotosMostrada = false;
+    private boolean alertaCarrosMostrada = false;
+
     private JPanel availableSpacesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
         String[] lines = presenter.availableSpaces().split("\n");
         if (!lines[0].equals("Hay -1 espacios disponibles")) {
             addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
             IntStream.range(0, lines.length)
                     .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
                             gbc, 1, i + 1, 1));
-            addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4,
-                    2);
-            boolean alertaMostrada = false;
-            if (!alertaMostrada) {
-                String[] etiquetas = { "Total", "Motos", "Carros" };
-                String alerta = IntStream.range(0, lines.length)
-                        .mapToObj(i -> etiquetas[i] + ": " + lines[i].replaceAll("\\D+", ""))
-                        .filter(text -> Integer.parseInt(text.replaceAll("\\D+", "")) <= 5)
-                        .collect(Collectors.joining("\n"));
-                if (!alerta.isEmpty()) {
-                    optionPanel("¡Alerta! Espacios limitados.\n\n" + alerta, "Advertencia",
-                            JOptionPane.WARNING_MESSAGE,
-                            "Entendido");
-                    alertaMostrada = true;
+            addComponent(panel, createButton("Salir", "SalirAvailableSpaces"), gbc, 0, 4, 2);
+            String[] etiquetas = { "Total", "Motos", "Carros" };
+            IntStream.range(0, lines.length).forEach(i -> {
+                int espaciosDisponibles = Integer.parseInt(lines[i].replaceAll("\\D+", ""));
+                if (espaciosDisponibles <= 5) {
+                    switch (i) {
+                        case 0 -> {
+                            if (!alertaTotalMostrada) {
+                                mostrarAlerta(etiquetas[i], espaciosDisponibles);
+                                alertaTotalMostrada = true;
+                            }
+                        }
+                        case 1 -> {
+                            if (!alertaMotosMostrada) {
+                                mostrarAlerta(etiquetas[i], espaciosDisponibles);
+                                alertaMotosMostrada = true;
+                            }
+                        }
+                        case 2 -> {
+                            if (!alertaCarrosMostrada) {
+                                mostrarAlerta(etiquetas[i], espaciosDisponibles);
+                                alertaCarrosMostrada = true;
+                            }
+                        }
+                    }
                 }
-            }
+            });
         }
         return panel;
+    }
+
+    private void mostrarAlerta(String tipo, int espaciosDisponibles) {
+        optionPanel("¡Alerta! Espacios limitados.\n\n" + tipo + ": " + espaciosDisponibles, "Advertencia",
+                JOptionPane.WARNING_MESSAGE,
+                "Entendido");
+    }
+
+    public void resetAlerts() {
+        alertaTotalMostrada = false;
+        alertaMotosMostrada = false;
+        alertaCarrosMostrada = false;
     }
 
     private JPanel registerVehiclePanel() {
@@ -419,7 +434,6 @@ public class View extends JFrame implements ActionListener {
         ticketOutPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
         addComponent(ticketOutPanel, createLabel("Ingrese la placa del vehiculo"), gbc, 0, 0, 2);
         addComponent(ticketOutPanel, createLabel("Placa"), gbc, 0, 1, 1);
         addComponent(ticketOutPanel, createTextField("PlacaExitVehicle"), gbc, 1, 1, 1);
@@ -427,10 +441,8 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createLabel("Dinero"), gbc, 0, 3, 1);
         addComponent(ticketOutPanel, createTextField("DineroExitVehicle"), gbc, 1, 3, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
-
         JButton generarReciboButton = createButton("Generar recibo", "GenerarReciboExitVehicle");
         addComponent(ticketOutPanel, generarReciboButton, gbc, 0, 6, 2);
-
         JButton registerButton = createButton("Registrar salida", "RegistrarSalidaExitVehicle");
         addComponent(ticketOutPanel, registerButton, gbc, 0, 8, 2);
         return ticketOutPanel;
@@ -450,7 +462,6 @@ public class View extends JFrame implements ActionListener {
         };
         JTable tableOne = new JTable(new Object[][] { dataOne }, colOne);
         JScrollPane scrollPaneOne = new JScrollPane(tableOne);
-
         gbc.fill = GridBagConstraints.HORIZONTAL;
         addComponent(consolidadoPanel, scrollPaneOne, gbc, 0, 1, 2);
         String[] colTwo = { "Hora salida", "Total ingresos", "Total vehiculos ingresados" };
@@ -461,14 +472,12 @@ public class View extends JFrame implements ActionListener {
         };
         JTable tableTwo = new JTable(new Object[][] { dataTwo }, colTwo);
         JScrollPane scrollPaneTwo = new JScrollPane(tableTwo);
-
         addComponent(consolidadoPanel, scrollPaneTwo, gbc, 0, 2, 2);
         addComponent(consolidadoPanel, createLabel("¿Desea cerrar sesión?"), gbc, 0, 3, 2);
         gbc.fill = GridBagConstraints.NONE;
         gbc.ipadx = 10;
         addComponent(consolidadoPanel, createButton("Si", "SiRecepLogOut"), gbc, 0, 4, 1);
         addComponent(consolidadoPanel, createButton("No", "NoRecepLogOut"), gbc, 1, 4, 1);
-
         consolidadoPanel.revalidate();
         consolidadoPanel.repaint();
         return consolidadoPanel;
@@ -544,26 +553,19 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void readUpdateRecepcionist() {
-        if (validEmail(textFieldsMap.get("UpdateEmail").getText())) {
-            presenter.updateRecepcionist(textFieldsMap.get("UpdateEmail").getText(),
-                    textFieldsMap.get("UpdateTelefono").getText(),
-                    textFieldsMap.get("UpdateDireccion").getText(),
-                    textFieldsMap.get("UpdateDocumento").getText(),
-                    textFieldsMap.get("UpdateNuevaContraseña").getText(),
-                    textFieldsMap.get("UpdateConfirmarContraseña").getText());
-            textFieldsMap.get("UpdateNombres").setText("");
-            textFieldsMap.get("UpdateApellidos").setText("");
-            textFieldsMap.get("UpdateDireccion").setText("");
-            textFieldsMap.get("UpdateTelefono").setText("");
-            textFieldsMap.get("UpdateEmail").setText("");
-            textFieldsMap.get("UpdateDocumento").setText("");
-            textFieldsMap.get("UpdateNuevaContraseña").setText("");
-            textFieldsMap.get("UpdateConfirmarContraseña").setText("");
-            JOptionPane.showMessageDialog(this, "Información actualizada", "Información actualizada",
+        String id = textFieldsMap.get("UpdateDocumento").getText();
+        String name = textFieldsMap.get("UpdateName").getText();
+        String address = textFieldsMap.get("UpdateDireccion").getText();
+        String phone = textFieldsMap.get("UpdateTelefono").getText();
+        String email = textFieldsMap.get("UpdateEmail").getText();
+        String newPassword = textFieldsMap.get("UpdateNewPassword").getText();
+        String confirmPassword = textFieldsMap.get("UpdateConfirmPassword").getText();
+        boolean updated = presenter.updateRecepcionist(id, name, address, phone, email, newPassword, confirmPassword);
+        if (updated) {
+            JOptionPane.showMessageDialog(this, "Información actualizada correctamente.", "Éxito",
                     JOptionPane.INFORMATION_MESSAGE);
-        } else
-            JOptionPane.showMessageDialog(this, "Formato de correo electrónico inválido", "Email invalido",
-                    JOptionPane.ERROR_MESSAGE);
+            resetUpdateRecepcionistPanel();
+        }
     }
 
     private void readRegisterVehicle() {
@@ -576,7 +578,21 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void readExitVehicle() {
-        presenter.exitVehicle(textFieldsMap.get("PlacaExitVehicle").getText());
+        JTextField plateField = textFieldsMap.get("PlacaExitVehicle");
+        if (plateField == null) {
+            System.out.println("Error: El campo de texto 'PlacaExitVehicle' no está configurado correctamente.");
+            return;
+        }
+
+        String plate = plateField.getText().trim(); 
+        System.out.println("Placa ingresada: " + plate); 
+
+        if (plate.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese una placa válida.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        presenter.exitVehicle(plate);
     }
 
     private String readLogin() {
@@ -599,6 +615,20 @@ public class View extends JFrame implements ActionListener {
                 opciones[0]);
     }
 
+    private void resetUpdateRecepcionistPanel() {
+        textFieldsMap.get("UpdateDocumento").setText("");
+        textFieldsMap.get("UpdateName").setText("");
+        textFieldsMap.get("UpdateDireccion").setText("");
+        textFieldsMap.get("UpdateTelefono").setText("");
+        textFieldsMap.get("UpdateEmail").setText("");
+        textFieldsMap.get("UpdateNewPassword").setText("");
+        textFieldsMap.get("UpdateConfirmPassword").setText("");
+    }
+
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonsMap.get("IngresarLoginPanel")) {
@@ -618,8 +648,10 @@ public class View extends JFrame implements ActionListener {
         if (e.getSource() == createRecepcionist)
             adminCardLayout.show(adminRightPanel, "Create Recepcionist");
 
-        else if (e.getSource() == updateRecepcionist)
+        else if (e.getSource() == updateRecepcionist) {
+            resetUpdateRecepcionistPanel(); 
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
+        }
 
         else if (e.getSource() == salesReport)
             adminCardLayout.show(adminRightPanel, "Sales Report");
@@ -628,16 +660,8 @@ public class View extends JFrame implements ActionListener {
             adminCardLayout.show(adminRightPanel, "Logout");
 
         else if (e.getSource() == availableSpaces) {
-            Component[] components = recepRightPanel.getComponents();
-            for (Component comp : components) {
-                if (comp instanceof JPanel && !comp.isVisible()) {
-                    JPanel availableSpacesPanel = (JPanel) comp;
-                    availableSpacesPanel.revalidate();
-                    availableSpacesPanel.repaint();
-                    getContentPane().removeAll();
-                    getContentPane().add(recepcionistPanel(), "RecepPanel");
-                }
-            }
+            JPanel updatedPanel = availableSpacesPanel();
+            recepRightPanel.add(updatedPanel, "Available Spaces");
             recepcionistCardLayout.show(recepRightPanel, "Available Spaces");
         }
 
@@ -678,10 +702,10 @@ public class View extends JFrame implements ActionListener {
             readRegisterVehicle();
 
         else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle")) {
+            readExitVehicle(); 
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
             optionPanel("Operación exitosa", "Exito", 1, "OK");
-            resetExitVehiclePanel();
-            readExitVehicle();
+            resetExitVehiclePanel(); 
         }
 
         else if (e.getSource() == buttonsMap.get("SalirAvailableSpaces"))
@@ -702,20 +726,20 @@ public class View extends JFrame implements ActionListener {
             setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
         }
 
-        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
-            if (datePicker.getSelectedDate() != null) {
-                int option = optionPanel("Desea continuar con la fecha: " +
-                        datePicker.getSelectedDateAsString(),
-                        "Continuar", 3, "Si", "No");
-                if (option == 0) {
-                    dateSale();
-                }
+        // else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
+        // if (datePicker.getSelectedDate() != null) {
+        // int option = optionPanel("Desea continuar con la fecha: " +
+        // datePicker.getSelectedDateAsString(),
+        // "Continuar", 3, "Si", "No");
+        // if (option == 0) {
+        // dateSale();
+        // }
 
-            } else {
+        // } else {
 
-                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
-            }
-        }
+        // optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+        // }
+        // }
         if (e.getSource() == buttonsMap.get("GenerarReciboExitVehicle")) {
 
             String placa = textFieldsMap.get("PlacaExitVehicle").getText();
@@ -767,12 +791,12 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
-    private void dateSale() {
-        LocalDate date = datePicker.getSelectedDate();
-        if (date != null) {
-            presenter.salesReport(date);
-        }
-    }
+    // private void dateSale() {
+    // LocalDate date = datePicker.getSelectedDate();
+    // if (date != null) {
+    // presenter.salesReport(date);
+    // }
+    // }
 
     private void resetExitVehiclePanel() {
         textFieldsMap.get("PlacaExitVehicle").setText("");

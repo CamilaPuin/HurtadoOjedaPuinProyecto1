@@ -41,32 +41,31 @@ public class Recepcionist extends User {
 
     public void registerEntryVehicle(String plate, String type) {
         parking.registerVehicle(plate, type, LocalTime.now());
-
     }
 
     public void registerVehicleExit(String plate) {
-        attendedVehicles.add(parking.deleteVehicle(plate));
+        Vehicle vehicle = parking.deleteVehicle(plate);
+        if (vehicle != null)
+            attendedVehicles.add(vehicle);
+
     }
 
     public Ticket generateTicket(String plate, double amountReceived) {
         return new Ticket(plate, parking.calculateCost(plate), amountReceived,
-                parking.getPassedTime(parking.getVehicle(plate)));
+                Parking.getPassedTime(parking.getVehicle(plate)));
     }
 
     public String seeParkingAvailability() {
         return parking.updateAvailability();
     }
 
-    public double income(){
+    public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
-           totalIncome+= parking.calculateCost(vehicle.getPlate());
-            
+            if (vehicle != null) {
+                totalIncome += parking.calculateCost(vehicle.getPlate());
+            }
         }
         return totalIncome;
     }
-
-    
-
-
 }

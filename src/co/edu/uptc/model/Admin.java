@@ -9,12 +9,14 @@ public class Admin extends User {
 
     public Admin(String name, String lastName, String email, String phone, String address, String id, String password) {
         super(name, lastName, email, phone, address, id, password);
-        parking = registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
+        parking = new Parking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>(),
+                new ArrayList<>(), new ArrayList<>());
     }
 
     public Admin(String id) {
         super(id);
     }
+
     public Parking getParking() {
         return parking;
     }
@@ -31,7 +33,7 @@ public class Admin extends User {
 
     public Recepcionist createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id, String password) {
-        return new Recepcionist(name, lastName, email, phone, address, id, password,parking);
+        return new Recepcionist(name, lastName, email, phone, address, id, password, parking);
     }
 
     public void updateRecepcionistData(String email, String phone, String address,
@@ -46,9 +48,8 @@ public class Admin extends User {
             recepcionist.setPassword(password);
     }
 
-    // el get cost ahi no me convence
     public ArrayList<String> generateSalesReport(LocalDate date) {
-     
+
         ArrayList<String> report = new ArrayList<>();
         report.add("Nombre,Apellidos,Dinero,Vehículos,Motocicletas,Coches");
         int totalMoney = 0;
@@ -77,9 +78,9 @@ public class Admin extends User {
             totalMotorbikes += motorbikes;
             totalCars += cars;
         }
-        report.add("Total: " + totalMoney + ", Vehículos: " + totalVehicles + ", Motocicletas: " + totalMotorbikes+ ", Coches: " + totalCars);
+        report.add("Total: " + totalMoney + ", Vehículos: " + totalVehicles + ", Motocicletas: " + totalMotorbikes
+                + ", Coches: " + totalCars);
         return report;
-        
 
     }
 

@@ -23,7 +23,7 @@ public class SystemParking {
         Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
                 "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "1", "1", admin.getParking());
+                "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.add(recepcionistTwo);
@@ -76,7 +76,6 @@ public class SystemParking {
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
         recepcionists.add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
-        recepcionists.sort(Comparator.comparing(Recepcionist::getId)); 
     }
 
     private String generatePassword() {
@@ -92,18 +91,16 @@ public class SystemParking {
 
     }
 
-    public boolean updateRecepcionist(String id, String name, String address, String phone, String email, String password) {
+    public void updateRecepcionist(String email, String phone, String address,
+            String id, String password, String passwordConfirm) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
-            Recepcionist recepcionist = recepcionists.get(index);
-            recepcionist.setName(name);
-            recepcionist.setAddress(address);
-            recepcionist.setPhone(phone);
-            recepcionist.setEmail(email);
-            recepcionist.setPassword(password);
-            return true; 
+            if (password != null && passwordConfirm != null) {
+                if (checkPassword(index, password, passwordConfirm))
+                    currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
+            }
+            currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
         }
-        return false; 
     }
 
     public int searchRecepcionist(String id) {
@@ -177,7 +174,7 @@ public class SystemParking {
             recepcionistData[3] = recepcionists.get(index).getEmail();
             return recepcionistData;
         }
-        return null; 
+        return null;
     }
 
     public int numAttendedVehicles() {

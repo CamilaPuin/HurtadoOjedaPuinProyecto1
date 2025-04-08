@@ -1,8 +1,6 @@
 package co.edu.uptc.presenter;
 
-import co.edu.uptc.model.Recepcionist;
 import co.edu.uptc.model.SystemParking;
-
 import java.time.LocalDate;
 
 public class Presenter {
@@ -18,9 +16,9 @@ public class Presenter {
         system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
-    public void updateRecepcionist(String email, String phone, String address,
-            String id, String newpassword, String passwordConfirm) {
-        system.updateRecepcionist(email, phone, address, id, newpassword, passwordConfirm);
+    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+            String password) {
+        return system.updateRecepcionist(id, name, address, phone, email, password);
     }
 
     public void salesReport(LocalDate date) {
@@ -39,7 +37,6 @@ public class Presenter {
     public void registerVehicle(String plate, String type) {
         system.registerVehicle(plate, type);
     }
-    
 
     public void exitVehicle(String plate) {
         system.exitVehicle(plate);
@@ -69,21 +66,20 @@ public class Presenter {
         return system.hoursVehicle(plate);
     }
 
-<<<<<<< HEAD
-=======
     public int numAttendedVehicles() {
         return system.numAttendedVehicles();
     }
 
-    public double income(){
+    public double income() {
         return system.income();
     }
-    public String[] obtainRecepcionistData(){
+
+    public String[] obtainRecepcionistData() {
         return system.obtainRecepcionistData();
     }
+
     public Object[][] getConsolidatedRecepcionists() {
         return system.getConsolidatedRecepcionists();
     }
 
->>>>>>> main
 }

@@ -57,16 +57,33 @@ public class Recepcionist extends User {
         return parking.updateAvailability();
     }
 
-    public double income(){
+    public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
-           totalIncome+= parking.calculateCost(vehicle.getPlate());
-            
+            totalIncome += parking.calculateCost(vehicle.getPlate());
+
         }
         return totalIncome;
     }
 
+    public void setName(String name) {
+        super.setName(name); // Llama al método setName de la clase base
+    }
     
-
+    public void setAddress(String address) {
+        super.setAddress(address);
+    }
+    
+    public void setPhone(String phone) {
+        super.setPhone(phone);
+    }
+    
+    public void setEmail(String email) {
+        super.setEmail(email);
+    }
+    
+    public void setPassword(String password) {
+        super.setPassword(password);
+    }
 
 }

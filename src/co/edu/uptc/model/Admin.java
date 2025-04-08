@@ -46,7 +46,6 @@ public class Admin extends User {
             recepcionist.setPassword(password);
     }
 
-    // el get cost ahi no me convence
     public ArrayList<String> generateSalesReport(LocalDate date) {
      
         ArrayList<String> report = new ArrayList<>();

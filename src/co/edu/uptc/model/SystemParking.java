@@ -75,7 +75,7 @@ public class SystemParking {
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword());
+        recepcionists.add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
     }
 
     private String generatePassword() {

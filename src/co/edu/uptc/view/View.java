@@ -653,10 +653,7 @@ public class View extends JFrame implements ActionListener {
             recepRightPanel.add(nuevoPanelLogOut, "Log Out");
             recepRightPanel.remove(recepRightPanel.getComponent(1));
             recepRightPanel.add(logOutRecep(), "Log Out");
-
             recepcionistCardLayout.show(recepRightPanel, "Log Out");
-            exitTimeRecepcionist();
-
         }
 
         else if (e.getSource() == buttonsMap.get("crearCreateRecepcionist"))

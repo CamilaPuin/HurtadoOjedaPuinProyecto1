@@ -1,6 +1,4 @@
 package co.edu.uptc.model;
-
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Recepcionist extends User {
@@ -40,7 +38,7 @@ public class Recepcionist extends User {
     }
 
     public void registerEntryVehicle(String plate, String type) {
-        parking.registerVehicle(plate, type, LocalTime.now());
+        parking.registerVehicle(plate, type);
     }
 
     public void registerVehicleExit(String plate) {

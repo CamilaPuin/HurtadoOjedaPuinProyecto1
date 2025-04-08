@@ -95,16 +95,11 @@ public class SystemParking {
 
     }
 
-    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+    public boolean updateRecepcionist(String id,String address, String phone, String email,
             String password) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
-            Recepcionist recepcionist = recepcionists.get(index);
-            recepcionist.setName(name);
-            recepcionist.setAddress(address);
-            recepcionist.setPhone(phone);
-            recepcionist.setEmail(email);
-            recepcionist.setPassword(password);
+            currentAdmin.updateRecepcionistData(email, phone, address, password, recepcionists.get(index));
             return true;
         }
         return false;
@@ -115,7 +110,7 @@ public class SystemParking {
         if (index >= 0) {
             return recepcionists.get(index).getPassword();
         }
-        return null; 
+        return "";
     }
 
     public int searchRecepcionist(String id) {
@@ -123,9 +118,9 @@ public class SystemParking {
                 Comparator.comparing(Recepcionist::getId));
     }
 
-    public void salesReport(LocalDate date) {
-        currentAdmin.generateSalesReport(date);
-    }
+    // public void salesReport(LocalDate date) {
+    // currentAdmin.generateSalesReport(date);
+    // }
 
     public void logout() {
         currentAdmin = null;
@@ -137,12 +132,11 @@ public class SystemParking {
     }
 
     public void registerVehicle(String plate, String type) {
-        // Depuración
-        System.out.println("SystemParking - Llamando a Recepcionist.registerEntryVehicle con:");
-        System.out.println("Placa: " + plate);
-        System.out.println("Tipo: " + type);
-    
+        //creas un metodo que verifique los espacios de acuerdo al tipo(llama a un metodo del parking), a este le pones boolean 
+        //un if else 
         currentRecepcionist.registerEntryVehicle(plate, type);
+        //si entra al if pus true
+        //retornas false
     }
 
     public void exitVehicle(String plate) {

@@ -10,10 +10,10 @@ public class Vehicle {
     private LocalTime entryTime;
     private LocalDate date;
 
-    public Vehicle(String plate, String type, LocalTime entryTime) {
+    public Vehicle(String plate, String type) {
         this.plate = plate;
         this.type = type;
-        this.entryTime = entryTime;
+        this.entryTime = LocalTime.now();
         this.date = LocalDate.now();
     }
 

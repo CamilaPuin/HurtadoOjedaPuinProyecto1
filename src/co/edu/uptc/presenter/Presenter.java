@@ -3,6 +3,7 @@ package co.edu.uptc.presenter;
 import co.edu.uptc.model.SystemParking;
 import co.edu.uptc.view.View;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 public class Presenter {
     private SystemParking system;
@@ -18,21 +19,19 @@ public class Presenter {
         system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
-    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+    public boolean updateRecepcionist(String id, String address, String phone, String email,
             String newPassword, String confirmPassword) {
         String oldPassword = system.getRecepcionistPassword(id);
-        if (!newPassword.equals(confirmPassword)) {
-            view.showErrorMessage("Las contraseñas no coinciden.");
+        if (newPassword.isEmpty() && confirmPassword.isEmpty())
+            return system.updateRecepcionist(id, address, phone, email, oldPassword);
+        else if (!validatePassword(newPassword, confirmPassword, oldPassword))
             return false;
-        }
-        if (!validatePassword(newPassword, oldPassword))
-            return false;
-        return system.updateRecepcionist(id, name, address, phone, email, newPassword);
+        return system.updateRecepcionist(id, address, phone, email, newPassword);
     }
 
-    public void salesReport(LocalDate date) {
-        system.salesReport(date);
-    }
+    // public void salesReport(LocalDate date) {
+    // system.salesReport(date);
+    // }
 
     public void logout() {
         system.logout();
@@ -43,11 +42,6 @@ public class Presenter {
     }
 
     public void registerVehicle(String plate, String type) {
-        // Depuración
-        System.out.println("Presenter - Llamando a SystemParking.registerVehicle con:");
-        System.out.println("Placa: " + plate);
-        System.out.println("Tipo: " + type);
-    
         system.registerVehicle(plate, type);
     }
 
@@ -95,7 +89,11 @@ public class Presenter {
         return system.getConsolidatedRecepcionists();
     }
 
-    public boolean validatePassword(String newPassword, String oldPassword) {
+    public void showErrorMessage(String message) {
+        view.showErrorMessage(message);
+    }
+
+    public boolean validatePassword(String newPassword, String confirmPassword, String oldPassword) {
         if (newPassword.equals(oldPassword)) {
             view.showErrorMessage("La nueva contraseña no puede ser igual a la anterior.");
             return false;
@@ -106,6 +104,10 @@ public class Presenter {
         }
         if (!newPassword.matches("^[a-zA-Z0-9]+$")) {
             view.showErrorMessage("La contraseña no debe contener caracteres especiales.");
+            return false;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            view.showErrorMessage("Las contraseñas no coinciden.");
             return false;
         }
         return true;

@@ -115,28 +115,33 @@ public class Parking {
                 "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
                 totalAvailable, availableMotorbikes, availableCars);
     }
-
-    public void registerVehicle(String plate, String type, LocalTime entryTime) {
-        switch (type) {
-            case "Carro" -> {
-                if (carscapacity > cars.size()) {
-                    Vehicle vehicle = new Vehicle(plate, type, entryTime);
-                    cars.add(vehicle);
-                    cars.sort(Comparator.comparing(Vehicle::getPlate));
-                } else
-                    System.out.println("No hay espacio disponible para carros.");
+public String registerVehicle(String plate, String type) {
+    switch (type) {
+        case "Carro" -> {
+            if (carscapacity > cars.size()) {
+                Vehicle vehicle = new Vehicle(plate, type);
+                cars.add(vehicle);
+                cars.sort(Comparator.comparing(Vehicle::getPlate));
+                return "Vehículo registrado correctamente.";
+            } else {
+                return "No hay espacio disponible para carros.";
             }
-            case "Moto" -> {
-                if (motorbikescapacity > motorbikes.size()) {
-                    Vehicle vehicle = new Vehicle(plate, type, entryTime);
-                    motorbikes.add(vehicle);
-                    motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-                } else
-                    System.out.println("No hay espacio disponible para motos.");
+        }
+        case "Moto" -> {
+            if (motorbikescapacity > motorbikes.size()) {
+                Vehicle vehicle = new Vehicle(plate, type);
+                motorbikes.add(vehicle);
+                motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+                return "Vehículo registrado correctamente.";
+            } else {
+                return "No hay espacio disponible para motos.";
             }
-            default -> System.out.println("Tipo de vehículo no reconocido.");
+        }
+        default -> {
+            return "Tipo de vehículo no reconocido.";
         }
     }
+}
 
     public Vehicle deleteVehicle(String plate) {
         cars.sort(Comparator.comparing(Vehicle::getPlate));
@@ -148,7 +153,6 @@ public class Parking {
         index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
         if (index >= 0)
             return motorbikes.remove(index);
-        System.out.println("No se encontró el vehículo con la placa: " + plate);
         return null;
     }
 

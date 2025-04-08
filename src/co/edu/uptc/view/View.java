@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -31,16 +32,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
-    private JTextField nameField;
-    private JTextField addressField;
-    private JTextField phoneField;
-    private JTextField emailField;
     private CardLayout cardLayout;
     private CardLayout adminCardLayout;
     private CardLayout recepcionistCardLayout;
@@ -177,7 +175,6 @@ public class View extends JFrame implements ActionListener {
         recepcionistPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
         addComponent(recepcionistPanel, createLabel("Digite los datos para actualizar el recepcionista"), gbc, 0, 0, 2);
         addComponent(recepcionistPanel, createLabel("Documento"), gbc, 0, 1, 1);
         addComponent(recepcionistPanel, createTextField("UpdateDocumento"), gbc, 1, 1, 1);
@@ -203,6 +200,10 @@ public class View extends JFrame implements ActionListener {
 
         addComponent(recepcionistPanel, createLabel("Nueva contraseña"), gbc, 0, 7, 1);
         addComponent(recepcionistPanel, createLabel("Confirmar contraseña"), gbc, 0, 8, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateName"), gbc, 1, 3, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateDireccion"), gbc, 1, 4, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateTelefono"), gbc, 1, 5, 1);
+        addComponent(recepcionistPanel, createTextField("UpdateEmail"), gbc, 1, 6, 1);
         addComponent(recepcionistPanel, createPasswordField("UpdateNewPassword"), gbc, 1, 7, 1);
         addComponent(recepcionistPanel, createPasswordField("UpdateConfirmPassword"), gbc, 1, 8, 1);
 
@@ -216,17 +217,16 @@ public class View extends JFrame implements ActionListener {
 
         return recepcionistPanel;
     }
-
     public void setRecepcionistInfo(String[] recepcionistInfo) {
         if (recepcionistInfo == null) {
             JOptionPane.showMessageDialog(this, "Recepcionista no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        nameField.setText(recepcionistInfo[0]);
+        else {nameField.setText(recepcionistInfo[0]);
         addressField.setText(recepcionistInfo[1]);
         phoneField.setText(recepcionistInfo[2]);
-        emailField.setText(recepcionistInfo[3]);
+        emailField.setText(recepcionistInfo[3]);}
     }
 
     private String getFullName(String id) {
@@ -381,10 +381,6 @@ public class View extends JFrame implements ActionListener {
         return recepPanel;
     }
 
-    private boolean alertaTotalMostrada = false;
-    private boolean alertaMotosMostrada = false;
-    private boolean alertaCarrosMostrada = false;
-
     private JPanel availableSpacesPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setSize(400, 600);
@@ -424,7 +420,7 @@ public class View extends JFrame implements ActionListener {
                             break;
                     }
                 }
-            });
+            }
         }
         return panel;
     }
@@ -601,7 +597,6 @@ public class View extends JFrame implements ActionListener {
             if (!newPassword.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error",
                         JOptionPane.ERROR_MESSAGE);
-                return;
             }
 
             boolean updated = presenter.updateRecepcionist(id, name, address, phone, email, newPassword);
@@ -619,12 +614,13 @@ public class View extends JFrame implements ActionListener {
             textFieldsMap.get("UpdateTelefono").setText("");
             textFieldsMap.get("UpdateEmail").setText("");
             textFieldsMap.get("UpdateDocumento").setText("");
-            textFieldsMap.get("UpdateNewPassword").setText("");
-            textFieldsMap.get("UpdateConfirmPassword").setText("");
-        } else {
-            JOptionPane.showMessageDialog(this, "Formato de correo electrónico inválido.", "Error",
+            textFieldsMap.get("UpdateNuevaContraseña").setText("");
+            textFieldsMap.get("UpdateConfirmarContraseña").setText("");
+            JOptionPane.showMessageDialog(this, "Información actualizada", "Información actualizada",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(this, "Formato de correo electrónico inválido", "Email invalido",
                     JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     private void readRegisterVehicle() {
@@ -767,7 +763,6 @@ public class View extends JFrame implements ActionListener {
                 if (option == 0) {
                     dateSale();
                     adminCardLayout.show(adminRightPanel, "Sales Report");
-                   
                 }
 
             } else {

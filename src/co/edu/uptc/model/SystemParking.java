@@ -14,9 +14,8 @@ public class SystemParking {
     private Admin currentAdmin;
 
     public SystemParking() {
-        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "2",
-
-                "2");
+        Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
+                "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
@@ -76,10 +75,8 @@ public class SystemParking {
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        Recepcionist newRecepcionist = currentAdmin.createRecepcionist(name, lastName, email, phone, address, id,
-                generatePassword());
-        recepcionists.add(newRecepcionist);
-        recepcionists.sort(Comparator.comparing(Recepcionist::getId)); // Ordena la lista después de agregar
+        recepcionists.add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
+        recepcionists.sort(Comparator.comparing(Recepcionist::getId)); 
     }
 
     private String generatePassword() {
@@ -104,9 +101,9 @@ public class SystemParking {
             recepcionist.setPhone(phone);
             recepcionist.setEmail(email);
             recepcionist.setPassword(password);
-            return true; // Actualización exitosa
+            return true; 
         }
-        return false; // No se encontró el recepcionista
+        return false; 
     }
 
     public int searchRecepcionist(String id) {
@@ -180,7 +177,7 @@ public class SystemParking {
             recepcionistData[3] = recepcionists.get(index).getEmail();
             return recepcionistData;
         }
-        return null; // Si no se encuentra, devuelve null
+        return null; 
     }
 
     public int numAttendedVehicles() {
@@ -208,4 +205,7 @@ public class SystemParking {
         return data;
     }
 
+    public boolean foundedVehicle(String plate) {
+        return currentRecepcionist.foundedVehicle(plate);
+    }
 }

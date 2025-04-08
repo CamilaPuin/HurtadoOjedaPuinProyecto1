@@ -50,7 +50,7 @@ public class Recepcionist extends User {
 
     public Ticket generateTicket(String plate, double amountReceived) {
         return new Ticket(plate, parking.calculateCost(plate), amountReceived,
-                parking.getPassedTime(parking.getVehicle(plate)));
+                Parking.getPassedTime(parking.getVehicle(plate)));
     }
 
     public String seeParkingAvailability() {
@@ -65,25 +65,8 @@ public class Recepcionist extends User {
         }
         return totalIncome;
     }
-
-    public void setName(String name) {
-        super.setName(name); // Llama al método setName de la clase base
-    }
-    
-    public void setAddress(String address) {
-        super.setAddress(address);
-    }
-    
-    public void setPhone(String phone) {
-        super.setPhone(phone);
-    }
-    
-    public void setEmail(String email) {
-        super.setEmail(email);
-    }
-    
-    public void setPassword(String password) {
-        super.setPassword(password);
+    public boolean foundedVehicle(String plate) {
+        return parking.foundedVehicle(plate);
     }
 
 }

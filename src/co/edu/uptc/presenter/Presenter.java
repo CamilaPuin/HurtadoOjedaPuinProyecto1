@@ -16,9 +16,8 @@ public class Presenter {
         system.createRecepcionist(name, lastName, email, phone, address, id);
     }
 
-    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
-            String password) {
-        return system.updateRecepcionist(id, name, address, phone, email, password);
+public void updateRecepcionist(String id, String address, String phone, String email, String newPassword, String confirmPassword) {
+        system.updateRecepcionist(id, address, phone, email, newPassword, confirmPassword);
     }
 
     public void salesReport(LocalDate date) {
@@ -81,5 +80,7 @@ public class Presenter {
     public Object[][] getConsolidatedRecepcionists() {
         return system.getConsolidatedRecepcionists();
     }
-
+    public boolean foundedVehicle(String plate){
+        return system.foundedVehicle(plate);
+    }
 }

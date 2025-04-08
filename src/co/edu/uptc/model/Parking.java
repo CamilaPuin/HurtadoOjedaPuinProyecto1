@@ -1,4 +1,5 @@
 package co.edu.uptc.model;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -119,13 +120,13 @@ public class Parking {
             if (carscapacity > cars.size()) {
                 cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
+            }
         }
         if (type.equals("Moto")) {
             if (motorbikescapacity > motorbikes.size()) {
                 motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
+            }
         }
     }
 
@@ -146,8 +147,7 @@ public class Parking {
         double costPerHour = 0;
         if (vehicle != null) {
             costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-        }
-        else{
+        } else {
             return -1;
         }
         return costPerHour * getPassedTime(vehicle);
@@ -175,11 +175,8 @@ public class Parking {
         return vehicle;
     }
 
-    @Override
-    public String toString() {
-        return "Parking [name=" + name + ", address=" + address + ", id=" + id + ", carscapacity=" + carscapacity
-                + ", motorbikescapacity=" + motorbikescapacity + ", openingHour=" + openingHour + ", motorbikes="
-                + motorbikes + ", cars=" + cars + ", recepcionists=" + recepcionists + "]";
+    public boolean foundedVehicle(String plate) {
+        return Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0;
     }
 
 }

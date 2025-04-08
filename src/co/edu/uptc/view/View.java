@@ -34,8 +34,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-
-// import raven.datetime.component.date.DatePicker;
+import raven.datetime.component.date.DatePicker;
 
 public class View extends JFrame implements ActionListener {
     private JTextField nameField;
@@ -61,7 +60,7 @@ public class View extends JFrame implements ActionListener {
     private HashMap<String, JButton> buttonsMap;
     private HashMap<String, JTextField> textFieldsMap;
     private JComboBox<String> comboBox;
-    // private DatePicker datePicker;
+    private DatePicker datePicker;
     private JPanel ticketOutPanel;
     private String recepEntryTime;
     private String recepExitTime;
@@ -78,7 +77,7 @@ public class View extends JFrame implements ActionListener {
         presenter = new Presenter();
         buttonsMap = new HashMap<>();
         textFieldsMap = new HashMap<>();
-        // datePicker = new DatePicker();
+        datePicker = new DatePicker();
         getContentPane().add(loginPanel(), "LoginPanel");
 
         setVisible(true);
@@ -134,11 +133,13 @@ public class View extends JFrame implements ActionListener {
         JPanel createRecepcionistPanel = createRecepcionist();
         JPanel updateRecepcionistPanel = updateRecepcionist();
         JPanel salesReportPanel = salesReport();
+        JPanel generateReportPanel = generateReportPanel();
         JPanel logoutPanel = logoutAdmin();
         adminRightPanel.add(welcome, "Welcome");
         adminRightPanel.add(createRecepcionistPanel, "Create Recepcionist");
         adminRightPanel.add(updateRecepcionistPanel, "Update Recepcionist");
         adminRightPanel.add(salesReportPanel, "Sales Report");
+        adminRightPanel.add(generateReportPanel, "Generate Report");
         adminRightPanel.add(logoutPanel, "Logout");
         createRecepcionist.addActionListener(this);
         updateRecepcionist.addActionListener(this);
@@ -190,7 +191,6 @@ public class View extends JFrame implements ActionListener {
         addComponent(recepcionistPanel, createLabel("Telefono"), gbc, 0, 5, 1);
         addComponent(recepcionistPanel, createLabel("Email"), gbc, 0, 6, 1);
 
-        // Inicializa las variables
         nameField = createTextField("UpdateName");
         addressField = createTextField("UpdateDireccion");
         phoneField = createTextField("UpdateTelefono");
@@ -222,7 +222,7 @@ public class View extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Recepcionista no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Código para establecer la información del recepcionista
+
         nameField.setText(recepcionistInfo[0]);
         addressField.setText(recepcionistInfo[1]);
         phoneField.setText(recepcionistInfo[2]);
@@ -319,9 +319,8 @@ public class View extends JFrame implements ActionListener {
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-
-        // datePicker.setColor(Color.BLUE);
-        // addComponent(generateReport, datePicker, gbc, 0, 0, 1);
+        datePicker.setColor(Color.BLUE);
+        addComponent(generateReport, datePicker, gbc, 0, 0, 1);
 
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
@@ -405,19 +404,19 @@ public class View extends JFrame implements ActionListener {
                 int espaciosDisponibles = Integer.parseInt(lines[i].replaceAll("\\D+", ""));
                 if (espaciosDisponibles <= 5) {
                     switch (i) {
-                        case 0: // Total
+                        case 0:
                             if (!alertaTotalMostrada) {
                                 mostrarAlerta(etiquetas[i], espaciosDisponibles);
                                 alertaTotalMostrada = true;
                             }
                             break;
-                        case 1: // Motos
+                        case 1:
                             if (!alertaMotosMostrada) {
                                 mostrarAlerta(etiquetas[i], espaciosDisponibles);
                                 alertaMotosMostrada = true;
                             }
                             break;
-                        case 2: // Carros
+                        case 2:
                             if (!alertaCarrosMostrada) {
                                 mostrarAlerta(etiquetas[i], espaciosDisponibles);
                                 alertaCarrosMostrada = true;
@@ -430,14 +429,12 @@ public class View extends JFrame implements ActionListener {
         return panel;
     }
 
-    // Método auxiliar para mostrar la alerta
     private void mostrarAlerta(String tipo, int espaciosDisponibles) {
         optionPanel("¡Alerta! Espacios limitados.\n\n" + tipo + ": " + espaciosDisponibles, "Advertencia",
                 JOptionPane.WARNING_MESSAGE,
                 "Entendido");
     }
 
-    // Método para reiniciar las alertas
     public void resetAlerts() {
         alertaTotalMostrada = false;
         alertaMotosMostrada = false;
@@ -590,9 +587,9 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void readUpdateRecepcionist() {
-        // Validar el formato del correo electrónico
+
         if (validEmail(textFieldsMap.get("UpdateEmail").getText())) {
-            // Obtener los datos de los campos de texto
+
             String id = textFieldsMap.get("UpdateDocumento").getText();
             String name = textFieldsMap.get("UpdateName").getText();
             String address = textFieldsMap.get("UpdateDireccion").getText();
@@ -601,17 +598,14 @@ public class View extends JFrame implements ActionListener {
             String newPassword = textFieldsMap.get("UpdateNewPassword").getText();
             String confirmPassword = textFieldsMap.get("UpdateConfirmPassword").getText();
 
-            // Validar que las contraseñas coincidan
             if (!newPassword.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Enviar los datos al Presenter para actualizar el recepcionista
             boolean updated = presenter.updateRecepcionist(id, name, address, phone, email, newPassword);
 
-            // Mostrar un mensaje según el resultado de la actualización
             if (updated) {
                 JOptionPane.showMessageDialog(this, "Información actualizada correctamente.", "Éxito",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -620,7 +614,6 @@ public class View extends JFrame implements ActionListener {
                         JOptionPane.ERROR_MESSAGE);
             }
 
-            // Limpiar los campos de texto
             textFieldsMap.get("UpdateName").setText("");
             textFieldsMap.get("UpdateDireccion").setText("");
             textFieldsMap.get("UpdateTelefono").setText("");
@@ -690,7 +683,7 @@ public class View extends JFrame implements ActionListener {
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
 
         else if (e.getSource() == salesReport)
-            adminCardLayout.show(adminRightPanel, "Sales Report");
+            adminCardLayout.show(adminRightPanel, "Generate Report");
 
         else if (e.getSource() == logout)
             adminCardLayout.show(adminRightPanel, "Logout");
@@ -766,20 +759,22 @@ public class View extends JFrame implements ActionListener {
             setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
         }
 
-        // else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
-        // if (datePicker.getSelectedDate() != null) {
-        // int option = optionPanel("Desea continuar con la fecha: " +
-        // datePicker.getSelectedDateAsString(),
-        // "Continuar", 3, "Si", "No");
-        // if (option == 0) {
-        // dateSale();
-        // }
+        else if (e.getSource() == buttonsMap.get("ConfirmarDateSales")) {
+            if (datePicker.getSelectedDate() != null) {
+                int option = optionPanel("Desea continuar con la fecha: " +
+                        datePicker.getSelectedDateAsString(),
+                        "Continuar", 3, "Si", "No");
+                if (option == 0) {
+                    dateSale();
+                    adminCardLayout.show(adminRightPanel, "Sales Report");
+                   
+                }
 
-        // // } else {
+            } else {
 
-        // optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
-        // }
-        // }
+                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+            }
+        }
         if (e.getSource() == buttonsMap.get("GenerarReciboExitVehicle")) {
 
             String placa = textFieldsMap.get("PlacaExitVehicle").getText();
@@ -821,8 +816,8 @@ public class View extends JFrame implements ActionListener {
 
                     ticketOutPanel.add(scrollPane, gbc);
                     presenter.exitVehicle(placa);
-                    if(!presenter.foundedVehicle(placa) )
-                   optionPanel("Operación exitosa", "Exito", 1, "OK");
+                    if (!presenter.foundedVehicle(placa))
+                        optionPanel("Operación exitosa", "Exito", 1, "OK");
                 }
                 ticketOutPanel.revalidate();
                 ticketOutPanel.repaint();
@@ -834,12 +829,12 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
-    // private void dateSale() {
-    // LocalDate date = datePicker.getSelectedDate();
-    // if (date != null) {
-    // presenter.salesReport(date);
-    // }
-    // }
+    private void dateSale() {
+        LocalDate date = datePicker.getSelectedDate();
+        if (date != null) {
+            presenter.salesReport(date);
+        }
+    }
 
     private void resetExitVehiclePanel() {
         textFieldsMap.get("PlacaExitVehicle").setText("");

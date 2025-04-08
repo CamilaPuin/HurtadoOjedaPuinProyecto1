@@ -23,7 +23,7 @@ public class SystemParking {
         Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
                 "recepcionist@recepcionist.com",
                 "123456789",
-                "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
+                "Calle de la casa, 1", "1", "1", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
         recepcionists.add(recepcionistTwo);
@@ -75,7 +75,9 @@ public class SystemParking {
 
     public void createRecepcionist(String name, String lastName, String email, String phone, String address,
             String id) {
-        recepcionists.add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
+        recepcionists
+                .add(currentAdmin.createRecepcionist(name, lastName, email, phone, address, id, generatePassword()));
+        recepcionists.sort(Comparator.comparing(Recepcionist::getId));
     }
 
     private String generatePassword() {
@@ -91,16 +93,20 @@ public class SystemParking {
 
     }
 
-    public void updateRecepcionist(String email, String phone, String address,
-            String id, String password, String passwordConfirm) {
+    public boolean updateRecepcionist(String id, String name, String address, String phone, String email,
+            String newPassword, String confirmPassword) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
-            if (password != null && passwordConfirm != null) {
-                if (checkPassword(index, password, passwordConfirm))
-                    currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
-            }
-            currentAdmin.updateRecepcionistData(email, phone, address, id, recepcionists.get(index), password);
+            Recepcionist recepcionist = recepcionists.get(index);
+            recepcionist.setName(name);
+            recepcionist.setAddress(address);
+            recepcionist.setPhone(phone);
+            recepcionist.setEmail(email);
+            if (checkPassword(recepcionist, confirmPassword, newPassword))
+                recepcionist.setPassword(newPassword);
+            return true;
         }
+        return false;
     }
 
     public int searchRecepcionist(String id) {
@@ -108,8 +114,8 @@ public class SystemParking {
                 Comparator.comparing(Recepcionist::getId));
     }
 
-    private boolean checkPassword(int index, String password, String passwordConfirm) {
-        return (!recepcionists.get(index).getPassword().equals(password) && passwordConfirm.equals(password)
+    private boolean checkPassword(Recepcionist recepcionist, String password, String passwordConfirm) {
+        return (!recepcionist.getPassword().equals(password) && passwordConfirm.equals(password)
                 && password.length() >= 8);
     }
 
@@ -133,6 +139,7 @@ public class SystemParking {
 
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
+
     }
 
     public String logIn(String id, String password) {

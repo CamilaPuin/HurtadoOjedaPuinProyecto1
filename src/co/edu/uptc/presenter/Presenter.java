@@ -84,7 +84,7 @@ public class Presenter {
         return system.getConsolidatedRecepcionists();
     }
 
-    public boolean foundedVehicle(String plate) {
+    public boolean foundedVehicle(String plate){
         return system.foundedVehicle(plate);
     }
 }

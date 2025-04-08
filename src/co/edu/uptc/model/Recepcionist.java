@@ -69,4 +69,5 @@ public class Recepcionist extends User {
     public boolean foundedVehicle(String plate) {
         return parking.foundedVehicle(plate);
     }
+
 }

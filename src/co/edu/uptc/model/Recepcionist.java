@@ -50,23 +50,23 @@ public class Recepcionist extends User {
 
     public Ticket generateTicket(String plate, double amountReceived) {
         return new Ticket(plate, parking.calculateCost(plate), amountReceived,
-                parking.getPassedTime(parking.getVehicle(plate)));
+                Parking.getPassedTime(parking.getVehicle(plate)));
     }
 
     public String seeParkingAvailability() {
         return parking.updateAvailability();
     }
 
-    public double income(){
+    public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
-           totalIncome+= parking.calculateCost(vehicle.getPlate());
-            
+            totalIncome += parking.calculateCost(vehicle.getPlate());
+
         }
         return totalIncome;
     }
 
-    
-
-
+    public boolean foundedVehicle(String plate) {
+        return parking.foundedVehicle(plate);
+    }
 }

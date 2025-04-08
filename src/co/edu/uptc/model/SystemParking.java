@@ -15,13 +15,13 @@ public class SystemParking {
 
     public SystemParking() {
         Admin admin = new Admin("admin", "admin", "admin@admin.com", "123456789", "Calle de la casa, 1", "admin",
-
                 "12345678");
         admin.registerParking("Parking UPTC", "UPTC", "parkinguptc", 10, 10, LocalTime.now(), new ArrayList<>());
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "recepcionist", "12345678", admin.getParking());
-        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta", "recepcionist@recepcionist.com",
+        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
+                "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "sapopeta", "12345678", admin.getParking());
         recepcionists = new ArrayList<>();
@@ -202,5 +202,7 @@ public class SystemParking {
         return data;
     }
 
-
+    public boolean foundedVehicle(String plate) {
+        return currentRecepcionist.foundedVehicle(plate);
+    }
 }

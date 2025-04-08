@@ -428,10 +428,10 @@ public class View extends JFrame implements ActionListener {
         addComponent(ticketOutPanel, createTextField("DineroExitVehicle"), gbc, 1, 3, 1);
         addComponent(ticketOutPanel, createLabel("Recibo"), gbc, 0, 5, 2);
 
-        JButton generarReciboButton = createButton("Generar recibo", "GenerarReciboExitVehicle");
+        JButton generarReciboButton = createButton("Generar recibo y registar salida", "GenerarReciboExitVehicle");
         addComponent(ticketOutPanel, generarReciboButton, gbc, 0, 6, 2);
 
-        JButton registerButton = createButton("Registrar salida", "RegistrarSalidaExitVehicle");
+        JButton registerButton = createButton("Salir", "RegistrarSalidaExitVehicle");
         addComponent(ticketOutPanel, registerButton, gbc, 0, 8, 2);
         return ticketOutPanel;
     }
@@ -679,7 +679,6 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("RegistrarSalidaExitVehicle")) {
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
-            optionPanel("Operación exitosa", "Exito", 1, "OK");
             resetExitVehiclePanel();
             readExitVehicle();
         }
@@ -697,7 +696,6 @@ public class View extends JFrame implements ActionListener {
 
         else if (e.getSource() == buttonsMap.get("NoRecepLogOut"))
             recepcionistCardLayout.show(recepRightPanel, "Welcome");
-        // TODO Boton buscar
         else if (e.getSource() == buttonsMap.get("buscarRecepcionist")) {
             setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("UpdateDocumento").getText()));
         }
@@ -756,6 +754,9 @@ public class View extends JFrame implements ActionListener {
                     gbc.insets = new Insets(10, 10, 10, 10);
 
                     ticketOutPanel.add(scrollPane, gbc);
+                    presenter.exitVehicle(placa);
+                    if(!presenter.foundedVehicle(placa) )
+                   optionPanel("Operación exitosa", "Exito", 1, "OK");
                 }
                 ticketOutPanel.revalidate();
                 ticketOutPanel.repaint();

@@ -119,21 +119,16 @@ public class Parking {
             if (carscapacity > cars.size()) {
                 cars.add(new Vehicle(plate, type, entryTime));
                 cars.sort(Comparator.comparing(Vehicle::getPlate));
-            } else {
-                // TODO: throw exception?
             }
         }
         if (type.equals("Moto")) {
             if (motorbikescapacity > motorbikes.size()) {
                 motorbikes.add(new Vehicle(plate, type, entryTime));
                 motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-            } else {
-                // TODO: throw exception?
             }
         }
     }
 
-    // TODO check method type
     public Vehicle deleteVehicle(String plate) {
         Vehicle vehicle = getVehicle(plate);
         if (vehicle != null) {
@@ -143,7 +138,6 @@ public class Parking {
                 motorbikes.remove(vehicle);
             }
         }
-        // TODO throw exception if plate not found???
         return vehicle;
     }
 
@@ -152,8 +146,7 @@ public class Parking {
         double costPerHour = 0;
         if (vehicle != null) {
             costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-        }
-        else{
+        } else {
             return -1;
         }
         return costPerHour * getPassedTime(vehicle);
@@ -178,15 +171,11 @@ public class Parking {
                 vehicle = motorbikes.get(index);
             }
         }
-        // TODO throw exception if plate not found??? and double retur?n
         return vehicle;
     }
 
-    @Override
-    public String toString() {
-        return "Parking [name=" + name + ", address=" + address + ", id=" + id + ", carscapacity=" + carscapacity
-                + ", motorbikescapacity=" + motorbikescapacity + ", openingHour=" + openingHour + ", motorbikes="
-                + motorbikes + ", cars=" + cars + ", recepcionists=" + recepcionists + "]";
+    public boolean foundedVehicle(String plate) {
+        return Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0;
     }
 
 }

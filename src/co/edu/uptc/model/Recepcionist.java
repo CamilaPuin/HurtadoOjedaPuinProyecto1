@@ -68,4 +68,7 @@ public class Recepcionist extends User {
         }
         return totalIncome;
     }
+    public boolean foundedVehicle (String plate) {
+        return parking.foundedVehicle(plate);
+    }
 }

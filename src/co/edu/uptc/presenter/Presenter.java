@@ -111,4 +111,8 @@ public class Presenter {
         return true;
     }
 
+    public boolean foundedVehicle(String plate) {
+        return system.foundedVehicle(plate);
+    }
+
 }

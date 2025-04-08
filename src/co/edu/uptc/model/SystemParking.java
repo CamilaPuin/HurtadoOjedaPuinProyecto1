@@ -217,4 +217,8 @@ public class SystemParking {
         return data;
     }
 
+    public boolean foundedVehicle(String plate) {
+        return currentRecepcionist.foundedVehicle(plate);
+    }
+
 }

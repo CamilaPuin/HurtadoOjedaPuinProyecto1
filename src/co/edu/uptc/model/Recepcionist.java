@@ -45,7 +45,12 @@ public class Recepcionist extends User {
     }
 
     public void registerVehicleExit(String plate) {
-        attendedVehicles.add(parking.deleteVehicle(plate));
+        Vehicle vehicle = parking.deleteVehicle(plate);
+        if (vehicle != null) {
+            attendedVehicles.add(vehicle);
+        } else {
+            System.out.println("El vehículo con la placa " + plate + " no existe en el estacionamiento.");
+        }
     }
 
     public Ticket generateTicket(String plate, double amountReceived) {
@@ -60,8 +65,9 @@ public class Recepcionist extends User {
     public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
-            totalIncome += parking.calculateCost(vehicle.getPlate());
-
+            if (vehicle != null) { // Verifica que el vehículo no sea null
+                totalIncome += parking.calculateCost(vehicle.getPlate());
+            }
         }
         return totalIncome;
     }
@@ -69,19 +75,19 @@ public class Recepcionist extends User {
     public void setName(String name) {
         super.setName(name); // Llama al método setName de la clase base
     }
-    
+
     public void setAddress(String address) {
         super.setAddress(address);
     }
-    
+
     public void setPhone(String phone) {
         super.setPhone(phone);
     }
-    
+
     public void setEmail(String email) {
         super.setEmail(email);
     }
-    
+
     public void setPassword(String password) {
         super.setPassword(password);
     }

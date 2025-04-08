@@ -1,9 +1,11 @@
 package co.edu.uptc.model;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Parking {
     private String name;
@@ -107,50 +109,71 @@ public class Parking {
     }
 
     public String updateAvailability() {
+        int availableCars = carscapacity - cars.size();
+        int availableMotorbikes = motorbikescapacity - motorbikes.size();
+        int totalAvailable = availableCars + availableMotorbikes;
+
         return String.format(
                 "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
-                (carscapacity - cars.size()) + (motorbikescapacity - motorbikes.size()),
-                motorbikescapacity - motorbikes.size(),
-                carscapacity - cars.size());
-    }
-
-    public void registerVehicle(String plate, String type, LocalTime entryTime) {
-        if (type.equals("Carro")) {
-            if (carscapacity > cars.size()) {
-                cars.add(new Vehicle(plate, type, entryTime));
-                cars.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
-        }
-        if (type.equals("Moto")) {
-            if (motorbikescapacity > motorbikes.size()) {
-                motorbikes.add(new Vehicle(plate, type, entryTime));
-                motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-            } 
-        }
-    }
-
-    public Vehicle deleteVehicle(String plate) {
-        Vehicle vehicle = getVehicle(plate);
-        if (vehicle != null) {
-            if (vehicle.getType().equals("car")) {
-                cars.remove(vehicle);
-            } else {
-                motorbikes.remove(vehicle);
-            }
-        }
-        return vehicle;
+                totalAvailable, availableMotorbikes, availableCars);
     }
 
     public double calculateCost(String plate) {
         Vehicle vehicle = getVehicle(plate);
-        double costPerHour = 0;
-        if (vehicle != null) {
-            costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
+        if (vehicle == null) {
+            throw new IllegalArgumentException("No se encontró un vehículo con la placa: " + plate);
         }
-        else{
-            return -1;
+        int hours = getPassedTime(vehicle);
+        double rate = vehicle.getType().equals("Carro") ? 10.0 : 5.0; // Ejemplo de tarifas
+        return hours * rate;
+    }
+
+    public void registerVehicle(String plate, String type, LocalTime entryTime) {
+        System.out.println("Antes de registrar: " + cars);
+        if (type.equals("Carro")) {
+            if (carscapacity > cars.size()) {
+                cars.add(new Vehicle(plate, type, entryTime));
+                cars.sort(Comparator.comparing(Vehicle::getPlate)); // Ordena la lista
+            } else {
+                System.out.println("No hay espacio disponible para carros.");
+            }
+        } else if (type.equals("Moto")) {
+            if (motorbikescapacity > motorbikes.size()) {
+                motorbikes.add(new Vehicle(plate, type, entryTime));
+                motorbikes.sort(Comparator.comparing(Vehicle::getPlate)); // Ordena la lista
+            } else {
+                System.out.println("No hay espacio disponible para motos.");
+            }
+        } else {
+            System.out.println("Tipo de vehículo no reconocido.");
         }
-        return costPerHour * getPassedTime(vehicle);
+        System.out.println("Después de registrar: " + cars);
+    }
+
+    public Vehicle deleteVehicle(String plate) {
+        // Limpia valores null antes de buscar
+        cars.removeIf(Objects::isNull);
+        motorbikes.removeIf(Objects::isNull);
+
+        // Ordena las listas antes de buscar
+        cars.sort(Comparator.comparing(Vehicle::getPlate));
+        motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+
+        // Busca y elimina el vehículo en la lista de carros
+        int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0) {
+            return cars.remove(index);
+        }
+
+        // Busca y elimina el vehículo en la lista de motos
+        index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0) {
+            return motorbikes.remove(index);
+        }
+
+        // Si no se encuentra el vehículo, imprime un mensaje y devuelve null
+        System.out.println("No se encontró el vehículo con la placa: " + plate);
+        return null;
     }
 
     public static int getPassedTime(Vehicle vehicle) {

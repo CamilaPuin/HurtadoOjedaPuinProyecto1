@@ -1,6 +1,7 @@
 package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.SystemParking;
+import co.edu.uptc.model.Exceptions.DateVehicleNotFoundException;
 import co.edu.uptc.view.View;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
@@ -41,13 +42,12 @@ public class Presenter {
         return system.availableSpaces();
     }
 
-public void registerVehicle(String plate, String type) {
-    String result = system.registerVehicle(plate, type); 
-    if (result.contains("No hay espacio disponible")) { 
-        view.showErrorMessage(result); 
-    } else {
-        view.showInfoMessage(result); 
+public String registerVehicle(String plate, String type) {
+    String result = system.registerVehicle(plate, type);
+    if (result.contains("No hay espacio disponible")) {
+        return result; // Devuelve el mensaje de error
     }
+    return result; // Devuelve el mensaje de éxito
 }
 
     public void exitVehicle(String plate) {
@@ -90,8 +90,8 @@ public void registerVehicle(String plate, String type) {
         return system.obtainRecepcionistData();
     }
 
-    public Object[][] getConsolidatedRecepcionists() {
-        return system.getConsolidatedRecepcionists();
+    public Object[][] getConsolidatedRecepcionists(LocalDate date) throws DateVehicleNotFoundException {
+        return system.getConsolidatedRecepcionists(date);
     }
 
     public void showErrorMessage(String message) {

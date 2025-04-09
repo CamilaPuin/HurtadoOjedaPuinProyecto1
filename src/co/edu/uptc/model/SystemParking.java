@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import co.edu.uptc.model.Exceptions.DateVehicleNotFoundException;
+
 public class SystemParking {
     private ArrayList<Admin> admins;
     private ArrayList<Recepcionist> recepcionists;
@@ -95,7 +97,7 @@ public class SystemParking {
 
     }
 
-    public boolean updateRecepcionist(String id,String address, String phone, String email,
+    public boolean updateRecepcionist(String id, String address, String phone, String email,
             String password) {
         int index = searchRecepcionist(id);
         if (index >= 0) {
@@ -131,12 +133,12 @@ public class SystemParking {
         return currentRecepcionist.seeParkingAvailability();
     }
 
-public String registerVehicle(String plate, String type) {
-    if (currentRecepcionist == null) {
-        return "No hay recepcionista activo para registrar el vehículo.";
+    public String registerVehicle(String plate, String type) {
+        if (currentRecepcionist == null) {
+            return "No hay recepcionista activo para registrar el vehículo.";
+        }
+        return currentRecepcionist.registerEntryVehicle(plate, type);
     }
-    return currentRecepcionist.registerEntryVehicle(plate, type); 
-}
 
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
@@ -198,15 +200,26 @@ public String registerVehicle(String plate, String type) {
         return recepcionistData;
     }
 
-    public Object[][] getConsolidatedRecepcionists() {
+    public Object[][] getConsolidatedRecepcionists(LocalDate date) throws DateVehicleNotFoundException {
         Object[][] data = new Object[recepcionists.size()][4];
-        for (int i = 0; i < recepcionists.size(); i++) {
-            Recepcionist r = recepcionists.get(i);
-            data[i][0] = r.getName();
-            data[i][1] = r.getLastName();
-            data[i][2] = r.income();
-            data[i][3] = r.numAttendedVehicles();
+        boolean vehicleFound = false;
+        for (Vehicle vehicle : currentRecepcionist.getAttendedVehicles()) {
+            if (vehicle.getDate().equals(date)) {
+                vehicleFound = true;
+                for (int i = 0; i < recepcionists.size(); i++) {
+                    Recepcionist r = recepcionists.get(i);
+                    data[i][0] = r.getName();
+                    data[i][1] = r.getLastName();
+                    data[i][2] = r.income();
+                    data[i][3] = r.numAttendedVehicles();
+                }
+
+            }
         }
+        if (!vehicleFound) {
+            throw new DateVehicleNotFoundException("No se encontraron vehículos atendidos en la fecha especificada.");
+        }
+
         return data;
     }
 

@@ -131,13 +131,12 @@ public class SystemParking {
         return currentRecepcionist.seeParkingAvailability();
     }
 
-    public void registerVehicle(String plate, String type) {
-        //creas un metodo que verifique los espacios de acuerdo al tipo(llama a un metodo del parking), a este le pones boolean 
-        //un if else 
-        currentRecepcionist.registerEntryVehicle(plate, type);
-        //si entra al if pus true
-        //retornas false
+public String registerVehicle(String plate, String type) {
+    if (currentRecepcionist == null) {
+        return "No hay recepcionista activo para registrar el vehículo.";
     }
+    return currentRecepcionist.registerEntryVehicle(plate, type); 
+}
 
     public void exitVehicle(String plate) {
         currentRecepcionist.registerVehicleExit(plate);
@@ -162,7 +161,7 @@ public class SystemParking {
     }
 
     public double costTikect(String plate, double amountReceived) {
-        return currentRecepcionist.getParking().calculateCost(plate);
+        return currentRecepcionist.calculateCost(plate);
     }
 
     public double calculteChange(String plate, double amountReceived) {

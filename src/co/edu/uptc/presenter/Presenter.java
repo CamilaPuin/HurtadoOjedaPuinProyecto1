@@ -41,9 +41,14 @@ public class Presenter {
         return system.availableSpaces();
     }
 
-    public void registerVehicle(String plate, String type) {
-        system.registerVehicle(plate, type);
+public void registerVehicle(String plate, String type) {
+    String result = system.registerVehicle(plate, type); 
+    if (result.contains("No hay espacio disponible")) { 
+        view.showErrorMessage(result); 
+    } else {
+        view.showInfoMessage(result); 
     }
+}
 
     public void exitVehicle(String plate) {
         system.exitVehicle(plate);

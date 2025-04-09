@@ -115,31 +115,46 @@ public class Parking {
                 "Hay %d espacios disponibles%nMoto: %d espacios disponibles%nCarro: %d espacios disponibles",
                 totalAvailable, availableMotorbikes, availableCars);
     }
+
 public String registerVehicle(String plate, String type) {
+
     switch (type) {
-        case "Carro" -> {
+        case "Carro": {
+            for (int i = 0; i < cars.size(); i++) {
+                if (cars.get(i).getPlate().equals(plate)) 
+                    return "El vehículo con placa " + plate + " ya está registrado como carro.";
+            }
             if (carscapacity > cars.size()) {
                 Vehicle vehicle = new Vehicle(plate, type);
                 cars.add(vehicle);
-                cars.sort(Comparator.comparing(Vehicle::getPlate));
-                return "Vehículo registrado correctamente.";
-            } else {
+                cars.sort(new Comparator<Vehicle>() {
+                    public int compare(Vehicle v1, Vehicle v2) {
+                        return v1.getPlate().compareTo(v2.getPlate());
+                    }
+                }); 
+                return "Vehículo con placa " + plate + " registrado correctamente como carro.";
+            } else 
                 return "No hay espacio disponible para carros.";
-            }
         }
-        case "Moto" -> {
+        case "Moto": {
+            for (int i = 0; i < motorbikes.size(); i++) {
+                if (motorbikes.get(i).getPlate().equals(plate)) 
+                    return "El vehículo con placa " + plate + " ya está registrado como moto.";
+            }
             if (motorbikescapacity > motorbikes.size()) {
                 Vehicle vehicle = new Vehicle(plate, type);
                 motorbikes.add(vehicle);
-                motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-                return "Vehículo registrado correctamente.";
-            } else {
+                motorbikes.sort(new Comparator<Vehicle>() {
+                    public int compare(Vehicle v1, Vehicle v2) {
+                        return v1.getPlate().compareTo(v2.getPlate());
+                    }
+                }); 
+                return "Vehículo con placa " + plate + " registrado correctamente como moto.";
+            } else 
                 return "No hay espacio disponible para motos.";
-            }
         }
-        default -> {
-            return "Tipo de vehículo no reconocido.";
-        }
+        default: 
+            return "Tipo de vehículo no reconocido: " + type;
     }
 }
 
@@ -154,16 +169,6 @@ public String registerVehicle(String plate, String type) {
         if (index >= 0)
             return motorbikes.remove(index);
         return null;
-    }
-
-    public double calculateCost(String plate) {
-        Vehicle vehicle = getVehicle(plate);
-        double costPerHour;
-        if (vehicle != null)
-            costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-        else
-            return -1;
-        return costPerHour * getPassedTime(vehicle);
     }
 
     public static int getPassedTime(Vehicle vehicle) {

@@ -1,4 +1,5 @@
 package co.edu.uptc.model;
+
 import java.util.ArrayList;
 
 public class Recepcionist extends User {
@@ -37,8 +38,8 @@ public class Recepcionist extends User {
         this.attendedVehicles = attendedVehicles;
     }
 
-    public void registerEntryVehicle(String plate, String type) {
-        parking.registerVehicle(plate, type);
+    public String registerEntryVehicle(String plate, String type) {
+        return parking.registerVehicle(plate, type);
     }
 
     public void registerVehicleExit(String plate) {
@@ -49,7 +50,7 @@ public class Recepcionist extends User {
     }
 
     public Ticket generateTicket(String plate, double amountReceived) {
-        return new Ticket(plate, parking.calculateCost(plate), amountReceived,
+        return new Ticket(plate,calculateCost(plate), amountReceived,
                 Parking.getPassedTime(parking.getVehicle(plate)));
     }
 
@@ -57,16 +58,31 @@ public class Recepcionist extends User {
         return parking.updateAvailability();
     }
 
+    public double calculateCost(String plate) {
+        for (Vehicle vehicle : attendedVehicles) {
+
+            vehicle = parking.getVehicle(plate);
+            double costPerHour;
+            if (vehicle != null)
+                costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
+            else
+                return -1;
+            return costPerHour * parking.getPassedTime(vehicle);    
+        }
+        return -1;
+    }
+
     public double income() {
         double totalIncome = 0;
         for (Vehicle vehicle : attendedVehicles) {
             if (vehicle != null) {
-                totalIncome += parking.calculateCost(vehicle.getPlate());
+                totalIncome += calculateCost(vehicle.getPlate());
             }
         }
         return totalIncome;
     }
-    public boolean foundedVehicle (String plate) {
+
+    public boolean foundedVehicle(String plate) {
         return parking.foundedVehicle(plate);
     }
 }

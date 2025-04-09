@@ -158,18 +158,19 @@ public String registerVehicle(String plate, String type) {
     }
 }
 
-    public Vehicle deleteVehicle(String plate) {
-        cars.sort(Comparator.comparing(Vehicle::getPlate));
-        motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-        int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
-        if (index >= 0)
-            return cars.remove(index);
+public Vehicle deleteVehicle(String plate) {
+    cars.sort(Comparator.comparing(Vehicle::getPlate));
+    motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+    int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+    if (index >= 0)
+        return cars.remove(index);
 
-        index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
-        if (index >= 0)
-            return motorbikes.remove(index);
-        return null;
-    }
+    index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+    if (index >= 0)
+        return motorbikes.remove(index);
+
+    return new Vehicle("NOT_FOUND", "Unknown");
+}
 
     public static int getPassedTime(Vehicle vehicle) {
         if (vehicle == null)

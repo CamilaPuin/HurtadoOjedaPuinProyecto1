@@ -50,7 +50,7 @@ public class Recepcionist extends User {
     }
 
     public Ticket generateTicket(String plate, double amountReceived) {
-        return new Ticket(plate,calculateCost(plate), amountReceived,
+        return new Ticket(plate, calculateCost(plate), amountReceived,
                 Parking.getPassedTime(parking.getVehicle(plate)));
     }
 
@@ -59,16 +59,16 @@ public class Recepcionist extends User {
     }
 
     public double calculateCost(String plate) {
-        for (Vehicle vehicle : attendedVehicles) {
 
-            vehicle = parking.getVehicle(plate);
-            double costPerHour;
-            if (vehicle != null)
-                costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-            else
-                return -1;
-            return costPerHour * parking.getPassedTime(vehicle);    
+        Vehicle vehicle = parking.getVehicle(plate);
+
+        if (vehicle != null) {
+
+            double costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
+
+            return costPerHour * parking.getPassedTime(vehicle);
         }
+
         return -1;
     }
 

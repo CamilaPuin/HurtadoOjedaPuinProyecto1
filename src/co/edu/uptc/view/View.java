@@ -337,12 +337,13 @@ public class View extends JFrame implements ActionListener {
         addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
         addComponent(report, createLabel("Numero aqui"), gbc, 1, 2, 1);
         String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehiculos" };
+        JTable table = new JTable();
         try {
-            
-        } catch (Exception e) {
-            // TODO: handle exception
+            table = new JTable(presenter.getConsolidatedRecepcionists(datePicker.getSelectedDate()), col);
+
+        } catch (DateVehicleNotFoundException e) {
+            optionPanel(e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, "Aceptar");
         }
-        JTable table = new JTable(presenter.getConsolidatedRecepcionists(datePicker.getSelectedDate()), col);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(300, 60));
@@ -371,8 +372,6 @@ public class View extends JFrame implements ActionListener {
     }
 
     private JPanel ticketPanel(String plate) {
-        System.out.println("ticket panel");
-        System.out.println("Placa " + plate);
         ticketPanel = new JPanel(new GridBagLayout());
         ticketPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -404,7 +403,6 @@ public class View extends JFrame implements ActionListener {
     }
 
     private void updateTable(String plate) {
-        System.out.println("update table");
         tableModel.setRowCount(0);
         Object[] data = {
                 plate,
@@ -626,39 +624,46 @@ public class View extends JFrame implements ActionListener {
     }
 
     private boolean readRegisterVehicle() {
-        String plate = textFieldsMap.get("plateRegisterVehicle").getText().trim();
+        String plate = textFieldsMap.get("plateRegisterVehicle").getText().trim().toUpperCase();
         String type = comboBox.getSelectedItem().toString();
+
         if (plate.isEmpty()) {
             showErrorMessage("Por favor, ingrese una placa válida.");
             return false;
         }
+
         if (type.equals("Carro") && !plate.matches("^[A-Z]{3}\\d{3}$")) {
             showErrorMessage("Formato de placa inválido para un carro. Debe ser 3 letras seguidas de 3 números.");
             return false;
         }
+
         if (type.equals("Moto") && !plate.matches("^[A-Z]{3}\\d{2}[A-Z]$")) {
             showErrorMessage("Formato de placa inválido para una moto. Debe ser 3 letras, 2 números y 1 letra.");
             return false;
         }
+
         String result = presenter.registerVehicle(plate, type);
         if (result.contains("No hay espacio disponible")) {
             showErrorMessage(result);
             return false;
         }
-        showInfoMessage(result);
-        comboBox.setSelectedIndex(0);
 
+        showInfoMessage(result);
+        recepRightPanel.remove(ticketPanel);
+        ticketPanel = ticketPanel(plate);
+        recepRightPanel.add(ticketPanel, "TicketPanel");
+        recepcionistCardLayout.show(recepRightPanel, "TicketPanel");
+        comboBox.setSelectedIndex(0);
         return true;
     }
 
     private void readExitVehicle() {
         JTextField plateField = textFieldsMap.get("plateExitVehicle");
-        String plate = plateField.getText().trim();
+        String plate = plateField.getText().trim().toUpperCase();
 
         if (plate.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese una placa válida.", "Error",
                     JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
         if (!plate.matches("^[A-Z]{3}\\d{3}$") && !plate.matches("^[A-Z]{3}\\d{2}[A-Z]$")) {
@@ -666,7 +671,6 @@ public class View extends JFrame implements ActionListener {
                     "Formato de placa inválido. Debe ser 3 letras seguidas de 3 números (carro) o 3 letras, 2 números y 1 letra (moto).",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
         presenter.exitVehicle(plate);
@@ -864,9 +868,7 @@ public class View extends JFrame implements ActionListener {
 
         } else if (e.getSource() == buttonsMap.get("nextOfRegisterVehicle")) {
             if (readRegisterVehicle()) {
-                ticketPanel = ticketPanel(textFieldsMap.get("plateRegisterVehicle").getText());
                 textFieldsMap.get("plateRegisterVehicle").setText("");
-                recepcionistCardLayout.show(recepRightPanel, "TicketPanel");
             }
         }
 
@@ -907,13 +909,11 @@ public class View extends JFrame implements ActionListener {
                     }
                 }
                 adminCardLayout.show(adminRightPanel, "Sales Report");
+            } else {
+                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
             }
-        } else {
-            optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
         }
-        if (e.getSource() == buttonsMap.get("generateTicketOfExitVehicle"))
-
-        {
+        if (e.getSource() == buttonsMap.get("generateTicketOfExitVehicle")) {
 
             String plate = textFieldsMap.get("plateExitVehicle").getText();
             String dineroStr = textFieldsMap.get("moneyExitVehicle").getText();
@@ -926,8 +926,8 @@ public class View extends JFrame implements ActionListener {
             double dinero = Double.parseDouble(dineroStr);
             double cost = presenter.costTikect(plate, dinero);
             if (cost == -1) {
-                optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo", 2, "Continuar");
-
+                optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo",
+                        JOptionPane.ERROR_MESSAGE, "Continuar");
             } else {
                 Object[] data = {
                         plate,

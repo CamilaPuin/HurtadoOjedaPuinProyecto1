@@ -79,7 +79,6 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap = new HashMap<>();
         datePicker = new DatePicker();
         getContentPane().add(loginPanel(), "LoginPanel");
-        // TODO pasar a locales y en ingles (Juan)
         alertaTotalMostrada = false;
         alertaMotosMostrada = false;
         alertaCarrosMostrada = false;
@@ -152,13 +151,11 @@ public class View extends JFrame implements ActionListener {
         JPanel welcome = welcome();
         JPanel createRecepcionistPanel = createRecepcionist();
         JPanel updateRecepcionistPanel = updateRecepcionist();
-        JPanel salesReportPanel = salesReport();
         JPanel generateReportPanel = generateReportPanel();
         JPanel logoutPanel = logoutAdmin();
         adminRightPanel.add(welcome, "Welcome");
         adminRightPanel.add(createRecepcionistPanel, "Create Recepcionist");
         adminRightPanel.add(updateRecepcionistPanel, "Update Recepcionist");
-        adminRightPanel.add(salesReportPanel, "Sales Report");
         adminRightPanel.add(generateReportPanel, "Generate Report");
         adminRightPanel.add(logoutPanel, "Logout");
         createRecepcionist.addActionListener(this);
@@ -325,38 +322,35 @@ public class View extends JFrame implements ActionListener {
         textFieldsMap.get("updateConfirmPassword").setText("");
     }
 
-    private JPanel salesReport() {
+    private JPanel salesReport(Object[][] data) {
         JPanel report = new JPanel(new GridBagLayout());
         report.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+
         addComponent(report, createLabel("Reporte de ventas de:"), gbc, 0, 0, 1);
         addComponent(report, createLabel(datePicker.getSelectedDateAsString()), gbc, 1, 0, 1);
         addComponent(report, createLabel("Total ingresos"), gbc, 0, 1, 1);
         addComponent(report, createLabel(presenter.totalMoney(datePicker.getSelectedDate()) + ""), gbc, 1, 1, 1);
-        addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
+        addComponent(report, createLabel("Total vehículos ingresados"), gbc, 0, 2, 1);
         addComponent(report, createLabel(presenter.totalVehicles(datePicker.getSelectedDate()) + ""), gbc, 1, 2, 1);
-        String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehiculos" };
-        JTable table = new JTable();
-        try {
-            table = new JTable(presenter.getConsolidatedRecepcionists(datePicker.getSelectedDate()), col);
 
-        } catch (DateVehicleNotFoundException e) {
-            optionPanel(e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, "Aceptar");
-        }
-
+        String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehículos" };
+        JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(300, 60));
         GridBagConstraints gbcTable = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(report, scrollPane, gbcTable, 0, 3, 2);
+
         addComponent(report, createButton("Regresar al menú", "backOfSalesReport"), gbc, 0, 4, 2);
+
         return report;
     }
 
@@ -835,8 +829,10 @@ public class View extends JFrame implements ActionListener {
             adminCardLayout.show(adminRightPanel, "Update Recepcionist");
         }
 
-        else if (e.getSource() == salesReport)
+        else if (e.getSource() == salesReport) {
             adminCardLayout.show(adminRightPanel, "Generate Report");
+
+        }
 
         else if (e.getSource() == logoutAdmin)
             adminCardLayout.show(adminRightPanel, "Logout");
@@ -910,7 +906,7 @@ public class View extends JFrame implements ActionListener {
             setRecepcionistInfo(presenter.obtainRecepcionist(textFieldsMap.get("updateDocument").getText()));
         }
 
-        else if (e.getSource() == buttonsMap.get("confirmOfSalesReport")) {
+                else if (e.getSource() == buttonsMap.get("confirmOfSalesReport")) {
             if (datePicker.getSelectedDate() != null) {
                 int option = optionPanel("Desea continuar con la fecha: " +
                         datePicker.getSelectedDateAsString(),
@@ -918,13 +914,19 @@ public class View extends JFrame implements ActionListener {
                 if (option == 0) {
                     try {
                         Object[][] data = presenter.getConsolidatedRecepcionists(datePicker.getSelectedDate());
+                        if (data == null || data.length == 0) {
+                            optionPanel("No hay datos disponibles para la fecha seleccionada.", "Sin datos", JOptionPane.INFORMATION_MESSAGE, "Aceptar");
+                            return;
+                        }
+                        JPanel updatedSalesReportPanel = salesReport(data);
+                        adminRightPanel.add(updatedSalesReportPanel, "Sales Report");
+                        adminCardLayout.show(adminRightPanel, "Sales Report");
                     } catch (DateVehicleNotFoundException ex) {
                         optionPanel(ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE, "Aceptar");
                     }
                 }
-                adminCardLayout.show(adminRightPanel, "Sales Report");
             } else {
-                optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
+                optionPanel("Por favor, seleccione una fecha antes de continuar.", "Fecha requerida", JOptionPane.WARNING_MESSAGE, "Aceptar");
             }
         }
 
@@ -937,13 +939,9 @@ public class View extends JFrame implements ActionListener {
                 optionPanel("Por favor, complete los campos de placa y dinero.", "Rellenar datos", 2, "Aceptar");
                 textFieldsMap.get("PlacaExitVehicle").setText("");
             }
-
-            double dinero = Double.parseDouble(dineroStr);
-            double cost = presenter.costTikect(plate, dinero);
-            if (cost == 0) {
-                optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo",
-                        JOptionPane.ERROR_MESSAGE, "Continuar");
-            } else {
+             else {
+                double dinero = Double.parseDouble(dineroStr);
+                double cost = presenter.costTikect(plate, dinero);
                 Object[] data = {
                         plate,
                         cost,

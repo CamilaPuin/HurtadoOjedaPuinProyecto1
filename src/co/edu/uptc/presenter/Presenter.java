@@ -124,4 +124,21 @@ public class Presenter {
     public int totalVehicles(LocalDate date) {
         return system.totalVehicles(date);
     }
+
+    public SystemParking getSystem() {
+        return system;
+    }
+
+    public void setSystem(SystemParking system) {
+        this.system = system;
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+    
 }

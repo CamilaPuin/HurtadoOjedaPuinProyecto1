@@ -59,17 +59,13 @@ public class Recepcionist extends User {
     }
 
     public double calculateCost(String plate) {
-
         Vehicle vehicle = parking.getVehicle(plate);
-
         if (vehicle != null) {
-
             double costPerHour = "car".equals(vehicle.getType()) ? 2000 : 1000;
-
+            vehicle.setCost(costPerHour * parking.getPassedTime(vehicle));
             return costPerHour * parking.getPassedTime(vehicle);
         }
-
-        return -1;
+        return 0;
     }
 
     public double income() {

@@ -30,10 +30,6 @@ public class Presenter {
         return system.updateRecepcionist(id, address, phone, email, newPassword);
     }
 
-    // public void salesReport(LocalDate date) {
-    // system.salesReport(date);
-    // }
-
     public void logout() {
         system.logout();
     }
@@ -42,13 +38,13 @@ public class Presenter {
         return system.availableSpaces();
     }
 
-public String registerVehicle(String plate, String type) {
-    String result = system.registerVehicle(plate, type);
-    if (result.contains("No hay espacio disponible")) {
-        return result; // Devuelve el mensaje de error
+    public String registerVehicle(String plate, String type) {
+        String result = system.registerVehicle(plate, type);
+        if (result.contains("No hay espacio disponible")) {
+            return result; 
+        }
+        return result;
     }
-    return result; // Devuelve el mensaje de éxito
-}
 
     public void exitVehicle(String plate) {
         system.exitVehicle(plate);
@@ -122,4 +118,10 @@ public String registerVehicle(String plate, String type) {
         return system.foundedVehicle(plate);
     }
 
+    public double totalMoney(LocalDate date) {
+        return system.totalMoney(date);
+    }
+    public int totalVehicles(LocalDate date) {
+        return system.totalVehicles(date);
+    }
 }

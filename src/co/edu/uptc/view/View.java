@@ -331,11 +331,11 @@ public class View extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         addComponent(report, createLabel("Reporte de ventas de:"), gbc, 0, 0, 1);
-        addComponent(report, createLabel("Fecha aqui"), gbc, 1, 0, 1);
+        addComponent(report, createLabel(datePicker.getSelectedDateAsString()), gbc, 1, 0, 1);
         addComponent(report, createLabel("Total ingresos"), gbc, 0, 1, 1);
-        addComponent(report, createLabel("ingresos aqui"), gbc, 1, 1, 1);
+        addComponent(report, createLabel(presenter.totalMoney(datePicker.getSelectedDate()) + ""), gbc, 1, 1, 1);
         addComponent(report, createLabel("Total vehiculos ingresados"), gbc, 0, 2, 1);
-        addComponent(report, createLabel("Numero aqui"), gbc, 1, 2, 1);
+        addComponent(report, createLabel(presenter.totalVehicles(datePicker.getSelectedDate()) + ""), gbc, 1, 2, 1);
         String[] col = { "Nombre", "Apellidos", "Ingreso", "Vehiculos" };
         JTable table = new JTable();
         try {
@@ -376,29 +376,40 @@ public class View extends JFrame implements ActionListener {
         ticketPanel.setSize(400, 600);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        addComponent(ticketPanel, createLabel("Su ticket ha sido generado exitosamente"), gbc, 0, 0, 1);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        addComponent(ticketPanel, createLabel("Su ticket ha sido generado exitosamente"), gbc, 0, 0, 2);
+
         gbc.gridy = 1;
         addComponent(ticketPanel, createLabel("Resumen"), gbc, 0, 1, 2);
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        addComponent(ticketPanel, createButton("Imprimir recibo", "printOfTicketPanel"), gbc, 0, 3, 1);
-        addComponent(ticketPanel, createButton("Regresar", "backOfTicketPanel"), gbc, 1, 3, 1);
+
         String[] col = { "Placa", "Fecha", "Hora ingreso", "Tipo de vehiculo" };
         tableModel = new DefaultTableModel(col, 0);
         ticketRegisterTable = new JTable(tableModel);
         updateTable(plate);
         JScrollPane scrollPane = new JScrollPane(ticketRegisterTable);
-        scrollPane.setPreferredSize(new Dimension(10, 20));
+        scrollPane.setPreferredSize(new Dimension(300, 100));
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.1;
-        gbc.insets = new Insets(1, 1, 1, 1);
-        addComponent(ticketPanel, scrollPane, gbc, 0, 3, 1);
+        gbc.weighty = 1.0;
+        addComponent(ticketPanel, scrollPane, gbc, 0, 2, 2);
+
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        addComponent(ticketPanel, createButton("Imprimir recibo", "printOfTicketPanel"), gbc, 0, 3, 1);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        addComponent(ticketPanel, createButton("Regresar", "backOfTicketPanel"), gbc, 1, 3, 1);
+
         return ticketPanel;
     }
 
@@ -489,36 +500,36 @@ public class View extends JFrame implements ActionListener {
         String[] lines = presenter.availableSpaces().split("\n");
         if (!lines[0].equals("Hay -1 espacios disponibles")) {
             addComponent(panel, createLabel("Disponibilidad"), gbc, 0, 0, 2);
-            IntStream.range(0, lines.length)
-                    .forEach(i -> addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12),
-                            gbc, 1, i + 1, 1));
+            for (int i = 0; i < lines.length; i++) {
+                addComponent(panel, createLabel(lines[i], i == 0 ? 25 : 12), gbc, 1, i + 1, 1);
+            }
             addComponent(panel, createButton("Salir", "outOfAvailableSpaces"), gbc, 0, 4, 2);
             String[] etiquetas = { "Total", "Motos", "Carros" };
-            IntStream.range(0, lines.length).forEach(i -> {
+            for (int i = 0; i < lines.length; i++) {
                 int espaciosDisponibles = Integer.parseInt(lines[i].replaceAll("\\D+", ""));
                 if (espaciosDisponibles <= 5) {
                     switch (i) {
-                        case 0 -> {
+                        case 0:
                             if (!alertaTotalMostrada) {
                                 showAlert(etiquetas[i], espaciosDisponibles);
                                 alertaTotalMostrada = true;
                             }
-                        }
-                        case 1 -> {
+                            break;
+                        case 1:
                             if (!alertaMotosMostrada) {
                                 showAlert(etiquetas[i], espaciosDisponibles);
                                 alertaMotosMostrada = true;
                             }
-                        }
-                        case 2 -> {
+                            break;
+                        case 2:
                             if (!alertaCarrosMostrada) {
                                 showAlert(etiquetas[i], espaciosDisponibles);
                                 alertaCarrosMostrada = true;
                             }
-                        }
+                            break;
                     }
                 }
-            });
+            }
         }
         return panel;
     }
@@ -642,12 +653,15 @@ public class View extends JFrame implements ActionListener {
             return false;
         }
 
+        if (presenter.foundedVehicle(plate)) {
+            showErrorMessage("El vehiculo ya se encuentra registrado.");
+            return false;
+        }
         String result = presenter.registerVehicle(plate, type);
         if (result.contains("No hay espacio disponible")) {
             showErrorMessage(result);
             return false;
         }
-
         showInfoMessage(result);
         recepRightPanel.remove(ticketPanel);
         ticketPanel = ticketPanel(plate);
@@ -913,6 +927,7 @@ public class View extends JFrame implements ActionListener {
                 optionPanel("Seleccione una fecha", "Seleccione una fecha", 2, "Continuar");
             }
         }
+
         if (e.getSource() == buttonsMap.get("generateTicketOfExitVehicle")) {
 
             String plate = textFieldsMap.get("plateExitVehicle").getText();
@@ -925,7 +940,7 @@ public class View extends JFrame implements ActionListener {
 
             double dinero = Double.parseDouble(dineroStr);
             double cost = presenter.costTikect(plate, dinero);
-            if (cost == -1) {
+            if (cost == 0) {
                 optionPanel("No hay ningun vehiculo registrado con esa placa", "Alerta vehiculo",
                         JOptionPane.ERROR_MESSAGE, "Continuar");
             } else {
@@ -959,6 +974,9 @@ public class View extends JFrame implements ActionListener {
                 updateTable(plate);
             }
 
+        }
+        if (e.getSource() == buttonsMap.get("backOfSalesReport")) {
+            adminCardLayout.show(adminRightPanel, "Welcome");
         }
     }
 }

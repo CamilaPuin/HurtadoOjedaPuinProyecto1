@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 import co.edu.uptc.model.Exceptions.DateVehicleNotFoundException;
@@ -23,13 +24,8 @@ public class SystemParking {
         Recepcionist recepcionist = new Recepcionist("recepcionist", "recepcionist", "recepcionist@recepcionist.com",
                 "123456789",
                 "Calle de la casa, 1", "1", "1", admin.getParking());
-        Recepcionist recepcionistTwo = new Recepcionist("Sapopet", "Sacudeme la trompeta",
-                "recepcionist@recepcionist.com",
-                "123456789",
-                "Calle de la casa, 1", "1", "1", admin.getParking());
         recepcionists = new ArrayList<>();
         recepcionists.add(recepcionist);
-        recepcionists.add(recepcionistTwo);
         recepcionists.sort(Comparator.comparing(Recepcionist::getId));
         admins = new ArrayList<>();
         admins.sort(Comparator.comparing(Admin::getId));
@@ -120,10 +116,6 @@ public class SystemParking {
                 Comparator.comparing(Recepcionist::getId));
     }
 
-    // public void salesReport(LocalDate date) {
-    // currentAdmin.generateSalesReport(date);
-    // }
-
     public void logout() {
         currentAdmin = null;
         currentRecepcionist = null;
@@ -184,7 +176,7 @@ public class SystemParking {
             recepcionistData[3] = recepcionists.get(index).getEmail();
             return recepcionistData;
         }
-        return null;
+        return new String[] { "NOT_FOUND", "NOT_FOUND", "NOT_FOUND", "NOT_FOUND" };
     }
 
     public int numAttendedVehicles() {
@@ -200,31 +192,59 @@ public class SystemParking {
         return recepcionistData;
     }
 
-    public Object[][] getConsolidatedRecepcionists(LocalDate date) throws DateVehicleNotFoundException {
-        Object[][] data = new Object[recepcionists.size()][4];
+        public Object[][] getConsolidatedRecepcionists(LocalDate date) throws DateVehicleNotFoundException {
+        if (date == null) {
+            throw new IllegalArgumentException("La fecha no puede ser nula.");
+        }
+    
+        List<Object[]> dataList = new ArrayList<>();
         boolean vehicleFound = false;
-        for (Vehicle vehicle : currentRecepcionist.getAttendedVehicles()) {
-            if (vehicle.getDate().equals(date)) {
-                vehicleFound = true;
-                for (int i = 0; i < recepcionists.size(); i++) {
-                    Recepcionist r = recepcionists.get(i);
-                    data[i][0] = r.getName();
-                    data[i][1] = r.getLastName();
-                    data[i][2] = r.income();
-                    data[i][3] = r.numAttendedVehicles();
+    
+        for (Recepcionist r : recepcionists) {
+            if (r.getAttendedVehicles() != null) {
+                for (Vehicle vehicle : r.getAttendedVehicles()) {
+                    if (vehicle.getDate().equals(date)) {
+                        vehicleFound = true;
+                        dataList.add(new Object[] {
+                            r.getName(),
+                            r.getLastName(),
+                            r.income(),
+                            r.numAttendedVehicles()
+                        });
+                    }
                 }
-
             }
         }
+    
         if (!vehicleFound) {
             throw new DateVehicleNotFoundException("No se encontraron vehículos atendidos en la fecha especificada.");
         }
+        return dataList.toArray(new Object[0][0]);
+    }
 
-        return data;
+    public double totalMoney(LocalDate date) {
+        double total = 0;
+        for (Recepcionist r : recepcionists) {
+            for (Vehicle vehicle : r.getAttendedVehicles()) {
+                if (vehicle.getDate().equals(date)) 
+                    total += vehicle.getCost();
+            }
+        }
+        return total;
     }
 
     public boolean foundedVehicle(String plate) {
         return currentRecepcionist.foundedVehicle(plate);
+    }
+    public int totalVehicles(LocalDate date) {
+        int total = 0;
+        for (Recepcionist r : recepcionists) {
+            for (Vehicle vehicle : r.getAttendedVehicles()) {
+                if (vehicle.getDate().equals(date)) 
+                    total++;
+            }
+        }
+        return total;
     }
 
 }

@@ -116,65 +116,65 @@ public class Parking {
                 totalAvailable, availableMotorbikes, availableCars);
     }
 
-public String registerVehicle(String plate, String type) {
+    public String registerVehicle(String plate, String type) {
 
-    switch (type) {
-        case "Carro": {
-            for (int i = 0; i < cars.size(); i++) {
-                if (cars.get(i).getPlate().equals(plate)) 
-                    return "El vehículo con placa " + plate + " ya está registrado como carro.";
+        switch (type) {
+            case "Carro": {
+                for (int i = 0; i < cars.size(); i++) {
+                    if (cars.get(i).getPlate().equals(plate))
+                        return "El vehículo con placa " + plate + " ya está registrado como carro.";
+                }
+                if (carscapacity > cars.size()) {
+                    Vehicle vehicle = new Vehicle(plate, type);
+                    cars.add(vehicle);
+                    cars.sort(new Comparator<Vehicle>() {
+                        public int compare(Vehicle v1, Vehicle v2) {
+                            return v1.getPlate().compareTo(v2.getPlate());
+                        }
+                    });
+                    return "Vehículo con placa " + plate + " registrado correctamente como carro.";
+                } else
+                    return "No hay espacio disponible para carros.";
             }
-            if (carscapacity > cars.size()) {
-                Vehicle vehicle = new Vehicle(plate, type);
-                cars.add(vehicle);
-                cars.sort(new Comparator<Vehicle>() {
-                    public int compare(Vehicle v1, Vehicle v2) {
-                        return v1.getPlate().compareTo(v2.getPlate());
-                    }
-                }); 
-                return "Vehículo con placa " + plate + " registrado correctamente como carro.";
-            } else 
-                return "No hay espacio disponible para carros.";
-        }
-        case "Moto": {
-            for (int i = 0; i < motorbikes.size(); i++) {
-                if (motorbikes.get(i).getPlate().equals(plate)) 
-                    return "El vehículo con placa " + plate + " ya está registrado como moto.";
+            case "Moto": {
+                for (int i = 0; i < motorbikes.size(); i++) {
+                    if (motorbikes.get(i).getPlate().equals(plate))
+                        return "El vehículo con placa " + plate + " ya está registrado como moto.";
+                }
+                if (motorbikescapacity > motorbikes.size()) {
+                    Vehicle vehicle = new Vehicle(plate, type);
+                    motorbikes.add(vehicle);
+                    motorbikes.sort(new Comparator<Vehicle>() {
+                        public int compare(Vehicle v1, Vehicle v2) {
+                            return v1.getPlate().compareTo(v2.getPlate());
+                        }
+                    });
+                    return "Vehículo con placa " + plate + " registrado correctamente como moto.";
+                } else
+                    return "No hay espacio disponible para motos.";
             }
-            if (motorbikescapacity > motorbikes.size()) {
-                Vehicle vehicle = new Vehicle(plate, type);
-                motorbikes.add(vehicle);
-                motorbikes.sort(new Comparator<Vehicle>() {
-                    public int compare(Vehicle v1, Vehicle v2) {
-                        return v1.getPlate().compareTo(v2.getPlate());
-                    }
-                }); 
-                return "Vehículo con placa " + plate + " registrado correctamente como moto.";
-            } else 
-                return "No hay espacio disponible para motos.";
+            default:
+                return "Tipo de vehículo no reconocido: " + type;
         }
-        default: 
-            return "Tipo de vehículo no reconocido: " + type;
     }
-}
 
-public Vehicle deleteVehicle(String plate) {
-    cars.sort(Comparator.comparing(Vehicle::getPlate));
-    motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
-    int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
-    if (index >= 0)
-        return cars.remove(index);
+    public Vehicle deleteVehicle(String plate) {
+        cars.sort(Comparator.comparing(Vehicle::getPlate));
+        motorbikes.sort(Comparator.comparing(Vehicle::getPlate));
+        int index = Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0)
+            return cars.remove(index);
 
-    index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
-    if (index >= 0)
-        return motorbikes.remove(index);
+        index = Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate));
+        if (index >= 0)
+            return motorbikes.remove(index);
 
-    return new Vehicle("NOT_FOUND", "Unknown");
-}
+        return new Vehicle("NOT_FOUND", "Unknown");
+    }
 
     public static int getPassedTime(Vehicle vehicle) {
         if (vehicle == null)
-            return -1;
+            return 0;
         Duration passedTime = Duration.between(vehicle.getEntryTime(), LocalTime.now());
         return (int) (passedTime.toMinutes() + 59) / 60;
     }
@@ -194,7 +194,11 @@ public Vehicle deleteVehicle(String plate) {
     }
 
     public boolean foundedVehicle(String plate) {
-        return Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0;
+        if (Collections.binarySearch(cars, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0)
+            return true;
+        if (Collections.binarySearch(motorbikes, new Vehicle(plate), Comparator.comparing(Vehicle::getPlate)) >= 0)
+            return true;
+        return false;
     }
 
 }

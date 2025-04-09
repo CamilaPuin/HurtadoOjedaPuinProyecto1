@@ -9,7 +9,7 @@ public class Vehicle {
     private String type;
     private LocalTime entryTime;
     private LocalDate date;
-
+    private double cost;
     public Vehicle(String plate, String type) {
         this.plate = plate;
         this.type = type;
@@ -75,6 +75,14 @@ public class Vehicle {
     @Override
     public int hashCode() {
         return Objects.hash(plate);
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
 }
